@@ -1,0 +1,1 @@
+docker build -t prognosis-app . && docker run -it -p 8080:8080 prognosis-app

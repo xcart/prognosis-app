@@ -1,0 +1,22 @@
+{
+  "name": "prognosis-app",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "rollup": "^2.18.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-svelte": "^5.2.3",
+    "svelte": "^3.23.2",
+    "svelte-routing": "^1.4.2"
+  },
+  "dependencies": {
+    "sirv-cli": "^1.0.1"
+  }
+}
