@@ -11,10 +11,15 @@ class Configuration {
     private val instance = {
         systemProperties() overriding
                 EnvironmentVariables() overriding
-                ConfigurationProperties.fromResource("application.properties")
+                ConfigurationProperties.fromOptionalResource("application.properties") overriding
+                ConfigurationProperties.fromOptionalResource("application.defaults.properties")
     }()
 
     fun getYoutrackToken(): String {
         return instance[youtrackToken]
     }
 }
+
+private fun ConfigurationProperties.Companion.fromOptionalResource(resourceName: String) =
+        if (ClassLoader.getSystemResource(resourceName) != null) fromResource(resourceName)
+        else EmptyConfiguration

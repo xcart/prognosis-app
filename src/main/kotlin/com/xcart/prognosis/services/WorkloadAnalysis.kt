@@ -57,7 +57,7 @@ class WorkloadAnalysis (private val issues: List<Issue>) {
             var issuesOnDay = issues
                     .filter { it.startDate <= date && it.dueDate!! >= date && it.estimation > 0 }
             var value = calculateWorkloadValue (date, issuesOnDay)
-            WorkloadItem(date, value)
+            WorkloadItem(date, value, issuesOnDay)
         }
     }
 
