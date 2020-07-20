@@ -11,8 +11,8 @@
     // Finally map from [0°, 360°] -> [0, 1.0] by dividing
     let hue = ((percentage * (endHue - startHue)) + startHue);
 
-    const saturation = 60.0;
-    const lightness = 70.0;
+    const saturation = 65.0;
+    const lightness = 55.0;
 
     // Get the color
     return {hue, saturation, lightness};
