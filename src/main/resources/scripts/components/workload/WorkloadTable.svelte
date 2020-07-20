@@ -5,18 +5,27 @@
   let dates = getDates(new Date(), new Date().addDays(calendarLength - 1))
   let formatWorkload = (value) => (value / 60.0).toFixed(1)
   let limitValues = (values) => values.slice(0, calendarLength)
-  let colorCode = (value) => {
-    if (value > 300) {
-      return "red"
-    } else if (value > 180) {
-      return "yellow"
-    } else if (value > 30) {
-      return "green"
-    } else if (value > 1) {
-      return "pale"
-    } else {
-      return "white"
+
+  let transitionOfHueRange = (percentage, startHue, endHue) => {
+    // From 'startHue' 'percentage'-many to 'endHue'
+    // Finally map from [0°, 360°] -> [0, 1.0] by dividing
+    let hue = ((percentage * (endHue - startHue)) + startHue);
+
+    const saturation = 100.0;
+    const lightness = 50.0;
+
+    // Get the color
+    return {hue, saturation, lightness};
+  }
+
+  let continuousColorCode = (value) => {
+    if (value < 1) {
+      return '#eee';
     }
+    const absoluteMaxWorkloadMinutes = 8 * 60;
+
+    let hsl = transitionOfHueRange(value / absoluteMaxWorkloadMinutes, 180, 0);
+    return `hsl(${hsl.hue}deg ${hsl.saturation}% ${hsl.lightness}%)`;
   }
 </script>
 
@@ -32,7 +41,7 @@
     {#each report as reportLine}
       <div class="table-row">
         {#each limitValues(reportLine.items) as item}
-          <div class="data-column color-{colorCode(item.workload)}">
+          <div class="data-column" style="background: {continuousColorCode(item.workload)}">
             <span class="workload-value ">{formatWorkload(item.workload)}</span>
             <div class="extra-info">
               {#each item.issues as issue}
