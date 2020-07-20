@@ -8,14 +8,9 @@
 
   let transitionOfHueRange = (percentage, startHue, endHue) => {
     // From 'startHue' 'percentage'-many to 'endHue'
-    // Finally map from [0°, 360°] -> [0, 1.0] by dividing
-    let hue = ((percentage * (endHue - startHue)) + startHue);
+    let hue = (percentage * (endHue - startHue)) + startHue;
 
-    const saturation = 65.0;
-    const lightness = 55.0;
-
-    // Get the color
-    return {hue, saturation, lightness};
+    return {hue, saturation: 65.0, lightness: 55.0};
   }
 
   let continuousColorCode = (value) => {
