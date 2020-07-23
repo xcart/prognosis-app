@@ -2,7 +2,7 @@ package com.xcart.prognosis.domain
 
 import java.sql.Timestamp
 import java.time.LocalDate
-import java.util.HashMap
+import java.util.*
 
 data class Issue(
         val id: String = "",
@@ -37,6 +37,15 @@ data class Issue(
             return if (cfield?.value !== null) Timestamp(cfield.value as Long).toLocalDateTime().toLocalDate() else null
         }
 
+    /**
+     * Due date timestamp
+     */
+    val verificationDate: LocalDate?
+        get() {
+            val cfield = customFields.find { it.name == "Verification date" }
+            return if (cfield?.value !== null) Timestamp(cfield.value as Long).toLocalDateTime().toLocalDate() else null
+        }
+
     val state: Enum<IssueState>?
         get() {
             val cfield = customFields.find { it.name == "State" }
@@ -66,6 +75,22 @@ data class Issue(
             val cfield = customFields.find { it.name == "Start Date" }
             val timestamp = if (cfield?.value !== null) cfield.value as Long else created
             return Timestamp(timestamp).toLocalDateTime().toLocalDate()
+        }
+
+    /**
+     * Start date timestamp (approximate)
+     */
+    val endDate: LocalDate?
+        get() {
+            return when (state) {
+                IssueState.New,
+                IssueState.Open,
+                IssueState.InProgress,
+                IssueState.Waiting -> {
+                    if (verificationDate !== null) verificationDate else dueDate
+                }
+                else -> dueDate
+            }
         }
 
     val assignee: User?

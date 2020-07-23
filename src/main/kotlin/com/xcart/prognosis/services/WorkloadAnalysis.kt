@@ -1,6 +1,7 @@
 package com.xcart.prognosis.services
 
 import com.xcart.prognosis.domain.Issue
+import com.xcart.prognosis.domain.IssueInfo
 import com.xcart.prognosis.domain.User
 import com.xcart.prognosis.reports.WorkloadItem
 import java.time.DayOfWeek
@@ -15,12 +16,12 @@ class WorkloadAnalysis (private val issues: List<Issue>) {
 
     fun getDailyWorkloadForUser(user: User, startDate: LocalDate): List<WorkloadItem> {
         val userIssues = issues.filter { it.assignee?.id == user.id }
-        val filteredIssues = userIssues.filter { it.dueDate != null }
-        val lastIssue = filteredIssues.maxBy { it.dueDate ?: LocalDate.MIN }
+        val filteredIssues = userIssues.filter { it.endDate != null }
+        val lastIssue = filteredIssues.maxBy { it.endDate ?: LocalDate.MIN }
         if (lastIssue == null || filteredIssues.isNullOrEmpty()) {
             return emptyList()
         }
-        val endDate = lastIssue.dueDate
+        val endDate = lastIssue.endDate
         return if (startDate < endDate && endDate != null)
             listDaysBetween(startDate, endDate)
                     .map(getMappingFunc(filteredIssues))
@@ -55,9 +56,9 @@ class WorkloadAnalysis (private val issues: List<Issue>) {
     private fun getMappingFunc(issues: List<Issue>): (LocalDate) -> WorkloadItem {
         return { date ->
             var issuesOnDay = issues
-                    .filter { it.startDate <= date && it.dueDate!! >= date && it.estimation > 0 }
+                    .filter { it.startDate <= date && it.endDate!! >= date && it.estimation > 0 }
             var value = calculateWorkloadValue (date, issuesOnDay)
-            WorkloadItem(date, value, issuesOnDay)
+            WorkloadItem(date, value, issuesOnDay.map { IssueInfo(it.id, it.idReadable, it.summary) })
         }
     }
 
@@ -66,7 +67,7 @@ class WorkloadAnalysis (private val issues: List<Issue>) {
             return 0f
         }
         return issuesOnDay.fold(0f) { acc, issue ->
-            val issueDays = issue.dueDate?.let {
+            val issueDays = issue.endDate?.let {
                 countBusinessDaysBetween(issue.startDate, it)
             } ?: 1
             acc + (issue.estimation / issueDays)

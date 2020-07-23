@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service
 
 @Service
 class Configuration {
-    private val youtrackToken = Key("youtrack.token", stringType)
-
     private val instance = {
         systemProperties() overriding
                 EnvironmentVariables() overriding
@@ -16,7 +14,15 @@ class Configuration {
     }()
 
     fun getYoutrackToken(): String {
-        return instance[youtrackToken]
+        return instance[Key("youtrack.token", stringType)]
+    }
+
+    fun getAuthUser(): String {
+        return instance[Key("auth.user", stringType)]
+    }
+
+    fun getAuthPassword(): String {
+        return instance[Key("auth.password", stringType)]
     }
 }
 
