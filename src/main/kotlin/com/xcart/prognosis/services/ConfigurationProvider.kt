@@ -9,8 +9,8 @@ class Configuration {
     private val instance = {
         systemProperties() overriding
                 EnvironmentVariables() overriding
-                ConfigurationProperties.fromOptionalResource("application.properties") overriding
-                ConfigurationProperties.fromOptionalResource("application.defaults.properties")
+                ConfigurationProperties.fromOptionalResource("user.properties") overriding
+                ConfigurationProperties.fromOptionalResource("application.properties")
     }()
 
     fun getYoutrackToken(): String {
