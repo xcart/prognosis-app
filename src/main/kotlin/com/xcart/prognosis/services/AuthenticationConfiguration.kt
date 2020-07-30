@@ -20,8 +20,8 @@ class AuthenticationConfiguration @Autowired constructor(val config: com.xcart.p
         auth
             .inMemoryAuthentication()
                 .passwordEncoder(passwordEncoder)
-                .withUser(config.getAuthUser())
-                    .password(passwordEncoder.encode(config.getAuthPassword()))
+                .withUser(config.authUser)
+                    .password(passwordEncoder.encode(config.authPassword))
                     .roles("USER")
     }
 

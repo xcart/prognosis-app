@@ -1,1 +1,1 @@
-docker build -t prognosis-app . && docker run -it -p 8080:8080 --env-file ./env.list prognosis-app
+docker build . -t xcart/prognosis-app:latest && docker run -d --network shared --rm --name backend xcart/prognosis-app:latest

@@ -1,31 +1,17 @@
 package com.xcart.prognosis.services
 
-import com.natpryce.konfig.*
-import com.natpryce.konfig.ConfigurationProperties.Companion.systemProperties
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 @Service
 class Configuration {
-    private val instance = {
-        systemProperties() overriding
-                EnvironmentVariables() overriding
-                ConfigurationProperties.fromOptionalResource("user.properties") overriding
-                ConfigurationProperties.fromOptionalResource("application.properties")
-    }()
 
-    fun getYoutrackToken(): String {
-        return instance[Key("youtrack.token", stringType)]
-    }
+    @Value("\${youtrack.token}")
+    lateinit var youtrackToken: String
 
-    fun getAuthUser(): String {
-        return instance[Key("auth.user", stringType)]
-    }
+    @Value("\${auth.user}")
+    lateinit var authUser: String
 
-    fun getAuthPassword(): String {
-        return instance[Key("auth.password", stringType)]
-    }
+    @Value("\${auth.password}")
+    lateinit var authPassword: String
 }
-
-private fun ConfigurationProperties.Companion.fromOptionalResource(resourceName: String) =
-        if (ClassLoader.getSystemResource(resourceName) != null) fromResource(resourceName)
-        else EmptyConfiguration

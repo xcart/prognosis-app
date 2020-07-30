@@ -1,0 +1,1 @@
+docker build . -t xcart/prognosis-app-webserver:latest && docker run -d --network shared --rm --name webserver -p 80:80 xcart/prognosis-app-webserver:latest

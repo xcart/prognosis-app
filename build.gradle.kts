@@ -19,7 +19,6 @@ repositories {
 }
 
 dependencies {
-	implementation("com.natpryce:konfig:1.6.10.0")
 	implementation("com.github.node-gradle:gradle-node-plugin:2.2.4")
 	implementation("com.github.kittinunf.fuel:fuel:2.2.3")
 	implementation("com.github.kittinunf.fuel:fuel:2.2.3")
