@@ -1,0 +1,26 @@
+name: Backend CI update
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    # Job name is Greeting
+    name: Image build
+    # This job runs on Linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build image
+        run: make build
+      - name: Push to Docker hub
+        run: make release
+      - name: Load changes on production instance
+        uses: appleboy/ssh-action@master
+          with:
+            host: ${{ secrets.HOST }}
+            username: ${{ secrets.USERNAME }}
+            key: ${{ secrets.DEPLOY_KEY }}
+            script: ./test.sh
