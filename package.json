@@ -17,6 +17,7 @@
     "svelte-routing": "^1.4.2"
   },
   "dependencies": {
-    "sirv-cli": "^1.0.1"
+    "sirv-cli": "^1.0.1",
+    "sveltestrap": "^3.7.3"
   }
 }
