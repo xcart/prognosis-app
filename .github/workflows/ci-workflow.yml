@@ -25,4 +25,8 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.DEPLOY_KEY }}
-          script: ./test.sh
+          script: |
+            docker stop backend
+            docker rm backend
+            docker pull xcart/prognosis-app:latest
+            docker run -d --network shared --env YOUTRACK_TOKEN=${{ secrets.YOUTRACK_TOKEN }} --env AUTH_PASSWORD=${{ secrets.AUTH_PWD }} --name backend xcart/prognosis-app:latest
