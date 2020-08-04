@@ -2,6 +2,8 @@
     import getContinuousColorCode from "../../util/colorCode";
     import DateTableHeader from "./table/DateTableHeader.svelte"
 
+    import {Table} from 'sveltestrap';
+
     export let report = null
     let calendarLength = 30
     let formatWorkload = (value) => (value / 60.0).toFixed(1)
@@ -9,24 +11,27 @@
 </script>
 
 <div class="calendar-section">
-    <DateTableHeader duration={calendarLength} />
-    <div class="table-body">
-      {#each report as reportLine}
-          <div class="table-row">
-            {#each limitValues(reportLine.items) as item}
-                <div class="data-column" style="background: {getContinuousColorCode(item.workload)}">
-                    <span class="workload-value ">{formatWorkload(item.workload)}</span>
-                    <div class="extra-info">
-                      {#each item.issues as issue}
-                          <a class="issue-link" href="https://xcart.myjetbrains.com/youtrack/issue/{issue.idReadable}"
-                             target="_blank">{issue.idReadable}</a>
-                      {/each}
-                    </div>
-                </div>
-            {/each}
-          </div>
-      {/each}
-    </div>
+    <DateTableHeader duration={calendarLength}/>
+
+    <Table>
+        <tbody>
+        {#each report as reportLine}
+            <tr>
+              {#each limitValues(reportLine.items) as item}
+                  <td style="background: {getContinuousColorCode(item.workload)}">
+                      <span class="workload-value">{formatWorkload(item.workload)}</span>
+<!--                      <div class="extra-info">-->
+<!--                        {#each item.issues as issue}-->
+<!--                            <a class="issue-link" href="https://xcart.myjetbrains.com/youtrack/issue/{issue.idReadable}"-->
+<!--                               target="_blank">{issue.idReadable}</a>-->
+<!--                        {/each}-->
+<!--                      </div>-->
+                  </td>
+              {/each}
+            </tr>
+        {/each}
+        </tbody>
+    </Table>
 </div>
 
 <style>

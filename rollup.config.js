@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import svelte from 'rollup-plugin-svelte';
+import scss from 'rollup-plugin-scss';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 
@@ -20,6 +21,9 @@ export default {
       css: css => {
         css.write('src/main/resources/static/bundle.css');
       }
+    }),
+    scss({
+      output: 'src/main/resources/static/global.css'
     }),
     resolve({
       browser: true,

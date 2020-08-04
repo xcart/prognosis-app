@@ -3,46 +3,21 @@
 
     export let report = null
 </script>
-<div class="user-section">
-    <div class="table-header">
-        <span></span>
-    </div>
-    <div class="table-body">
-      {#each report as reportLine}
-          <div class="table-row">
-              <div class="user-column">
-                  <span>{reportLine.user.fullName}</span>
-              </div>
-          </div>
-      {/each}
-    </div>
-</div>
+<ListGroup flush class="user-section">
+    <ListGroupItem class="empty"></ListGroupItem>
+  {#each report as reportLine}
+      <ListGroupItem>
+          <span>{reportLine.user.login}</span>
+      </ListGroupItem>
+  {/each}
+</ListGroup>
 
 <style>
-    .user-section {
+    :global(.user-section) {
         border-right: 1px solid #ddd;
     }
 
-    .table-header {
-        display: flex;
-    }
-
-    .table-row {
-        display: flex;
-        height: 2rem;
-        min-height: 2rem;
-        align-items: center;
-    }
-
-    .table-header + .table-body {
-        margin-top: 1rem;
-    }
-
-    .user-section .table-row {
-        justify-content: flex-end;
-    }
-
-    .user-section + :global(div) {
-        margin-left: 1rem;
+    :global(.user-section .list-group-item) {
+        width: 150px;
     }
 </style>
