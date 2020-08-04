@@ -13,9 +13,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PWD }}
       - name: Build image
         run: make build
-      - name: Push to Docker hub
+      - name: Push to Docker Hub
         run: make release
       - name: Load changes on production instance
         uses: appleboy/ssh-action@master
