@@ -1,19 +1,36 @@
 <script>
-  import { Router, Route } from "svelte-routing";
-  import Workload from "./pages/Workload.svelte";
-  import About from "./pages/About.svelte";
+    import {Router, Route} from "svelte-routing";
+    import {Container} from "sveltestrap"
+    import PageHeader from "./components/PageHeader.svelte";
+    import Workload from "./pages/Workload.svelte";
+    import About from "./pages/About.svelte";
 
-  export let url = "";
-  export let state = null;
+    export let url = "";
+    export let state = null;
 </script>
 
 <Router {url}>
-  <section class="page-container">
     <Route path="/">
-      <Workload {state} />
+        <PageHeader>
+            Workload analysis
+        </PageHeader>
+        <Container class="page-container" fluid>
+            <Workload {state}/>
+        </Container>
     </Route>
     <Route path="/about">
-      <About {state} />
+        <PageHeader>
+            About page
+        </PageHeader>
+        <Container class="page-container" fluid>
+            <About {state}/>
+        </Container>
     </Route>
-  </section>
 </Router>
+
+<style>
+    :global(.page-container) {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+</style>

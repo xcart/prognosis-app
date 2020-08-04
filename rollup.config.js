@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import svelte from 'rollup-plugin-svelte';
-import resolve from 'rollup-plugin-node-resolve';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 
 export default {
   input: 'src/main/resources/scripts/main.js',
@@ -23,6 +24,10 @@ export default {
     resolve({
       browser: true,
       dedupe: ['svelte']
+    }),
+    commonjs({
+    	include: /node_modules/,
+//      namedExports: {'lodash.tonumber': }
     })
   ]
 };
