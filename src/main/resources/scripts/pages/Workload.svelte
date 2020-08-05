@@ -15,8 +15,14 @@
 </section>
 
 <style>
+    :root {
+        --table-row-height: 2rem;
+        --table-row-width: 2rem;
+        --table-line-margin: .5rem;
+        --table-border: 1px solid #ddd;
+    }
+
     .workload-table {
         display: flex;
     }
-
 </style>
