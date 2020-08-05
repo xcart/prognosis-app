@@ -5894,7 +5894,7 @@ var bundle = (function () {
     			t0 = text(t0_value);
     			t1 = space();
     			add_location(span, file$a, 31, 10, 934);
-    			attr_dev(div, "class", "month-column svelte-1jw2280");
+    			attr_dev(div, "class", "month-column svelte-ulsio8");
     			set_style(div, "--data-size", /*month*/ ctx[7].size);
     			attr_dev(div, "data-month", div_data_month_value = /*month*/ ctx[7].number);
     			add_location(div, file$a, 30, 6, 835);
@@ -5937,7 +5937,7 @@ var bundle = (function () {
     			t0 = text(t0_value);
     			t1 = space();
     			add_location(span, file$a, 38, 10, 1081);
-    			attr_dev(div, "class", "date-column svelte-1jw2280");
+    			attr_dev(div, "class", "date-column svelte-ulsio8");
     			add_location(div, file$a, 37, 6, 1045);
     		},
     		m: function mount(target, anchor) {
@@ -5998,9 +5998,9 @@ var bundle = (function () {
     				each_blocks[i].c();
     			}
 
-    			attr_dev(div0, "class", "table-row svelte-1jw2280");
+    			attr_dev(div0, "class", "table-row svelte-ulsio8");
     			add_location(div0, file$a, 28, 0, 779);
-    			attr_dev(div1, "class", "table-row svelte-1jw2280");
+    			attr_dev(div1, "class", "table-row svelte-ulsio8");
     			add_location(div1, file$a, 35, 0, 991);
     		},
     		l: function claim(nodes) {
@@ -6218,7 +6218,7 @@ var bundle = (function () {
     		c: function create() {
     			a = element("a");
     			t = text(t_value);
-    			attr_dev(a, "class", "issue-link svelte-1a27gvm");
+    			attr_dev(a, "class", "issue-link svelte-f51508");
     			attr_dev(a, "href", a_href_value = "https://xcart.myjetbrains.com/youtrack/issue/" + /*issue*/ ctx[7].idReadable);
     			attr_dev(a, "target", "_blank");
     			add_location(a, file$b, 16, 16, 605);
@@ -6280,11 +6280,11 @@ var bundle = (function () {
     			}
 
     			t2 = space();
-    			attr_dev(span, "class", "workload-value  svelte-1a27gvm");
+    			attr_dev(span, "class", "workload-value  svelte-f51508");
     			add_location(span, file$b, 13, 10, 444);
-    			attr_dev(div0, "class", "extra-info svelte-1a27gvm");
+    			attr_dev(div0, "class", "extra-info svelte-f51508");
     			add_location(div0, file$b, 14, 10, 523);
-    			attr_dev(div1, "class", "data-column svelte-1a27gvm");
+    			attr_dev(div1, "class", "data-column svelte-f51508");
     			set_style(div1, "background", getContinuousColorCode(/*item*/ ctx[4].workload));
     			add_location(div1, file$b, 12, 6, 348);
     		},
@@ -6367,7 +6367,7 @@ var bundle = (function () {
     				each_blocks[i].c();
     			}
 
-    			attr_dev(div, "class", "table-row user-swimlane svelte-1a27gvm");
+    			attr_dev(div, "class", "table-row user-swimlane svelte-f51508");
     			add_location(div, file$b, 10, 0, 262);
     		},
     		l: function claim(nodes) {
@@ -6504,7 +6504,7 @@ var bundle = (function () {
     	return child_ctx;
     }
 
-    // (14:6) {#each report as reportLine}
+    // (17:6) {#each report as reportLine}
     function create_each_block$3(ctx) {
     	let swimlane;
     	let current;
@@ -6548,7 +6548,7 @@ var bundle = (function () {
     		block,
     		id: create_each_block$3.name,
     		type: "each",
-    		source: "(14:6) {#each report as reportLine}",
+    		source: "(17:6) {#each report as reportLine}",
     		ctx
     	});
 
@@ -6592,12 +6592,12 @@ var bundle = (function () {
     				each_blocks[i].c();
     			}
 
-    			attr_dev(div0, "class", "table-header svelte-hmr8xo");
-    			add_location(div0, file$c, 9, 4, 230);
-    			attr_dev(div1, "class", "table-body");
-    			add_location(div1, file$c, 12, 4, 325);
-    			attr_dev(div2, "class", "swimlanes-section");
-    			add_location(div2, file$c, 8, 0, 194);
+    			attr_dev(div0, "class", "table-header svelte-s70m8k");
+    			add_location(div0, file$c, 12, 4, 371);
+    			attr_dev(div1, "class", "table-body svelte-s70m8k");
+    			add_location(div1, file$c, 15, 4, 466);
+    			attr_dev(div2, "class", "swimlanes-section svelte-s70m8k");
+    			add_location(div2, file$c, 11, 0, 335);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6684,7 +6684,15 @@ var bundle = (function () {
 
     function instance$g($$self, $$props, $$invalidate) {
     	let { report = null } = $$props;
-    	let calendarLength = 30;
+
+    	let calendarLength = Array.from(report.values()).reduce(
+    		(sum, item) => {
+    			let length = item.items.length;
+    			return length > sum ? length : sum;
+    		},
+    		0
+    	);
+
     	const writable_props = ["report"];
 
     	Object.keys($$props).forEach(key => {

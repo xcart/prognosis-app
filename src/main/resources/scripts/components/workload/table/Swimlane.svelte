@@ -36,6 +36,8 @@
 
     .data-column {
         width: var(--table-row-width);
+        min-width: var(--table-row-width);
+        max-width: var(--table-row-width);
         display: flex;
         height: 100%;
         justify-content: center;

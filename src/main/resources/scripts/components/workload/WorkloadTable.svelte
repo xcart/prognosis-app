@@ -3,7 +3,10 @@
     import Swimlane from "./table/Swimlane.svelte"
 
     export let report = null
-    let calendarLength = 30
+    let calendarLength = Array.from(report.values()).reduce((sum, item) => {
+        let length = item.items.length
+        return length > sum ? length : sum
+    }, 0)
 </script>
 
 <div class="swimlanes-section">
@@ -21,5 +24,15 @@
     .table-header {
         border-bottom: var(--table-border);
         margin-bottom: var(--table-line-margin);
+        width: max-content;
+    }
+
+    .table-body {
+        width: max-content;
+    }
+
+    .swimlanes-section {
+        max-width: 90vw;
+        overflow: scroll;
     }
 </style>
