@@ -12,7 +12,6 @@
 
 <style>
   .page {
-    font-family: sans-serif;
     font-size: 16px;
   }
 </style>

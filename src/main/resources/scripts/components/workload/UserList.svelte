@@ -1,42 +1,63 @@
 <script>
-  export let report = null
+    export let report = null
 </script>
+
 <div class="user-section">
     <div class="table-header">
-        <span>-------</span>
+        <div class="table-row">
+            <span></span>
+        </div>
+        <div class="table-row">
+            <span></span>
+        </div>
     </div>
     <div class="table-body">
-        {#each report as reportLine}
-        <div class="table-row">
-            <div class="user-column">
-                <span>{reportLine.user.fullName}</span>
-            </div>
-        </div>
-        {/each}
+      {#each report as reportLine}
+          <div class="table-row">
+              <div class="user-column">
+                  <span>{reportLine.user.login}</span>
+              </div>
+          </div>
+      {/each}
     </div>
 </div>
 
 <style>
-.table-header {
-  display: flex;
-}
+    .user-section {
+        border-right: var(--table-border);
+    }
 
-.table-row {
-  display: flex;
-  height: 2rem;
-  min-height: 2rem;
-  align-items: center;
-}
+    .table-header {
+        margin-bottom: var(--table-line-margin);
+    }
 
-.table-header + .table-body {
-  margin-top: 1rem;
-}
+    .table-row {
+        display: flex;
+        height: var(--table-row-height);
+        min-height: var(--table-row-height);
+        align-items: center;
+    }
 
-.user-section .table-row {
-  justify-content: flex-end;
-}
+    .table-body .table-row + .table-row {
+        margin-top: var(--table-line-margin);
+    }
 
-.user-section + :global(div) {
-  margin-left: 1rem;
-}
+    .user-column {
+        min-width: 120px;
+        padding: 0 1rem;
+        text-align: right;
+        display: flex;
+        height: 100%;
+        justify-content: center;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .user-section .table-row {
+        justify-content: flex-end;
+    }
+
+    .user-section + :global(div) {
+        margin-left: 1rem;
+    }
 </style>

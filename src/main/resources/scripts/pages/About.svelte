@@ -1,3 +1,3 @@
 <section class="page">
-  <span>About</span>
+    <p>Nothing to see here yet</p>
 </section>

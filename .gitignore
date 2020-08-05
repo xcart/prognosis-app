@@ -32,5 +32,5 @@ out/
 .vscode/
 
 ### Project specific ###
-/src/main/resources/user.properties
+/src/main/resources/application-default.properties
 /node_modules/
