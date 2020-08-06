@@ -1,4 +1,4 @@
-package com.xcart.prognosis.services
+package com.xcart.prognosis.logic
 
 import com.xcart.prognosis.domain.Issue
 import com.xcart.prognosis.domain.IssueInfo
@@ -9,7 +9,6 @@ import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import java.util.stream.Stream
 import kotlin.streams.toList
-
 
 class WorkloadAnalysis (private val issues: List<Issue>) {
     private val holidays = emptyList<LocalDate>()

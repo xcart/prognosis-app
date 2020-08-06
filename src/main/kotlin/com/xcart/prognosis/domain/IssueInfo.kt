@@ -8,6 +8,4 @@ data class IssueInfo(
         val summary: String? = null,
         val startDate: LocalDate? = null,
         val endDate: LocalDate? = null
-) {
-}
-
+)
