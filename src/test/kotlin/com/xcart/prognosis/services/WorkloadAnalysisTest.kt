@@ -5,7 +5,7 @@ import com.xcart.prognosis.domain.IssueCustomField
 import com.xcart.prognosis.domain.IssueInfo
 import com.xcart.prognosis.domain.User
 import com.xcart.prognosis.logic.WorkloadAnalysis
-import com.xcart.prognosis.reports.WorkloadItem
+import com.xcart.prognosis.reports.DailyWorkloadItem
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.sql.Timestamp
@@ -49,21 +49,21 @@ internal class WorkloadAnalysisTest {
         val list2 = listOf(IssueInfo("1"), IssueInfo("2"))
         val list3 = listOf(IssueInfo("2"))
         val expected = listOf(
-                WorkloadItem(LocalDate.of(2020, 1, 1), 75f, list1),
-                WorkloadItem(LocalDate.of(2020, 1, 2), 75f, list1),
-                WorkloadItem(LocalDate.of(2020, 1, 3), 75f, list1),
-                WorkloadItem(LocalDate.of(2020, 1, 4), 0f, list1),
-                WorkloadItem(LocalDate.of(2020, 1, 5), 0f, list2),
-                WorkloadItem(LocalDate.of(2020, 1, 6), 225f, list2),
-                WorkloadItem(LocalDate.of(2020, 1, 7), 225f, list2),
-                WorkloadItem(LocalDate.of(2020, 1, 8), 225f, list2),
-                WorkloadItem(LocalDate.of(2020, 1, 9), 225f, list2),
-                WorkloadItem(LocalDate.of(2020, 1, 10), 225f, list2),
-                WorkloadItem(LocalDate.of(2020, 1, 11), 0f, list3),
-                WorkloadItem(LocalDate.of(2020, 1, 12), 0f, list3),
-                WorkloadItem(LocalDate.of(2020, 1, 13), 150f, list3),
-                WorkloadItem(LocalDate.of(2020, 1, 14), 150f, list3),
-                WorkloadItem(LocalDate.of(2020, 1, 15), 150f, list3)
+                DailyWorkloadItem(LocalDate.of(2020, 1, 1), 75f, list1),
+                DailyWorkloadItem(LocalDate.of(2020, 1, 2), 75f, list1),
+                DailyWorkloadItem(LocalDate.of(2020, 1, 3), 75f, list1),
+                DailyWorkloadItem(LocalDate.of(2020, 1, 4), 0f, list1),
+                DailyWorkloadItem(LocalDate.of(2020, 1, 5), 0f, list2),
+                DailyWorkloadItem(LocalDate.of(2020, 1, 6), 225f, list2),
+                DailyWorkloadItem(LocalDate.of(2020, 1, 7), 225f, list2),
+                DailyWorkloadItem(LocalDate.of(2020, 1, 8), 225f, list2),
+                DailyWorkloadItem(LocalDate.of(2020, 1, 9), 225f, list2),
+                DailyWorkloadItem(LocalDate.of(2020, 1, 10), 225f, list2),
+                DailyWorkloadItem(LocalDate.of(2020, 1, 11), 0f, list3),
+                DailyWorkloadItem(LocalDate.of(2020, 1, 12), 0f, list3),
+                DailyWorkloadItem(LocalDate.of(2020, 1, 13), 150f, list3),
+                DailyWorkloadItem(LocalDate.of(2020, 1, 14), 150f, list3),
+                DailyWorkloadItem(LocalDate.of(2020, 1, 15), 150f, list3)
         )
         assertEquals(expected, result)
     }
