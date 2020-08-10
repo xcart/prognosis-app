@@ -1,16 +1,13 @@
-<script lang="ts">
+<script>
     import UserList from "../components/workload/UserList.svelte"
     import SwimlanesView from "../components/workload/SwimlanesView.svelte"
-    import type {User, TeamWorkload} from "../types"
     import {state} from '../stores'
 
-    let users: Array<User>,
-        teams: Array<TeamWorkload>,
-        duration: Number;
+    let users,
+        teams,
+        duration,
+        rows;
 
-    $: {
-
-    }
     $: users = $state.report.teams.reduce((list, team) => {
         return list.concat(team.users.map((workload) => {
             return workload.user
@@ -22,7 +19,7 @@
 
 <section class="page">
     <div class="workload-table">
-        <UserList users={users}/>
+        <UserList teams={teams}/>
         <SwimlanesView teams={teams} duration={duration}/>
     </div>
 </section>
@@ -32,7 +29,8 @@
         --table-row-height: 2rem;
         --table-row-width: 2rem;
         --table-line-margin: .5rem;
-        --table-border: 1px solid #ddd;
+        --table-border: 1px solid #eee;
+        --table-team-bg: #eee;
     }
 
     .workload-table {

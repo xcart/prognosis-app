@@ -3,8 +3,8 @@ package com.xcart.prognosis.reports
 import com.xcart.prognosis.domain.Issue
 import com.xcart.prognosis.domain.Team
 import com.xcart.prognosis.domain.User
-import com.xcart.prognosis.repositories.YouTrack
 import com.xcart.prognosis.logic.WorkloadAnalysis
+import com.xcart.prognosis.repositories.YouTrack
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDate
@@ -28,18 +28,21 @@ class WorkloadReportBuilder @Autowired constructor(val youTrack: YouTrack) {
         }
 
         return teams.map {
-            TeamWorkload(it.key, getUsersWorkload(it.value, issues), emptyList())
-        }
+            val skipEmpty = it.key == Team.NoTeam
+            TeamWorkload(it.key, getUsersWorkload(it.value, issues, skipEmpty), emptyList())
+        }.sortedBy { it.teamName }
     }
 
-    fun getUsersWorkload(users: List<User>, issues: List<Issue>): List<UserWorkload> {
+    fun getUsersWorkload(users: List<User>, issues: List<Issue>, skipEmpty: Boolean): List<UserWorkload> {
         val analysis = WorkloadAnalysis(issues)
         return users.fold(mutableListOf()) { acc, user ->
             val swimlane = analysis.getDailyWorkloadForUser(user, LocalDate.now())
             val stats = listOf(
                 StatValue(StatValueKey.SwimlaneDuration, swimlane.size)
             )
-            acc.add(UserWorkload(user, swimlane, stats))
+            if (swimlane.isNotEmpty() || !skipEmpty) {
+                acc.add(UserWorkload(user, swimlane, stats))
+            }
             acc
         }
     }

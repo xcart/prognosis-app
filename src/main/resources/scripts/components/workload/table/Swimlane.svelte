@@ -1,8 +1,7 @@
-<script lang="ts">
+<script>
     import getContinuousColorCode from "../../../util/colorCode";
-    import type {DailyWorkloadItem} from "../../../types"
 
-    export let swimlane: Array<DailyWorkloadItem> = null
+    export let swimlane = null
 
     let formatWorkload = (value) => (value / 60.0).toFixed(1)
 </script>
@@ -51,7 +50,7 @@
         top: 100%;
         left: 50%;
         transform: translate(-50%, 0);
-        box-shadow: 0 1px 5px 0px #ccc;
+        box-shadow: 0 1px 5px 0 #ccc;
         background: white;
         padding: .5rem;
         z-index: 1;
@@ -68,6 +67,7 @@
 
     .data-column .workload-value {
         opacity: .2;
+        cursor: default;
     }
 
     .data-column:hover .workload-value {

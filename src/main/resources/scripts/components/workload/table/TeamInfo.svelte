@@ -1,11 +1,11 @@
 <script lang="ts">
-    export let label: String = null
+    export let team: String = null
 </script>
 
-<div class="table-row label-row">
-    <div class="full-width-column">
-        <span>{label}</span>
-    </div>
+<div class="table-row team-swimlane">
+  <div class="full-column">
+      <span></span>
+  </div>
 </div>
 
 <style>
@@ -20,13 +20,13 @@
         margin-top: var(--table-line-margin);
     }
 
-    .full-width-column {
+    .full-column {
         width: 100%;
         display: flex;
         height: 100%;
         justify-content: center;
         flex-direction: column;
         position: relative;
-        text-align: center;
+        text-align: left;
     }
 </style>

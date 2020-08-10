@@ -1,11 +1,10 @@
-<script lang="ts">
+<script>
     import Dates from "./table/Dates.svelte"
     import Swimlane from "./table/Swimlane.svelte"
-    import type {SwimlaneRow} from "../../types"
-    import LabelRow from "./table/LabelRow.svelte"
+    import TeamInfo from "./table/TeamInfo.svelte"
 
-    export let rows: Array<SwimlaneRow> = null
-    export let duration: Number = null
+    export let teams = null
+    export let duration = null
 </script>
 
 <div class="swimlanes-section">
@@ -13,12 +12,11 @@
         <Dates duration={duration}/>
     </div>
     <div class="table-body">
-      {#each rows as row}
-        {#if row.swimlane}
-            <Swimlane swimlane={row.swimlane} />
-        {:else}
-            <LabelRow label={row.label} />
-        {/if}
+      {#each teams as team}
+          <TeamInfo team={team.teamName} />
+          {#each team.users as user}
+              <Swimlane swimlane={user.swimlane} />
+          {/each}
       {/each}
     </div>
 </div>
@@ -37,5 +35,6 @@
     .swimlanes-section {
         max-width: 90vw;
         overflow: scroll;
+        overflow-y: hidden;
     }
 </style>

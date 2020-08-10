@@ -24,6 +24,19 @@
         acc.set(month, object)
         return acc
     }, new Map()).values())
+
+    let getDayClass = function (date) {
+        let day = date.getDay()
+        switch(day) {
+            case 0: return 'sunday'
+            case 1: return 'monday'
+            case 2: return 'tuesday'
+            case 3: return 'wednesday'
+            case 4: return 'thursday'
+            case 5: return 'friday'
+            case 6: return 'saturday'
+        }
+    }
 </script>
 
 <div class="table-row">
@@ -35,7 +48,7 @@
 </div>
 <div class="table-row">
   {#each dates as date}
-      <div class="date-column">
+      <div class="date-column {getDayClass(date)}">
           <span>{date.getUTCDate()}</span>
       </div>
   {/each}
@@ -53,12 +66,20 @@
         width: var(--table-row-width);
         min-width: var(--table-row-width);
         max-width: var(--table-row-width);
+        text-align: center;
     }
 
     .month-column {
         width: calc(var(--table-row-width) * var(--data-size));
         min-width: calc(var(--table-row-width) * var(--data-size));
         max-width: calc(var(--table-row-width) * var(--data-size));
+        text-align: left;
+        border-left: 1px solid #eee;
+        padding-left: .7rem;
+    }
+
+    .month-column span {
+        margin-left: -1px;
     }
 
     .date-column, .month-column {
@@ -67,6 +88,13 @@
         justify-content: center;
         flex-direction: column;
         position: relative;
-        text-align: center;
+    }
+
+    :global(.date-column.monday) {
+        border-left: 1px solid #eee;
+    }
+
+    :global(.date-column.monday span) {
+        margin-left: -1px;
     }
 </style>
