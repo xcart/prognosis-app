@@ -6,7 +6,6 @@
     import About from "./pages/About.svelte";
 
     export let url = "";
-    export let state = null;
 </script>
 
 <Router {url}>
@@ -15,7 +14,7 @@
             Workload analysis
         </PageHeader>
         <Container class="page-container" fluid>
-            <Workload {state}/>
+            <Workload/>
         </Container>
     </Route>
     <Route path="/about">
@@ -23,7 +22,7 @@
             About page
         </PageHeader>
         <Container class="page-container" fluid>
-            <About {state}/>
+            <About/>
         </Container>
     </Route>
 </Router>

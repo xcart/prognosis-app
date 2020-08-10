@@ -1,15 +1,14 @@
-<script>
+<script lang="ts">
     import getContinuousColorCode from "../../../util/colorCode";
+    import type {DailyWorkloadItem} from "../../../types"
 
-    export let data = null
-    export let limit = null
+    export let swimlane: Array<DailyWorkloadItem> = null
 
     let formatWorkload = (value) => (value / 60.0).toFixed(1)
-    let limitValues = (values) => values.slice(0, limit)
 </script>
 
 <div class="table-row user-swimlane">
-  {#each limitValues(data.items) as item}
+  {#each swimlane as item}
       <div class="data-column" style="background: {getContinuousColorCode(item.workload)}">
           <span class="workload-value ">{formatWorkload(item.workload)}</span>
           <div class="extra-info">

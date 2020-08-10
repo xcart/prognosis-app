@@ -527,12 +527,6 @@ var bundle = (function () {
         };
     }
 
-    const globals = (typeof window !== 'undefined'
-        ? window
-        : typeof globalThis !== 'undefined'
-            ? globalThis
-            : global);
-
     function get_spread_update(levels, updates) {
         const update = {};
         const to_null_out = {};
@@ -5640,12 +5634,12 @@ var bundle = (function () {
     	return child_ctx;
     }
 
-    // (15:6) {#each report as reportLine}
+    // (16:6) {#each users as user}
     function create_each_block(ctx) {
     	let div1;
     	let div0;
     	let span;
-    	let t0_value = /*reportLine*/ ctx[1].user.login + "";
+    	let t0_value = /*user*/ ctx[1].login + "";
     	let t0;
     	let t1;
 
@@ -5656,11 +5650,11 @@ var bundle = (function () {
     			span = element("span");
     			t0 = text(t0_value);
     			t1 = space();
-    			add_location(span, file$9, 17, 18, 420);
+    			add_location(span, file$9, 18, 18, 452);
     			attr_dev(div0, "class", "user-column svelte-bvo6r8");
-    			add_location(div0, file$9, 16, 14, 376);
+    			add_location(div0, file$9, 17, 14, 408);
     			attr_dev(div1, "class", "table-row svelte-bvo6r8");
-    			add_location(div1, file$9, 15, 10, 338);
+    			add_location(div1, file$9, 16, 10, 370);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
@@ -5670,7 +5664,7 @@ var bundle = (function () {
     			append_dev(div1, t1);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*report*/ 1 && t0_value !== (t0_value = /*reportLine*/ ctx[1].user.login + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*users*/ 1 && t0_value !== (t0_value = /*user*/ ctx[1].login + "")) set_data_dev(t0, t0_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div1);
@@ -5681,7 +5675,7 @@ var bundle = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(15:6) {#each report as reportLine}",
+    		source: "(16:6) {#each users as user}",
     		ctx
     	});
 
@@ -5698,7 +5692,7 @@ var bundle = (function () {
     	let span1;
     	let t1;
     	let div3;
-    	let each_value = /*report*/ ctx[0];
+    	let each_value = /*users*/ ctx[0];
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -5722,18 +5716,18 @@ var bundle = (function () {
     				each_blocks[i].c();
     			}
 
-    			add_location(span0, file$9, 7, 12, 151);
+    			add_location(span0, file$9, 8, 12, 190);
     			attr_dev(div0, "class", "table-row svelte-bvo6r8");
-    			add_location(div0, file$9, 6, 8, 115);
-    			add_location(span1, file$9, 10, 12, 224);
+    			add_location(div0, file$9, 7, 8, 154);
+    			add_location(span1, file$9, 11, 12, 263);
     			attr_dev(div1, "class", "table-row svelte-bvo6r8");
-    			add_location(div1, file$9, 9, 8, 188);
+    			add_location(div1, file$9, 10, 8, 227);
     			attr_dev(div2, "class", "table-header svelte-bvo6r8");
-    			add_location(div2, file$9, 5, 4, 80);
+    			add_location(div2, file$9, 6, 4, 119);
     			attr_dev(div3, "class", "table-body");
-    			add_location(div3, file$9, 13, 4, 268);
+    			add_location(div3, file$9, 14, 4, 307);
     			attr_dev(div4, "class", "user-section svelte-bvo6r8");
-    			add_location(div4, file$9, 4, 0, 49);
+    			add_location(div4, file$9, 5, 0, 88);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -5754,8 +5748,8 @@ var bundle = (function () {
     			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*report*/ 1) {
-    				each_value = /*report*/ ctx[0];
+    			if (dirty & /*users*/ 1) {
+    				each_value = /*users*/ ctx[0];
     				validate_each_argument(each_value);
     				let i;
 
@@ -5798,8 +5792,9 @@ var bundle = (function () {
     }
 
     function instance$d($$self, $$props, $$invalidate) {
-    	let { report = null } = $$props;
-    	const writable_props = ["report"];
+    	
+    	let { users = null } = $$props;
+    	const writable_props = ["users"];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<UserList> was created with unknown prop '${key}'`);
@@ -5809,26 +5804,26 @@ var bundle = (function () {
     	validate_slots("UserList", $$slots, []);
 
     	$$self.$set = $$props => {
-    		if ("report" in $$props) $$invalidate(0, report = $$props.report);
+    		if ("users" in $$props) $$invalidate(0, users = $$props.users);
     	};
 
-    	$$self.$capture_state = () => ({ report });
+    	$$self.$capture_state = () => ({ users });
 
     	$$self.$inject_state = $$props => {
-    		if ("report" in $$props) $$invalidate(0, report = $$props.report);
+    		if ("users" in $$props) $$invalidate(0, users = $$props.users);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [report];
+    	return [users];
     }
 
     class UserList extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$d, create_fragment$d, safe_not_equal, { report: 0 });
+    		init(this, options, instance$d, create_fragment$d, safe_not_equal, { users: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -5838,11 +5833,11 @@ var bundle = (function () {
     		});
     	}
 
-    	get report() {
+    	get users() {
     		throw new Error("<UserList>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
-    	set report(value) {
+    	set users(value) {
     		throw new Error("<UserList>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
@@ -5863,8 +5858,8 @@ var bundle = (function () {
       return dateArray;
     }
 
-    /* src/main/resources/scripts/components/workload/table/DateTableHeader.svelte generated by Svelte v3.23.2 */
-    const file$a = "src/main/resources/scripts/components/workload/table/DateTableHeader.svelte";
+    /* src/main/resources/scripts/components/workload/table/Dates.svelte generated by Svelte v3.23.2 */
+    const file$a = "src/main/resources/scripts/components/workload/table/Dates.svelte";
 
     function get_each_context$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
@@ -6121,11 +6116,11 @@ var bundle = (function () {
     	const writable_props = ["duration"];
 
     	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<DateTableHeader> was created with unknown prop '${key}'`);
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Dates> was created with unknown prop '${key}'`);
     	});
 
     	let { $$slots = {}, $$scope } = $$props;
-    	validate_slots("DateTableHeader", $$slots, []);
+    	validate_slots("Dates", $$slots, []);
 
     	$$self.$set = $$props => {
     		if ("duration" in $$props) $$invalidate(2, duration = $$props.duration);
@@ -6153,25 +6148,25 @@ var bundle = (function () {
     	return [dates, months, duration];
     }
 
-    class DateTableHeader extends SvelteComponentDev {
+    class Dates extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
     		init(this, options, instance$e, create_fragment$e, safe_not_equal, { duration: 2 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
-    			tagName: "DateTableHeader",
+    			tagName: "Dates",
     			options,
     			id: create_fragment$e.name
     		});
     	}
 
     	get duration() {
-    		throw new Error("<DateTableHeader>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		throw new Error("<Dates>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
     	set duration(value) {
-    		throw new Error("<DateTableHeader>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		throw new Error("<Dates>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
 
@@ -6197,20 +6192,20 @@ var bundle = (function () {
 
     function get_each_context_1$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[7] = list[i];
+    	child_ctx[5] = list[i];
     	return child_ctx;
     }
 
     function get_each_context$2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[4] = list[i];
+    	child_ctx[2] = list[i];
     	return child_ctx;
     }
 
-    // (16:12) {#each item.issues as issue}
+    // (12:12) {#each item.issues as issue}
     function create_each_block_1$1(ctx) {
     	let a;
-    	let t_value = /*issue*/ ctx[7].idReadable + "";
+    	let t_value = /*issue*/ ctx[5].idReadable + "";
     	let t;
     	let a_href_value;
 
@@ -6219,18 +6214,18 @@ var bundle = (function () {
     			a = element("a");
     			t = text(t_value);
     			attr_dev(a, "class", "issue-link svelte-f51508");
-    			attr_dev(a, "href", a_href_value = "https://xcart.myjetbrains.com/youtrack/issue/" + /*issue*/ ctx[7].idReadable);
+    			attr_dev(a, "href", a_href_value = "https://xcart.myjetbrains.com/youtrack/issue/" + /*issue*/ ctx[5].idReadable);
     			attr_dev(a, "target", "_blank");
-    			add_location(a, file$b, 16, 16, 605);
+    			add_location(a, file$b, 12, 16, 508);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
     			append_dev(a, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*data*/ 1 && t_value !== (t_value = /*issue*/ ctx[7].idReadable + "")) set_data_dev(t, t_value);
+    			if (dirty & /*swimlane*/ 1 && t_value !== (t_value = /*issue*/ ctx[5].idReadable + "")) set_data_dev(t, t_value);
 
-    			if (dirty & /*data*/ 1 && a_href_value !== (a_href_value = "https://xcart.myjetbrains.com/youtrack/issue/" + /*issue*/ ctx[7].idReadable)) {
+    			if (dirty & /*swimlane*/ 1 && a_href_value !== (a_href_value = "https://xcart.myjetbrains.com/youtrack/issue/" + /*issue*/ ctx[5].idReadable)) {
     				attr_dev(a, "href", a_href_value);
     			}
     		},
@@ -6243,23 +6238,23 @@ var bundle = (function () {
     		block,
     		id: create_each_block_1$1.name,
     		type: "each",
-    		source: "(16:12) {#each item.issues as issue}",
+    		source: "(12:12) {#each item.issues as issue}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (12:2) {#each limitValues(data.items) as item}
+    // (8:2) {#each swimlane as item}
     function create_each_block$2(ctx) {
     	let div1;
     	let span;
-    	let t0_value = /*formatWorkload*/ ctx[1](/*item*/ ctx[4].workload) + "";
+    	let t0_value = /*formatWorkload*/ ctx[1](/*item*/ ctx[2].workload) + "";
     	let t0;
     	let t1;
     	let div0;
     	let t2;
-    	let each_value_1 = /*item*/ ctx[4].issues;
+    	let each_value_1 = /*item*/ ctx[2].issues;
     	validate_each_argument(each_value_1);
     	let each_blocks = [];
 
@@ -6281,12 +6276,12 @@ var bundle = (function () {
 
     			t2 = space();
     			attr_dev(span, "class", "workload-value  svelte-f51508");
-    			add_location(span, file$b, 13, 10, 444);
+    			add_location(span, file$b, 9, 10, 347);
     			attr_dev(div0, "class", "extra-info svelte-f51508");
-    			add_location(div0, file$b, 14, 10, 523);
+    			add_location(div0, file$b, 10, 10, 426);
     			attr_dev(div1, "class", "data-column svelte-f51508");
-    			set_style(div1, "background", getContinuousColorCode(/*item*/ ctx[4].workload));
-    			add_location(div1, file$b, 12, 6, 348);
+    			set_style(div1, "background", getContinuousColorCode(/*item*/ ctx[2].workload));
+    			add_location(div1, file$b, 8, 6, 251);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
@@ -6302,10 +6297,10 @@ var bundle = (function () {
     			append_dev(div1, t2);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*data*/ 1 && t0_value !== (t0_value = /*formatWorkload*/ ctx[1](/*item*/ ctx[4].workload) + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*swimlane*/ 1 && t0_value !== (t0_value = /*formatWorkload*/ ctx[1](/*item*/ ctx[2].workload) + "")) set_data_dev(t0, t0_value);
 
-    			if (dirty & /*limitValues, data*/ 5) {
-    				each_value_1 = /*item*/ ctx[4].issues;
+    			if (dirty & /*swimlane*/ 1) {
+    				each_value_1 = /*item*/ ctx[2].issues;
     				validate_each_argument(each_value_1);
     				let i;
 
@@ -6328,8 +6323,8 @@ var bundle = (function () {
     				each_blocks.length = each_value_1.length;
     			}
 
-    			if (dirty & /*data*/ 1) {
-    				set_style(div1, "background", getContinuousColorCode(/*item*/ ctx[4].workload));
+    			if (dirty & /*swimlane*/ 1) {
+    				set_style(div1, "background", getContinuousColorCode(/*item*/ ctx[2].workload));
     			}
     		},
     		d: function destroy(detaching) {
@@ -6342,7 +6337,7 @@ var bundle = (function () {
     		block,
     		id: create_each_block$2.name,
     		type: "each",
-    		source: "(12:2) {#each limitValues(data.items) as item}",
+    		source: "(8:2) {#each swimlane as item}",
     		ctx
     	});
 
@@ -6351,7 +6346,7 @@ var bundle = (function () {
 
     function create_fragment$f(ctx) {
     	let div;
-    	let each_value = /*limitValues*/ ctx[2](/*data*/ ctx[0].items);
+    	let each_value = /*swimlane*/ ctx[0];
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -6368,7 +6363,7 @@ var bundle = (function () {
     			}
 
     			attr_dev(div, "class", "table-row user-swimlane svelte-f51508");
-    			add_location(div, file$b, 10, 0, 262);
+    			add_location(div, file$b, 6, 0, 180);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6381,8 +6376,8 @@ var bundle = (function () {
     			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*getContinuousColorCode, limitValues, data, formatWorkload*/ 7) {
-    				each_value = /*limitValues*/ ctx[2](/*data*/ ctx[0].items);
+    			if (dirty & /*getContinuousColorCode, swimlane, formatWorkload*/ 3) {
+    				each_value = /*swimlane*/ ctx[0];
     				validate_each_argument(each_value);
     				let i;
 
@@ -6425,11 +6420,10 @@ var bundle = (function () {
     }
 
     function instance$f($$self, $$props, $$invalidate) {
-    	let { data = null } = $$props;
-    	let { limit = null } = $$props;
+    	
+    	let { swimlane = null } = $$props;
     	let formatWorkload = value => (value / 60).toFixed(1);
-    	let limitValues = values => values.slice(0, limit);
-    	const writable_props = ["data", "limit"];
+    	const writable_props = ["swimlane"];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Swimlane> was created with unknown prop '${key}'`);
@@ -6439,36 +6433,31 @@ var bundle = (function () {
     	validate_slots("Swimlane", $$slots, []);
 
     	$$self.$set = $$props => {
-    		if ("data" in $$props) $$invalidate(0, data = $$props.data);
-    		if ("limit" in $$props) $$invalidate(3, limit = $$props.limit);
+    		if ("swimlane" in $$props) $$invalidate(0, swimlane = $$props.swimlane);
     	};
 
     	$$self.$capture_state = () => ({
     		getContinuousColorCode,
-    		data,
-    		limit,
-    		formatWorkload,
-    		limitValues
+    		swimlane,
+    		formatWorkload
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ("data" in $$props) $$invalidate(0, data = $$props.data);
-    		if ("limit" in $$props) $$invalidate(3, limit = $$props.limit);
+    		if ("swimlane" in $$props) $$invalidate(0, swimlane = $$props.swimlane);
     		if ("formatWorkload" in $$props) $$invalidate(1, formatWorkload = $$props.formatWorkload);
-    		if ("limitValues" in $$props) $$invalidate(2, limitValues = $$props.limitValues);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [data, formatWorkload, limitValues, limit];
+    	return [swimlane, formatWorkload];
     }
 
     class Swimlane extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$f, create_fragment$f, safe_not_equal, { data: 0, limit: 3 });
+    		init(this, options, instance$f, create_fragment$f, safe_not_equal, { swimlane: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -6478,25 +6467,23 @@ var bundle = (function () {
     		});
     	}
 
-    	get data() {
+    	get swimlane() {
     		throw new Error("<Swimlane>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
-    	set data(value) {
-    		throw new Error("<Swimlane>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get limit() {
-    		throw new Error("<Swimlane>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set limit(value) {
+    	set swimlane(value) {
     		throw new Error("<Swimlane>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
 
-    /* src/main/resources/scripts/components/workload/WorkloadTable.svelte generated by Svelte v3.23.2 */
-    const file$c = "src/main/resources/scripts/components/workload/WorkloadTable.svelte";
+    /* src/main/resources/scripts/components/workload/SwimlanesView.svelte generated by Svelte v3.23.2 */
+    const file$c = "src/main/resources/scripts/components/workload/SwimlanesView.svelte";
+
+    function get_each_context_1$2(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[5] = list[i];
+    	return child_ctx;
+    }
 
     function get_each_context$3(ctx, list, i) {
     	const child_ctx = ctx.slice();
@@ -6504,16 +6491,13 @@ var bundle = (function () {
     	return child_ctx;
     }
 
-    // (17:6) {#each report as reportLine}
-    function create_each_block$3(ctx) {
+    // (19:10) {#each team.users as user}
+    function create_each_block_1$2(ctx) {
     	let swimlane;
     	let current;
 
     	swimlane = new Swimlane({
-    			props: {
-    				data: /*reportLine*/ ctx[2],
-    				limit: /*calendarLength*/ ctx[1]
-    			},
+    			props: { swimlane: /*user*/ ctx[5].swimlane },
     			$$inline: true
     		});
 
@@ -6527,7 +6511,7 @@ var bundle = (function () {
     		},
     		p: function update(ctx, dirty) {
     			const swimlane_changes = {};
-    			if (dirty & /*report*/ 1) swimlane_changes.data = /*reportLine*/ ctx[2];
+    			if (dirty & /*teams*/ 1) swimlane_changes.swimlane = /*user*/ ctx[5].swimlane;
     			swimlane.$set(swimlane_changes);
     		},
     		i: function intro(local) {
@@ -6546,9 +6530,131 @@ var bundle = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
+    		id: create_each_block_1$2.name,
+    		type: "each",
+    		source: "(19:10) {#each team.users as user}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (13:6) {#each teams as team}
+    function create_each_block$3(ctx) {
+    	let div1;
+    	let div0;
+    	let t0;
+    	let t1_value = /*team*/ ctx[2].teamName + "";
+    	let t1;
+    	let t2;
+    	let each_1_anchor;
+    	let current;
+    	let each_value_1 = /*team*/ ctx[2].users;
+    	validate_each_argument(each_value_1);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value_1.length; i += 1) {
+    		each_blocks[i] = create_each_block_1$2(get_each_context_1$2(ctx, each_value_1, i));
+    	}
+
+    	const out = i => transition_out(each_blocks[i], 1, 1, () => {
+    		each_blocks[i] = null;
+    	});
+
+    	const block = {
+    		c: function create() {
+    			div1 = element("div");
+    			div0 = element("div");
+    			t0 = text("Team ");
+    			t1 = text(t1_value);
+    			t2 = space();
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			each_1_anchor = empty();
+    			attr_dev(div0, "class", "column");
+    			add_location(div0, file$c, 14, 14, 401);
+    			attr_dev(div1, "class", "table-row team-stats");
+    			add_location(div1, file$c, 13, 10, 352);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div1, anchor);
+    			append_dev(div1, div0);
+    			append_dev(div0, t0);
+    			append_dev(div0, t1);
+    			insert_dev(target, t2, anchor);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(target, anchor);
+    			}
+
+    			insert_dev(target, each_1_anchor, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			if ((!current || dirty & /*teams*/ 1) && t1_value !== (t1_value = /*team*/ ctx[2].teamName + "")) set_data_dev(t1, t1_value);
+
+    			if (dirty & /*teams*/ 1) {
+    				each_value_1 = /*team*/ ctx[2].users;
+    				validate_each_argument(each_value_1);
+    				let i;
+
+    				for (i = 0; i < each_value_1.length; i += 1) {
+    					const child_ctx = get_each_context_1$2(ctx, each_value_1, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    						transition_in(each_blocks[i], 1);
+    					} else {
+    						each_blocks[i] = create_each_block_1$2(child_ctx);
+    						each_blocks[i].c();
+    						transition_in(each_blocks[i], 1);
+    						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+    					}
+    				}
+
+    				group_outros();
+
+    				for (i = each_value_1.length; i < each_blocks.length; i += 1) {
+    					out(i);
+    				}
+
+    				check_outros();
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+
+    			for (let i = 0; i < each_value_1.length; i += 1) {
+    				transition_in(each_blocks[i]);
+    			}
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			each_blocks = each_blocks.filter(Boolean);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				transition_out(each_blocks[i]);
+    			}
+
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div1);
+    			if (detaching) detach_dev(t2);
+    			destroy_each(each_blocks, detaching);
+    			if (detaching) detach_dev(each_1_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
     		id: create_each_block$3.name,
     		type: "each",
-    		source: "(17:6) {#each report as reportLine}",
+    		source: "(13:6) {#each teams as team}",
     		ctx
     	});
 
@@ -6558,17 +6664,17 @@ var bundle = (function () {
     function create_fragment$g(ctx) {
     	let div2;
     	let div0;
-    	let datetableheader;
+    	let dates;
     	let t;
     	let div1;
     	let current;
 
-    	datetableheader = new DateTableHeader({
-    			props: { duration: /*calendarLength*/ ctx[1] },
+    	dates = new Dates({
+    			props: { duration: /*duration*/ ctx[1] },
     			$$inline: true
     		});
 
-    	let each_value = /*report*/ ctx[0];
+    	let each_value = /*teams*/ ctx[0];
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -6584,7 +6690,7 @@ var bundle = (function () {
     		c: function create() {
     			div2 = element("div");
     			div0 = element("div");
-    			create_component(datetableheader.$$.fragment);
+    			create_component(dates.$$.fragment);
     			t = space();
     			div1 = element("div");
 
@@ -6593,11 +6699,11 @@ var bundle = (function () {
     			}
 
     			attr_dev(div0, "class", "table-header svelte-s70m8k");
-    			add_location(div0, file$c, 12, 4, 371);
+    			add_location(div0, file$c, 8, 4, 210);
     			attr_dev(div1, "class", "table-body svelte-s70m8k");
-    			add_location(div1, file$c, 15, 4, 466);
+    			add_location(div1, file$c, 11, 4, 289);
     			attr_dev(div2, "class", "swimlanes-section svelte-s70m8k");
-    			add_location(div2, file$c, 11, 0, 335);
+    			add_location(div2, file$c, 7, 0, 174);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6605,7 +6711,7 @@ var bundle = (function () {
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
     			append_dev(div2, div0);
-    			mount_component(datetableheader, div0, null);
+    			mount_component(dates, div0, null);
     			append_dev(div2, t);
     			append_dev(div2, div1);
 
@@ -6616,8 +6722,12 @@ var bundle = (function () {
     			current = true;
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*report, calendarLength*/ 3) {
-    				each_value = /*report*/ ctx[0];
+    			const dates_changes = {};
+    			if (dirty & /*duration*/ 2) dates_changes.duration = /*duration*/ ctx[1];
+    			dates.$set(dates_changes);
+
+    			if (dirty & /*teams*/ 1) {
+    				each_value = /*teams*/ ctx[0];
     				validate_each_argument(each_value);
     				let i;
 
@@ -6646,7 +6756,7 @@ var bundle = (function () {
     		},
     		i: function intro(local) {
     			if (current) return;
-    			transition_in(datetableheader.$$.fragment, local);
+    			transition_in(dates.$$.fragment, local);
 
     			for (let i = 0; i < each_value.length; i += 1) {
     				transition_in(each_blocks[i]);
@@ -6655,7 +6765,7 @@ var bundle = (function () {
     			current = true;
     		},
     		o: function outro(local) {
-    			transition_out(datetableheader.$$.fragment, local);
+    			transition_out(dates.$$.fragment, local);
     			each_blocks = each_blocks.filter(Boolean);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
@@ -6666,7 +6776,7 @@ var bundle = (function () {
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div2);
-    			destroy_component(datetableheader);
+    			destroy_component(dates);
     			destroy_each(each_blocks, detaching);
     		}
     	};
@@ -6683,73 +6793,70 @@ var bundle = (function () {
     }
 
     function instance$g($$self, $$props, $$invalidate) {
-    	let { report = null } = $$props;
-
-    	let calendarLength = Array.from(report.values()).reduce(
-    		(sum, item) => {
-    			let length = item.items.length;
-    			return length > sum ? length : sum;
-    		},
-    		0
-    	);
-
-    	const writable_props = ["report"];
+    	
+    	let { teams = null } = $$props;
+    	let { duration = null } = $$props;
+    	const writable_props = ["teams", "duration"];
 
     	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<WorkloadTable> was created with unknown prop '${key}'`);
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<SwimlanesView> was created with unknown prop '${key}'`);
     	});
 
     	let { $$slots = {}, $$scope } = $$props;
-    	validate_slots("WorkloadTable", $$slots, []);
+    	validate_slots("SwimlanesView", $$slots, []);
 
     	$$self.$set = $$props => {
-    		if ("report" in $$props) $$invalidate(0, report = $$props.report);
+    		if ("teams" in $$props) $$invalidate(0, teams = $$props.teams);
+    		if ("duration" in $$props) $$invalidate(1, duration = $$props.duration);
     	};
 
-    	$$self.$capture_state = () => ({
-    		DateTableHeader,
-    		Swimlane,
-    		report,
-    		calendarLength
-    	});
+    	$$self.$capture_state = () => ({ Dates, Swimlane, teams, duration });
 
     	$$self.$inject_state = $$props => {
-    		if ("report" in $$props) $$invalidate(0, report = $$props.report);
-    		if ("calendarLength" in $$props) $$invalidate(1, calendarLength = $$props.calendarLength);
+    		if ("teams" in $$props) $$invalidate(0, teams = $$props.teams);
+    		if ("duration" in $$props) $$invalidate(1, duration = $$props.duration);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [report, calendarLength];
+    	return [teams, duration];
     }
 
-    class WorkloadTable extends SvelteComponentDev {
+    class SwimlanesView extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$g, create_fragment$g, safe_not_equal, { report: 0 });
+    		init(this, options, instance$g, create_fragment$g, safe_not_equal, { teams: 0, duration: 1 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
-    			tagName: "WorkloadTable",
+    			tagName: "SwimlanesView",
     			options,
     			id: create_fragment$g.name
     		});
     	}
 
-    	get report() {
-    		throw new Error("<WorkloadTable>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	get teams() {
+    		throw new Error("<SwimlanesView>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
-    	set report(value) {
-    		throw new Error("<WorkloadTable>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	set teams(value) {
+    		throw new Error("<SwimlanesView>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get duration() {
+    		throw new Error("<SwimlanesView>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set duration(value) {
+    		throw new Error("<SwimlanesView>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
 
-    /* src/main/resources/scripts/pages/Workload.svelte generated by Svelte v3.23.2 */
+    const state = writable({});
 
-    const { Object: Object_1 } = globals;
+    /* src/main/resources/scripts/pages/Workload.svelte generated by Svelte v3.23.2 */
     const file$d = "src/main/resources/scripts/pages/Workload.svelte";
 
     function create_fragment$h(ctx) {
@@ -6757,19 +6864,18 @@ var bundle = (function () {
     	let div;
     	let userlist;
     	let t;
-    	let workloadtable;
+    	let swimlanesview;
     	let current;
 
     	userlist = new UserList({
-    			props: {
-    				report: /*filterReport*/ ctx[1](/*report*/ ctx[0])
-    			},
+    			props: { users: /*users*/ ctx[0] },
     			$$inline: true
     		});
 
-    	workloadtable = new WorkloadTable({
+    	swimlanesview = new SwimlanesView({
     			props: {
-    				report: /*filterReport*/ ctx[1](/*report*/ ctx[0])
+    				teams: /*teams*/ ctx[1],
+    				duration: /*duration*/ ctx[2]
     			},
     			$$inline: true
     		});
@@ -6780,11 +6886,11 @@ var bundle = (function () {
     			div = element("div");
     			create_component(userlist.$$.fragment);
     			t = space();
-    			create_component(workloadtable.$$.fragment);
+    			create_component(swimlanesview.$$.fragment);
     			attr_dev(div, "class", "workload-table svelte-co5zm7");
-    			add_location(div, file$d, 10, 4, 345);
+    			add_location(div, file$d, 15, 4, 484);
     			attr_dev(section, "class", "page svelte-co5zm7");
-    			add_location(section, file$d, 9, 0, 318);
+    			add_location(section, file$d, 14, 0, 457);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6794,25 +6900,33 @@ var bundle = (function () {
     			append_dev(section, div);
     			mount_component(userlist, div, null);
     			append_dev(div, t);
-    			mount_component(workloadtable, div, null);
+    			mount_component(swimlanesview, div, null);
     			current = true;
     		},
-    		p: noop,
+    		p: function update(ctx, [dirty]) {
+    			const userlist_changes = {};
+    			if (dirty & /*users*/ 1) userlist_changes.users = /*users*/ ctx[0];
+    			userlist.$set(userlist_changes);
+    			const swimlanesview_changes = {};
+    			if (dirty & /*teams*/ 2) swimlanesview_changes.teams = /*teams*/ ctx[1];
+    			if (dirty & /*duration*/ 4) swimlanesview_changes.duration = /*duration*/ ctx[2];
+    			swimlanesview.$set(swimlanesview_changes);
+    		},
     		i: function intro(local) {
     			if (current) return;
     			transition_in(userlist.$$.fragment, local);
-    			transition_in(workloadtable.$$.fragment, local);
+    			transition_in(swimlanesview.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
     			transition_out(userlist.$$.fragment, local);
-    			transition_out(workloadtable.$$.fragment, local);
+    			transition_out(swimlanesview.$$.fragment, local);
     			current = false;
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(section);
     			destroy_component(userlist);
-    			destroy_component(workloadtable);
+    			destroy_component(swimlanesview);
     		}
     	};
 
@@ -6828,47 +6942,68 @@ var bundle = (function () {
     }
 
     function instance$h($$self, $$props, $$invalidate) {
-    	let { state = null } = $$props;
-    	let report = Object.values(state.report);
-    	let filterReport = report => report.filter(line => line.items.length > 0);
-    	const writable_props = ["state"];
+    	let $state;
+    	validate_store(state, "state");
+    	component_subscribe($$self, state, $$value => $$invalidate(3, $state = $$value));
+    	
+    	let users, teams, duration;
+    	const writable_props = [];
 
-    	Object_1.keys($$props).forEach(key => {
+    	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Workload> was created with unknown prop '${key}'`);
     	});
 
     	let { $$slots = {}, $$scope } = $$props;
     	validate_slots("Workload", $$slots, []);
 
-    	$$self.$set = $$props => {
-    		if ("state" in $$props) $$invalidate(2, state = $$props.state);
-    	};
-
     	$$self.$capture_state = () => ({
     		UserList,
-    		WorkloadTable,
+    		SwimlanesView,
     		state,
-    		report,
-    		filterReport
+    		users,
+    		teams,
+    		duration,
+    		$state
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ("state" in $$props) $$invalidate(2, state = $$props.state);
-    		if ("report" in $$props) $$invalidate(0, report = $$props.report);
-    		if ("filterReport" in $$props) $$invalidate(1, filterReport = $$props.filterReport);
+    		if ("users" in $$props) $$invalidate(0, users = $$props.users);
+    		if ("teams" in $$props) $$invalidate(1, teams = $$props.teams);
+    		if ("duration" in $$props) $$invalidate(2, duration = $$props.duration);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [report, filterReport, state];
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*$state*/ 8) {
+    			 $$invalidate(0, users = $state.report.teams.reduce(
+    				(list, team) => {
+    					return list.concat(team.users.map(workload => {
+    						return workload.user;
+    					}));
+    				},
+    				[]
+    			));
+    		}
+
+    		if ($$self.$$.dirty & /*$state*/ 8) {
+    			 $$invalidate(1, teams = $state.report.teams);
+    		}
+
+    		if ($$self.$$.dirty & /*$state*/ 8) {
+    			 $$invalidate(2, duration = $state.report.duration);
+    		}
+    	};
+
+    	return [users, teams, duration];
     }
 
     class Workload extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$h, create_fragment$h, safe_not_equal, { state: 2 });
+    		init(this, options, instance$h, create_fragment$h, safe_not_equal, {});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -6876,14 +7011,6 @@ var bundle = (function () {
     			options,
     			id: create_fragment$h.name
     		});
-    	}
-
-    	get state() {
-    		throw new Error("<Workload>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set state(value) {
-    		throw new Error("<Workload>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
 
@@ -6958,7 +7085,7 @@ var bundle = (function () {
 
     /* src/main/resources/scripts/PageContainer.svelte generated by Svelte v3.23.2 */
 
-    // (14:8) <PageHeader>
+    // (13:8) <PageHeader>
     function create_default_slot_6$1(ctx) {
     	let t;
 
@@ -6978,22 +7105,18 @@ var bundle = (function () {
     		block,
     		id: create_default_slot_6$1.name,
     		type: "slot",
-    		source: "(14:8) <PageHeader>",
+    		source: "(13:8) <PageHeader>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (17:8) <Container class="page-container" fluid>
+    // (16:8) <Container class="page-container" fluid>
     function create_default_slot_5$1(ctx) {
     	let workload;
     	let current;
-
-    	workload = new Workload({
-    			props: { state: /*state*/ ctx[1] },
-    			$$inline: true
-    		});
+    	workload = new Workload({ $$inline: true });
 
     	const block = {
     		c: function create() {
@@ -7002,11 +7125,6 @@ var bundle = (function () {
     		m: function mount(target, anchor) {
     			mount_component(workload, target, anchor);
     			current = true;
-    		},
-    		p: function update(ctx, dirty) {
-    			const workload_changes = {};
-    			if (dirty & /*state*/ 2) workload_changes.state = /*state*/ ctx[1];
-    			workload.$set(workload_changes);
     		},
     		i: function intro(local) {
     			if (current) return;
@@ -7026,14 +7144,14 @@ var bundle = (function () {
     		block,
     		id: create_default_slot_5$1.name,
     		type: "slot",
-    		source: "(17:8) <Container class=\\\"page-container\\\" fluid>",
+    		source: "(16:8) <Container class=\\\"page-container\\\" fluid>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (13:4) <Route path="/">
+    // (12:4) <Route path="/">
     function create_default_slot_4$1(ctx) {
     	let pageheader;
     	let t;
@@ -7073,14 +7191,14 @@ var bundle = (function () {
     		p: function update(ctx, dirty) {
     			const pageheader_changes = {};
 
-    			if (dirty & /*$$scope*/ 4) {
+    			if (dirty & /*$$scope*/ 2) {
     				pageheader_changes.$$scope = { dirty, ctx };
     			}
 
     			pageheader.$set(pageheader_changes);
     			const container_changes = {};
 
-    			if (dirty & /*$$scope, state*/ 6) {
+    			if (dirty & /*$$scope*/ 2) {
     				container_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7108,14 +7226,14 @@ var bundle = (function () {
     		block,
     		id: create_default_slot_4$1.name,
     		type: "slot",
-    		source: "(13:4) <Route path=\\\"/\\\">",
+    		source: "(12:4) <Route path=\\\"/\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (22:8) <PageHeader>
+    // (21:8) <PageHeader>
     function create_default_slot_3$1(ctx) {
     	let t;
 
@@ -7135,22 +7253,18 @@ var bundle = (function () {
     		block,
     		id: create_default_slot_3$1.name,
     		type: "slot",
-    		source: "(22:8) <PageHeader>",
+    		source: "(21:8) <PageHeader>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (25:8) <Container class="page-container" fluid>
+    // (24:8) <Container class="page-container" fluid>
     function create_default_slot_2$1(ctx) {
     	let about;
     	let current;
-
-    	about = new About({
-    			props: { state: /*state*/ ctx[1] },
-    			$$inline: true
-    		});
+    	about = new About({ $$inline: true });
 
     	const block = {
     		c: function create() {
@@ -7159,11 +7273,6 @@ var bundle = (function () {
     		m: function mount(target, anchor) {
     			mount_component(about, target, anchor);
     			current = true;
-    		},
-    		p: function update(ctx, dirty) {
-    			const about_changes = {};
-    			if (dirty & /*state*/ 2) about_changes.state = /*state*/ ctx[1];
-    			about.$set(about_changes);
     		},
     		i: function intro(local) {
     			if (current) return;
@@ -7183,14 +7292,14 @@ var bundle = (function () {
     		block,
     		id: create_default_slot_2$1.name,
     		type: "slot",
-    		source: "(25:8) <Container class=\\\"page-container\\\" fluid>",
+    		source: "(24:8) <Container class=\\\"page-container\\\" fluid>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (21:4) <Route path="/about">
+    // (20:4) <Route path="/about">
     function create_default_slot_1$1(ctx) {
     	let pageheader;
     	let t;
@@ -7230,14 +7339,14 @@ var bundle = (function () {
     		p: function update(ctx, dirty) {
     			const pageheader_changes = {};
 
-    			if (dirty & /*$$scope*/ 4) {
+    			if (dirty & /*$$scope*/ 2) {
     				pageheader_changes.$$scope = { dirty, ctx };
     			}
 
     			pageheader.$set(pageheader_changes);
     			const container_changes = {};
 
-    			if (dirty & /*$$scope, state*/ 6) {
+    			if (dirty & /*$$scope*/ 2) {
     				container_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7265,14 +7374,14 @@ var bundle = (function () {
     		block,
     		id: create_default_slot_1$1.name,
     		type: "slot",
-    		source: "(21:4) <Route path=\\\"/about\\\">",
+    		source: "(20:4) <Route path=\\\"/about\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (12:0) <Router {url}>
+    // (11:0) <Router {url}>
     function create_default_slot$4(ctx) {
     	let route0;
     	let t;
@@ -7312,14 +7421,14 @@ var bundle = (function () {
     		p: function update(ctx, dirty) {
     			const route0_changes = {};
 
-    			if (dirty & /*$$scope, state*/ 6) {
+    			if (dirty & /*$$scope*/ 2) {
     				route0_changes.$$scope = { dirty, ctx };
     			}
 
     			route0.$set(route0_changes);
     			const route1_changes = {};
 
-    			if (dirty & /*$$scope, state*/ 6) {
+    			if (dirty & /*$$scope*/ 2) {
     				route1_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7347,7 +7456,7 @@ var bundle = (function () {
     		block,
     		id: create_default_slot$4.name,
     		type: "slot",
-    		source: "(12:0) <Router {url}>",
+    		source: "(11:0) <Router {url}>",
     		ctx
     	});
 
@@ -7382,7 +7491,7 @@ var bundle = (function () {
     			const router_changes = {};
     			if (dirty & /*url*/ 1) router_changes.url = /*url*/ ctx[0];
 
-    			if (dirty & /*$$scope, state*/ 6) {
+    			if (dirty & /*$$scope*/ 2) {
     				router_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7415,8 +7524,7 @@ var bundle = (function () {
 
     function instance$j($$self, $$props, $$invalidate) {
     	let { url = "" } = $$props;
-    	let { state = null } = $$props;
-    	const writable_props = ["url", "state"];
+    	const writable_props = ["url"];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<PageContainer> was created with unknown prop '${key}'`);
@@ -7427,7 +7535,6 @@ var bundle = (function () {
 
     	$$self.$set = $$props => {
     		if ("url" in $$props) $$invalidate(0, url = $$props.url);
-    		if ("state" in $$props) $$invalidate(1, state = $$props.state);
     	};
 
     	$$self.$capture_state = () => ({
@@ -7437,26 +7544,24 @@ var bundle = (function () {
     		PageHeader,
     		Workload,
     		About,
-    		url,
-    		state
+    		url
     	});
 
     	$$self.$inject_state = $$props => {
     		if ("url" in $$props) $$invalidate(0, url = $$props.url);
-    		if ("state" in $$props) $$invalidate(1, state = $$props.state);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [url, state];
+    	return [url];
     }
 
     class PageContainer extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$j, create_fragment$j, safe_not_equal, { url: 0, state: 1 });
+    		init(this, options, instance$j, create_fragment$j, safe_not_equal, { url: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -7471,14 +7576,6 @@ var bundle = (function () {
     	}
 
     	set url(value) {
-    		throw new Error("<PageContainer>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get state() {
-    		throw new Error("<PageContainer>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set state(value) {
     		throw new Error("<PageContainer>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
@@ -7499,10 +7596,7 @@ var bundle = (function () {
     		});
 
     	pagecontainer = new PageContainer({
-    			props: {
-    				url: /*url*/ ctx[0],
-    				state: /*state*/ ctx[1]
-    			},
+    			props: { url: /*url*/ ctx[0] },
     			$$inline: true
     		});
 
@@ -7513,7 +7607,7 @@ var bundle = (function () {
     			t = space();
     			create_component(pagecontainer.$$.fragment);
     			attr_dev(section, "class", "page svelte-lrw9b");
-    			add_location(section, file$f, 7, 0, 164);
+    			add_location(section, file$f, 6, 0, 137);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -7531,7 +7625,6 @@ var bundle = (function () {
     			header.$set(header_changes);
     			const pagecontainer_changes = {};
     			if (dirty & /*url*/ 1) pagecontainer_changes.url = /*url*/ ctx[0];
-    			if (dirty & /*state*/ 2) pagecontainer_changes.state = /*state*/ ctx[1];
     			pagecontainer.$set(pagecontainer_changes);
     		},
     		i: function intro(local) {
@@ -7565,8 +7658,7 @@ var bundle = (function () {
 
     function instance$k($$self, $$props, $$invalidate) {
     	let { url = "" } = $$props;
-    	let { state = null } = $$props;
-    	const writable_props = ["url", "state"];
+    	const writable_props = ["url"];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<App> was created with unknown prop '${key}'`);
@@ -7577,27 +7669,25 @@ var bundle = (function () {
 
     	$$self.$set = $$props => {
     		if ("url" in $$props) $$invalidate(0, url = $$props.url);
-    		if ("state" in $$props) $$invalidate(1, state = $$props.state);
     	};
 
-    	$$self.$capture_state = () => ({ Header, PageContainer, url, state });
+    	$$self.$capture_state = () => ({ Header, PageContainer, url });
 
     	$$self.$inject_state = $$props => {
     		if ("url" in $$props) $$invalidate(0, url = $$props.url);
-    		if ("state" in $$props) $$invalidate(1, state = $$props.state);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [url, state];
+    	return [url];
     }
 
     class App extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$k, create_fragment$k, safe_not_equal, { url: 0, state: 1 });
+    		init(this, options, instance$k, create_fragment$k, safe_not_equal, { url: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -7614,21 +7704,18 @@ var bundle = (function () {
     	set url(value) {
     		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
-
-    	get state() {
-    		throw new Error("<App>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set state(value) {
-    		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
     }
+
+    Object.prototype.toMap = function() {
+    	return new Map(Object.entries(this))
+    };
+
+    state.set(window.initialState);
 
     const app = new App({
     	target: document.body,
     	props: {
-    		url: '',
-    		state: window.initialState
+    		url: ''
     	}
     });
 

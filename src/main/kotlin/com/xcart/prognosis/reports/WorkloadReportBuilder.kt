@@ -15,10 +15,11 @@ class WorkloadReportBuilder @Autowired constructor(val youTrack: YouTrack) {
         val users = youTrack.fetchUsers().filter { !it.banned }
         val issues = youTrack.fetchIssues(query)
         val teams = getTeamsWorkload(users, issues)
-        return WorkloadReport(teams)
+        val duration = getReportDuration(teams)
+        return WorkloadReport(teams, duration)
     }
 
-    fun getTeamsWorkload(users: List<User>, issues: List<Issue>): Map<String, TeamWorkload> {
+    fun getTeamsWorkload(users: List<User>, issues: List<Issue>): List<TeamWorkload> {
         val teams = users.fold(mutableMapOf<Team, MutableList<User>>()) { acc, user ->
             if (acc[user.team] != null)
                 acc[user.team]?.add(user)
@@ -26,16 +27,30 @@ class WorkloadReportBuilder @Autowired constructor(val youTrack: YouTrack) {
             acc
         }
 
-        return teams.entries.associateTo(mutableMapOf()) {
-            it.key.name to TeamWorkload(it.key, getUsersWorkload(it.value, issues), emptyList())
+        return teams.map {
+            TeamWorkload(it.key, getUsersWorkload(it.value, issues), emptyList())
         }
     }
 
-    fun getUsersWorkload(users: List<User>, issues: List<Issue>): Map<String, UserWorkload> {
+    fun getUsersWorkload(users: List<User>, issues: List<Issue>): List<UserWorkload> {
         val analysis = WorkloadAnalysis(issues)
-        return users.fold(mutableMapOf()) { acc, user ->
-            acc[user.login] = UserWorkload(user, analysis.getDailyWorkloadForUser(user, LocalDate.now()), emptyList())
+        return users.fold(mutableListOf()) { acc, user ->
+            val swimlane = analysis.getDailyWorkloadForUser(user, LocalDate.now())
+            val stats = listOf(
+                StatValue(StatValueKey.SwimlaneDuration, swimlane.size)
+            )
+            acc.add(UserWorkload(user, swimlane, stats))
             acc
+        }
+    }
+
+    fun getReportDuration(teams: List<TeamWorkload>): Number {
+        return teams.fold (0) { max, team ->
+            val duration = team.users.fold (0) { max, user ->
+                val stat = user.stats.find { stat -> stat.key == StatValueKey.SwimlaneDuration }
+                if (stat != null && (stat.value as Int) > max) stat.value else max
+            }
+            if (duration > max) duration else max
         }
     }
 }

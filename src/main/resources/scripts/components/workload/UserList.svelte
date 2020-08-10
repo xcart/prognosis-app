@@ -1,5 +1,7 @@
-<script>
-    export let report = null
+<!--suppress ES6CheckImport -->
+<script lang="ts">
+    import type {User} from "../../types"
+    export let users: Array<User> = null
 </script>
 
 <div class="user-section">
@@ -12,10 +14,10 @@
         </div>
     </div>
     <div class="table-body">
-      {#each report as reportLine}
+      {#each users as user}
           <div class="table-row">
               <div class="user-column">
-                  <span>{reportLine.user.login}</span>
+                  <span>{user.login}</span>
               </div>
           </div>
       {/each}

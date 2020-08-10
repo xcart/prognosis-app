@@ -1,16 +1,29 @@
-<script>
+<script lang="ts">
     import UserList from "../components/workload/UserList.svelte"
-    import WorkloadTable from "../components/workload/WorkloadTable.svelte"
+    import SwimlanesView from "../components/workload/SwimlanesView.svelte"
+    import type {User, TeamWorkload} from "../types"
+    import {state} from '../stores'
 
-    export let state = null
-    let report = Object.values(state.report)
-    let filterReport = (report) => report.filter((line) => line.items.length > 0)
+    let users: Array<User>,
+        teams: Array<TeamWorkload>,
+        duration: Number;
+
+    $: {
+
+    }
+    $: users = $state.report.teams.reduce((list, team) => {
+        return list.concat(team.users.map((workload) => {
+            return workload.user
+        }))
+    }, [])
+    $: teams = $state.report.teams
+    $: duration = $state.report.duration
 </script>
 
 <section class="page">
     <div class="workload-table">
-        <UserList report={filterReport(report)}/>
-        <WorkloadTable report={filterReport(report)}/>
+        <UserList users={users}/>
+        <SwimlanesView teams={teams} duration={duration}/>
     </div>
 </section>
 
