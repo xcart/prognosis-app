@@ -1,20 +1,19 @@
-package com.xcart.prognosis.services
+package com.xcart.prognosis.logic
 
 import com.xcart.prognosis.domain.Issue
 import com.xcart.prognosis.domain.IssueInfo
 import com.xcart.prognosis.domain.User
-import com.xcart.prognosis.reports.WorkloadItem
+import com.xcart.prognosis.reports.DailyWorkloadItem
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import java.util.stream.Stream
 import kotlin.streams.toList
 
-
 class WorkloadAnalysis (private val issues: List<Issue>) {
     private val holidays = emptyList<LocalDate>()
 
-    fun getDailyWorkloadForUser(user: User, startDate: LocalDate): List<WorkloadItem> {
+    fun getDailyWorkloadForUser(user: User, startDate: LocalDate): List<DailyWorkloadItem> {
         val userIssues = issues.filter { it.assignee?.id == user.id }
         val filteredIssues = userIssues.filter { it.endDate != null }
         val lastIssue = filteredIssues.maxBy { it.endDate ?: LocalDate.MIN }
@@ -53,12 +52,12 @@ class WorkloadAnalysis (private val issues: List<Issue>) {
                 .count()
     }
 
-    private fun getMappingFunc(issues: List<Issue>): (LocalDate) -> WorkloadItem {
+    private fun getMappingFunc(issues: List<Issue>): (LocalDate) -> DailyWorkloadItem {
         return { date ->
             var issuesOnDay = issues
                     .filter { it.startDate <= date && it.endDate!! >= date && it.estimation > 0 }
             var value = calculateWorkloadValue (date, issuesOnDay)
-            WorkloadItem(date, value, issuesOnDay.map { IssueInfo(it.id, it.idReadable, it.summary) })
+            DailyWorkloadItem(date, value, issuesOnDay.map { IssueInfo(it.id, it.idReadable, it.summary) })
         }
     }
 

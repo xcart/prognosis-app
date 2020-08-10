@@ -1,0 +1,24 @@
+{
+  "extends": "@tsconfig/svelte/tsconfig.json",
+
+  "compilerOptions": {
+    "preserveConstEnums": true,
+    "target": "ESNEXT",
+    "lib": ["ESNEXT", "dom"],
+    "module": "ESNEXT",
+    "moduleResolution": "node",
+
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "strictNullChecks": true
+  },
+
+  "include": ["./src/main/resources/scripts/**/*", "./src/main/resources/scripts/types.ts"],
+  "exclude": ["./node_modules/*", "./src/main/resources/static/*"]
+}

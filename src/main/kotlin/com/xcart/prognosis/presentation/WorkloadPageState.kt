@@ -1,5 +1,5 @@
 package com.xcart.prognosis.presentation
 
-import com.xcart.prognosis.reports.ReportItem
+import com.xcart.prognosis.reports.WorkloadReport
 
-data class WorkloadPageState (val report: Map<String, ReportItem>)
+data class WorkloadPageState (val report: WorkloadReport)

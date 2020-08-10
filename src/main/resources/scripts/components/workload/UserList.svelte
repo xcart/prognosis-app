@@ -1,5 +1,6 @@
+<!--suppress ES6CheckImport -->
 <script>
-    export let report = null
+    export let teams = null
 </script>
 
 <div class="user-section">
@@ -12,13 +13,24 @@
         </div>
     </div>
     <div class="table-body">
-      {#each report as reportLine}
-          <div class="table-row">
-              <div class="user-column">
-                  <span>{reportLine.user.login}</span>
-              </div>
-          </div>
-      {/each}
+        {#each teams as team}
+            <div class="table-row team-row">
+                <div class="team-column">
+                    {#if team.teamName == 'NoTeam'}
+                        <span>Without team</span>
+                    {:else}
+                        <span>Team {team.teamName}</span>
+                    {/if}
+                </div>
+            </div>
+            {#each team.users as userInfo}
+                <div class="table-row">
+                    <div class="user-column">
+                        <span>{userInfo.user.login}</span>
+                    </div>
+                </div>
+            {/each}
+        {/each}
     </div>
 </div>
 
@@ -42,8 +54,8 @@
         margin-top: var(--table-line-margin);
     }
 
-    .user-column {
-        min-width: 120px;
+    .user-column, .team-column {
+        min-width: 150px;
         padding: 0 1rem;
         text-align: right;
         display: flex;
@@ -51,6 +63,10 @@
         justify-content: center;
         flex-direction: column;
         position: relative;
+    }
+
+    .team-row {
+        background: var(--table-team-bg);
     }
 
     .user-section .table-row {

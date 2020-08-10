@@ -1,21 +1,22 @@
 <script>
-    import DateTableHeader from "./table/DateTableHeader.svelte"
+    import Dates from "./table/Dates.svelte"
     import Swimlane from "./table/Swimlane.svelte"
+    import TeamInfo from "./table/TeamInfo.svelte"
 
-    export let report = null
-    let calendarLength = Array.from(report.values()).reduce((sum, item) => {
-        let length = item.items.length
-        return length > sum ? length : sum
-    }, 0)
+    export let teams = null
+    export let duration = null
 </script>
 
 <div class="swimlanes-section">
     <div class="table-header">
-        <DateTableHeader duration={calendarLength}/>
+        <Dates duration={duration}/>
     </div>
     <div class="table-body">
-      {#each report as reportLine}
-          <Swimlane data="{reportLine}" limit={calendarLength}/>
+      {#each teams as team}
+          <TeamInfo team={team.teamName} />
+          {#each team.users as user}
+              <Swimlane swimlane={user.swimlane} />
+          {/each}
       {/each}
     </div>
 </div>
@@ -34,5 +35,6 @@
     .swimlanes-section {
         max-width: 90vw;
         overflow: scroll;
+        overflow-y: hidden;
     }
 </style>
