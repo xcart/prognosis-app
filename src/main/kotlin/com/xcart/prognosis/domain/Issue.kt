@@ -15,17 +15,10 @@ data class Issue(
     /**
      * Issue estimation in minutes
      */
-    val estimation: Int
+    val estimation: Int?
         get() {
             val cfield = customFields.find { it.name == "Estimation" }
-            return if (cfield?.value is HashMap<*, *>) cfield.value["minutes"] as Int else 0
-        }
-    /**
-     * Issue estimation in hours
-     */
-    val estimationDays: Int
-        get() {
-            return estimation / 60
+            return if (cfield?.value is HashMap<*, *>) cfield.value["minutes"] as Int else null
         }
 
     /**
