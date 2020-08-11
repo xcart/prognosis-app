@@ -55,7 +55,7 @@ class WorkloadAnalysis (private val issues: List<Issue>) {
     private fun getMappingFunc(issues: List<Issue>): (LocalDate) -> DailyWorkloadItem {
         return { date ->
             var issuesOnDay = issues
-                    .filter { it.startDate <= date && it.endDate!! >= date && it.estimation > 0 }
+                    .filter { it.startDate <= date && it.endDate!! >= date }
             var value = calculateWorkloadValue (date, issuesOnDay)
             DailyWorkloadItem(date, value, issuesOnDay.map { IssueInfo(it.id, it.idReadable, it.summary) })
         }
@@ -69,7 +69,10 @@ class WorkloadAnalysis (private val issues: List<Issue>) {
             val issueDays = issue.endDate?.let {
                 countBusinessDaysBetween(issue.startDate, it)
             } ?: 1
-            acc + (issue.estimation / issueDays)
+            val workload: Float = if (issue.estimation != null)
+                (issue.estimation!! / issueDays).toFloat()
+            else 150.0f
+            acc + workload
         }
     }
 }
