@@ -1,21 +1,20 @@
 <script>
-    import getContinuousColorCode from "../../../util/colorCode";
+    import getContinuousColorCode from "../../../util/colorCode"
+    import {tooltip} from "../../../actions/tooltip";
+    import IssueListTooltip from "./IssueListTooltip.svelte"
 
     export let swimlane = null
 
     let formatWorkload = (value) => (value / 60.0).toFixed(1)
+    let hasIssues = (issues) => issues && issues.length > 0
 </script>
 
 <div class="table-row user-swimlane">
   {#each swimlane as item}
-      <div class="data-column" style="background: {getContinuousColorCode(item.workload)}">
+      <div class="data-column"
+           style="background: {getContinuousColorCode(item.workload)}"
+           use:tooltip={{component: IssueListTooltip, props: {issues: item.issues}, interactive: true, display: hasIssues(item.issues) }}>
           <span class="workload-value ">{formatWorkload(item.workload)}</span>
-          <div class="extra-info">
-            {#each item.issues as issue}
-                <a class="issue-link" href="https://xcart.myjetbrains.com/youtrack/issue/{issue.idReadable}"
-                   target="_blank">{issue.idReadable}</a>
-            {/each}
-          </div>
       </div>
   {/each}
 </div>
@@ -42,27 +41,6 @@
         flex-direction: column;
         position: relative;
         text-align: center;
-    }
-
-    .data-column .extra-info {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translate(-50%, 0);
-        box-shadow: 0 1px 5px 0 #ccc;
-        background: white;
-        padding: .5rem;
-        z-index: 1;
-    }
-
-    .data-column:hover .extra-info {
-        display: block;
-    }
-
-    .extra-info .issue-link {
-        display: block;
-        white-space: nowrap;
     }
 
     .data-column .workload-value {
