@@ -69,8 +69,8 @@ class WorkloadAnalysis (private val issues: List<Issue>) {
             val issueDays = issue.endDate?.let {
                 countBusinessDaysBetween(issue.startDate, it)
             } ?: 1
-            val workload = if (issue.estimation != null)
-                (issue.estimation!! / issueDays) as Float
+            val workload: Float = if (issue.estimation != null)
+                (issue.estimation!! / issueDays).toFloat()
             else 150.0f
             acc + workload
         }
