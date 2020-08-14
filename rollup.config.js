@@ -6,7 +6,6 @@ import commonjs from '@rollup/plugin-commonjs'
 import typescript from "@rollup/plugin-typescript"
 import replace from "@rollup/plugin-replace";
 import postcss from 'rollup-plugin-postcss'
-// import ts from "@wessberg/rollup-plugin-ts";
 
 let production = false
 
@@ -44,6 +43,8 @@ export default {
     }),
     resolve({
       browser: true,
+      jsnext: true,
+      preferBuiltins: true,
       dedupe: ['svelte']
     }),
     commonjs({

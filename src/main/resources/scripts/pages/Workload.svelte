@@ -1,13 +1,17 @@
 <script>
     import UserList from "../components/workload/UserList.svelte"
     import SwimlanesView from "../components/workload/SwimlanesView.svelte"
+    import QueryPanel from "../components/workload/QueryPanel.svelte"
+    import {Container} from "sveltestrap"
     import {state} from '../stores'
+    import {performSearch} from "../actions"
 
     let users,
         teams,
         duration,
-        rows;
+        query;
 
+    $: query = $state.query
     $: users = $state.report.teams.reduce((list, team) => {
         return list.concat(team.users.map((workload) => {
             return workload.user
@@ -18,6 +22,9 @@
 </script>
 
 <section class="page">
+    <Container>
+        <QueryPanel query={query} on:search="{(event) => performSearch(event.detail)}"></QueryPanel>
+    </Container>
     <div class="workload-table">
         <UserList teams={teams}/>
         <SwimlanesView teams={teams} duration={duration}/>
