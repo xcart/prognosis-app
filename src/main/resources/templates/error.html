@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head lang="en">
+    <meta charset="UTF-8" />
+    <title>com.xcart.prognosis app</title>
+    <link th:href="@{/bundle.css}" rel="stylesheet" />
+    <link th:href="@{/global.css}" rel="stylesheet" />
+</head>
+<body>
+<div class="container">
+    <p class="exception h1">
+        <span>Error: </span><span th:text="${exception}"></span>
+    </p>
+    <div class="trace" th:text="${trace}">
+    </div>
+</div>
+</body>
+</html>

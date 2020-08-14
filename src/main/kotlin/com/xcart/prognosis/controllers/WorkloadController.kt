@@ -14,17 +14,13 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/workload")
 class WorkloadController @Autowired constructor(val reportBuilder: WorkloadReportBuilder) {
 
-    @GetMapping("/")
+    @GetMapping("")
     fun getWorkloadPageState(@RequestParam query: String?): ResponseEntity<WorkloadPageState> {
-        return try {
-            val queryToUse = if (query.isNullOrEmpty())
-                "Project: WD State: Open, Waiting, {In progress} sort by: created"
-            else query
+        val queryToUse = if (query.isNullOrEmpty())
+            "Project: WD State: Open, Waiting, {In progress} sort by: created"
+        else query
 
-            val report = WorkloadPageState(reportBuilder.gather(queryToUse))
-            ResponseEntity.ok(report);
-        } catch (e: Exception) {
-            ResponseEntity.status(500).build()
-        }
+        val report = WorkloadPageState(queryToUse, reportBuilder.gather(queryToUse))
+        return ResponseEntity.ok(report);
     }
 }
