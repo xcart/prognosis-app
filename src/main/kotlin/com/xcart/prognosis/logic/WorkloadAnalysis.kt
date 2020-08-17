@@ -72,7 +72,9 @@ class WorkloadAnalysis(private val issues: List<Issue>) {
 
     private fun toTaskDailyWorkloadItem(issue: Issue): (LocalDate) -> TaskDailyWorkloadItem {
         return { date ->
-            var value = calculateWorkloadValue(date, listOf(issue))
+            var issuesOnDay = listOf(issue)
+                    .filter { it.startDate <= date && it.endDate!! >= date }
+            var value = calculateWorkloadValue(date, issuesOnDay)
             TaskDailyWorkloadItem(date, value)
         }
     }

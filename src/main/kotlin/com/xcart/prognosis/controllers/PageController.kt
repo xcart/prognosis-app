@@ -18,7 +18,7 @@ class PageController @Autowired constructor(val workload: WorkloadReportBuilder,
     fun index(@RequestParam query: String?): ModelAndView {
         val mav = ModelAndView("index")
         val queryToUse = if (query.isNullOrEmpty())
-            "Project: WD State: Open, Waiting, {In progress} sort by: created"
+            "Project: WD State: Open, Waiting, {In progress} sort by: {Start Date} asc, created asc"
         else query
         val state = CommonPageState(queryToUse, workload.gather(queryToUse))
         mav.addObject("state", state)
