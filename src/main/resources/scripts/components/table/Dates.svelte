@@ -1,31 +1,16 @@
 <script>
-    import getDates from "../../../util/dates.js"
+    import getDates from "../../util/dates.js"
 
     export let duration = 30
 
-    let getMonthName = function (date) {
+    let dates, months;
+
+    function getMonthName (date) {
         const options = {month: 'long'};
         return new Intl.DateTimeFormat('en-US', options).format(date);
     }
-    let dates = getDates(new Date(), new Date().addDays(duration - 1))
-    let months = Array.from(dates.reduce((acc, item) => {
-        let month = item.getUTCMonth() + 1
-        let label = getMonthName(item)
-        let object = {
-            number: month,
-            label: label,
-            size: 1
-        }
-        if (acc.has(month)) {
-            let existing = acc.get(month)
-            object.size += existing.size
-        }
 
-        acc.set(month, object)
-        return acc
-    }, new Map()).values())
-
-    let getDayClass = function (date) {
+    function getDayClass (date) {
         let day = date.getDay()
         switch(day) {
             case 0: return 'sunday'
@@ -36,6 +21,26 @@
             case 5: return 'friday'
             case 6: return 'saturday'
         }
+    }
+
+    $: {
+        dates = getDates(new Date(), new Date().addDays(duration - 1))
+        months = Array.from(dates.reduce((acc, item) => {
+            let month = item.getUTCMonth() + 1
+            let label = getMonthName(item)
+            let object = {
+                number: month,
+                label: label,
+                size: 1
+            }
+            if (acc.has(month)) {
+                let existing = acc.get(month)
+                object.size += existing.size
+            }
+
+            acc.set(month, object)
+            return acc
+        }, new Map()).values())
     }
 </script>
 

@@ -11,6 +11,5 @@
 <style>
     :global(.page-header) {
         margin-top: 2rem;
-        display: none;
     }
 </style>

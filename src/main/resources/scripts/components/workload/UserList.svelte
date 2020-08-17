@@ -1,6 +1,12 @@
 <!--suppress ES6CheckImport -->
 <script>
+    import { Link } from "svelte-routing";
     export let teams = null
+    export let query = null
+
+    function buildUserUrl(user) {
+        return "/tasks/" + user.login
+    }
 </script>
 
 <div class="user-section">
@@ -26,7 +32,7 @@
             {#each team.users as userInfo}
                 <div class="table-row">
                     <div class="user-column">
-                        <span>{userInfo.user.login}</span>
+                        <Link to="{buildUserUrl(userInfo.user)}">{userInfo.user.login}</Link>
                     </div>
                 </div>
             {/each}

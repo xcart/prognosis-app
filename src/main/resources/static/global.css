@@ -1,3 +1,12 @@
+:root {
+  --table-row-height: 2rem;
+  --table-row-width: 2rem;
+  --table-line-margin: .5rem;
+  --table-border: 1px solid #eee;
+  --table-team-bg: #eee;
+  --table-extended-row-v-padding: .25rem 0;
+  --table-extended-row-height: 2.5rem; }
+
 /*!
  * Bootstrap v4.3.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 The Bootstrap Authors

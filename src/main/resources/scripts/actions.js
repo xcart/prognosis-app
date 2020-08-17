@@ -1,8 +1,8 @@
-import {state, errors} from "./stores"
+import {state, storedQuery, errors} from "./stores"
 import {start, move, finish} from "./util/progress"
-import {modifyUrl} from "./util/addressBar"
+import {modifyAddressBar} from "./util/addressBar"
 
-const workloadApiBaseurl = "/api/workload"
+const apiBaseurl = "/api"
 
 function buildUrl(urlString, queryParams) {
     let searchParams = new URLSearchParams()
@@ -12,18 +12,16 @@ function buildUrl(urlString, queryParams) {
     return urlString + '?' + searchParams.toString()
 }
 
-export function performSearch(query) {
+function loadPageState(apiUrl, addressBarUrl, params) {
     start()
-    modifyUrl(buildUrl("/", {query: query}))
-    fetch(buildUrl(workloadApiBaseurl, {
-        query: query
-    }))
+    modifyAddressBar(buildUrl(addressBarUrl, params))
+    fetch(buildUrl(apiBaseurl + apiUrl, params))
         .then(response => {
             move()
             if (response.ok) {
                 return response.json();
             }
-            throw new Error("Could not perform search, check your query");
+            throw new Error("Could not perform page load, check your query");
         })
         .then(result => {
             state.set(result)
@@ -33,6 +31,15 @@ export function performSearch(query) {
             addError(reason)
             finish()
         })
+}
+
+export function loadWorkloadReport(query = "") {
+    storedQuery.set(query)
+    loadPageState("/workload", "/", {query: query})
+}
+
+export function loadUsertasksReport(user, query = "") {
+    loadPageState("/usertasks/" + user, "/tasks/" + user, {query: query})
 }
 
 export function addError(message) {

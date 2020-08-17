@@ -2,7 +2,7 @@
     export let id = null
     export let issues = null
 
-    let length = issues ? issues.length : 0;
+    $: length = issues ? issues.length : 0;
 </script>
 
 <div class="extra-info" id="{id}">
