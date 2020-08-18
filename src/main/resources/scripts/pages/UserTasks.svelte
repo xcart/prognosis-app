@@ -39,7 +39,7 @@
         {#if tasks.length > 0}
             <TaskList tasks={tasks}/>
             <SwimlanesView tasks={tasks} duration={duration}/>
-        {:else}
+        {:else if isReady($state)}
             <div class="container">
                 <p class="lead">Alas, the list is empty :(</p>
             </div>
