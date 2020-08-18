@@ -45,9 +45,9 @@ internal class WorkloadAnalysisTest {
         val startDate = Timestamp(1577836800000).toLocalDateTime().toLocalDate()
         val result = WorkloadAnalysis(issues).getDailyWorkloadForUser(User(id = "1"), startDate)
 
-        val list1 = listOf(IssueInfo("1"))
-        val list2 = listOf(IssueInfo("1"), IssueInfo("2"))
-        val list3 = listOf(IssueInfo("2"))
+        val list1 = listOf(IssueInfo(issues[0]))
+        val list2 = listOf(IssueInfo(issues[0]), IssueInfo(issues[1]))
+        val list3 = listOf(IssueInfo(issues[1]))
         val expected = listOf(
                 DailyWorkloadItem(LocalDate.of(2020, 1, 1), 75f, list1),
                 DailyWorkloadItem(LocalDate.of(2020, 1, 2), 75f, list1),
