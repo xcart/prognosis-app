@@ -21,13 +21,13 @@ class UsertasksReportBuilder @Autowired constructor(val youTrack: YouTrack) {
 
     private fun getTaskWorkloadList(issues: List<Issue>): List<TaskWorkload> {
         val analysis = WorkloadAnalysis(issues)
-        return issues.fold(mutableListOf()) { acc, issue ->
+        return issues.fold(mutableListOf<TaskWorkload>()) { acc, issue ->
             val swimlane = analysis.getIssueSwimlane(issue, LocalDate.now())
             if (swimlane.isNotEmpty()) {
-                acc.add(TaskWorkload(swimlane, IssueInfo(issue)))
+                acc.add(TaskWorkload(swimlane, IssueInfo(issue), issue.startDate))
             }
             acc
-        }
+        }.sortedBy { it.startDate }
     }
 
     private fun modifyQuery(query: String, login: String): String {
@@ -36,7 +36,7 @@ class UsertasksReportBuilder @Autowired constructor(val youTrack: YouTrack) {
 
     private fun getReportDuration(tasks: List<TaskWorkload>): Number {
         return tasks.fold(0) { max, issue ->
-            return if (issue.swimlane.size > max) issue.swimlane.size else max
+            if (issue.swimlane.size > max) issue.swimlane.size else max
         }
     }
 }

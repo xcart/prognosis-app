@@ -17,7 +17,7 @@ class WorkloadController @Autowired constructor(val reportBuilder: WorkloadRepor
     @GetMapping("")
     fun getWorkloadPageState(@RequestParam query: String?): ResponseEntity<CommonPageState> {
         val queryToUse = if (query.isNullOrEmpty())
-            "Project: WD State: Open, Waiting, {In progress} sort by: {Start Date} asc, created asc"
+            "Project: WD State: Open, Waiting, {In progress}"
         else query
 
         val report = CommonPageState(queryToUse, reportBuilder.gather(queryToUse))
