@@ -1,6 +1,6 @@
 import nprogress from "nprogress"
 
-nprogress.configure({ showSpinner: false, trickleSpeed: 1600 })
+nprogress.configure({ showSpinner: false, trickleSpeed: 100 })
 
 export function start() {
     nprogress.start()

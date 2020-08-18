@@ -1,3 +1,3 @@
-export function modifyUrl(url, data) {
-    window.history.pushState(data, "", url);
+export function modifyAddressBar(url, title = "", data = null) {
+    window.history.replaceState(data, title, url);
 }

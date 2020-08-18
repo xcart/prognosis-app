@@ -7,5 +7,8 @@ data class IssueInfo(
         val idReadable: String = "",
         val summary: String? = null,
         val startDate: LocalDate? = null,
-        val endDate: LocalDate? = null
-)
+        val endDate: LocalDate? = null,
+        val state: Enum<IssueState>? = null
+) {
+    constructor(issue: Issue) : this(issue.id, issue.idReadable, issue.summary, issue.startDate, issue.endDate, issue.state)
+}

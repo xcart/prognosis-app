@@ -1,19 +1,15 @@
 <script>
     import getContinuousColorCode from "../../../util/colorCode"
-    import {tooltip} from "../../../actions/tooltip";
-    import IssueListTooltip from "./IssueListTooltip.svelte"
 
     export let swimlane = null
 
     let formatWorkload = (value) => (value / 60.0).toFixed(1)
-    let hasIssues = (issues) => issues && issues.length > 0
 </script>
 
 <div class="table-row user-swimlane">
   {#each swimlane as item}
       <div class="data-column"
-           style="background: {getContinuousColorCode(item.workload)}"
-           use:tooltip={{component: IssueListTooltip, props: {issues: item.issues}, interactive: true, display: hasIssues(item.issues) }}>
+           style="background: {getContinuousColorCode(item.workload)}">
           <span class="workload-value ">{formatWorkload(item.workload)}</span>
       </div>
   {/each}
@@ -22,8 +18,9 @@
 <style>
     .table-row {
         display: flex;
-        height: 2rem;
-        min-height: 2rem;
+        height: var(--table-extended-row-height);
+        height: var(--table-extended-row-height);
+        padding: var(--table-extended-row-v-padding);
         align-items: center;
     }
 

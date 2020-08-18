@@ -1,6 +1,6 @@
 package com.xcart.prognosis.controllers
 
-import com.xcart.prognosis.presentation.WorkloadPageState
+import com.xcart.prognosis.presentation.CommonPageState
 import com.xcart.prognosis.reports.WorkloadReportBuilder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RestController
 class WorkloadController @Autowired constructor(val reportBuilder: WorkloadReportBuilder) {
 
     @GetMapping("")
-    fun getWorkloadPageState(@RequestParam query: String?): ResponseEntity<WorkloadPageState> {
+    fun getWorkloadPageState(@RequestParam query: String?): ResponseEntity<CommonPageState> {
         val queryToUse = if (query.isNullOrEmpty())
-            "Project: WD State: Open, Waiting, {In progress} sort by: created"
+            "Project: WD State: Open, Waiting, {In progress}"
         else query
 
-        val report = WorkloadPageState(queryToUse, reportBuilder.gather(queryToUse))
+        val report = CommonPageState(queryToUse, reportBuilder.gather(queryToUse))
         return ResponseEntity.ok(report);
     }
 }

@@ -3,14 +3,15 @@ package com.xcart.prognosis.logic
 import com.xcart.prognosis.domain.Issue
 import com.xcart.prognosis.domain.IssueInfo
 import com.xcart.prognosis.domain.User
-import com.xcart.prognosis.reports.DailyWorkloadItem
+import com.xcart.prognosis.reports.usertasks.TaskDailyWorkloadItem
+import com.xcart.prognosis.reports.workload.DailyWorkloadItem
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import java.util.stream.Stream
 import kotlin.streams.toList
 
-class WorkloadAnalysis (private val issues: List<Issue>) {
+class WorkloadAnalysis(private val issues: List<Issue>) {
     private val holidays = emptyList<LocalDate>()
 
     fun getDailyWorkloadForUser(user: User, startDate: LocalDate): List<DailyWorkloadItem> {
@@ -23,10 +24,18 @@ class WorkloadAnalysis (private val issues: List<Issue>) {
         val endDate = lastIssue.endDate
         return if (startDate < endDate && endDate != null)
             listDaysBetween(startDate, endDate)
-                    .map(getMappingFunc(filteredIssues))
+                    .map(toDailyWorkloadItem(filteredIssues))
         else {
+            emptyList()
+        }
+    }
+
+    fun getIssueSwimlane(issue: Issue, startDate: LocalDate): List<TaskDailyWorkloadItem> {
+        if (issue.endDate == null || issue.endDate!! < startDate) {
             return emptyList()
         }
+        return listDaysBetween(startDate, issue.endDate!!)
+                .map(toTaskDailyWorkloadItem(issue))
     }
 
     private fun listDaysBetween(startDate: LocalDate, endDate: LocalDate): List<LocalDate> {
@@ -37,7 +46,7 @@ class WorkloadAnalysis (private val issues: List<Issue>) {
     }
 
     private fun LocalDate.isBusinessDay(): Boolean {
-        val isHoliday = { date: LocalDate -> holidays.contains(date)  }
+        val isHoliday = { date: LocalDate -> holidays.contains(date) }
         val isWeekend = { date: LocalDate ->
             (date.dayOfWeek === DayOfWeek.SATURDAY
                     || date.dayOfWeek === DayOfWeek.SUNDAY)
@@ -46,18 +55,27 @@ class WorkloadAnalysis (private val issues: List<Issue>) {
         return !isHoliday(this) && !isWeekend(this)
     }
 
-    private fun countBusinessDaysBetween(startDate: LocalDate, endDate: LocalDate) : Int {
+    private fun countBusinessDaysBetween(startDate: LocalDate, endDate: LocalDate): Int {
         return listDaysBetween(startDate, endDate)
                 .filter { it.isBusinessDay() }
                 .count()
     }
 
-    private fun getMappingFunc(issues: List<Issue>): (LocalDate) -> DailyWorkloadItem {
+    private fun toDailyWorkloadItem(issues: List<Issue>): (LocalDate) -> DailyWorkloadItem {
         return { date ->
             var issuesOnDay = issues
                     .filter { it.startDate <= date && it.endDate!! >= date }
-            var value = calculateWorkloadValue (date, issuesOnDay)
-            DailyWorkloadItem(date, value, issuesOnDay.map { IssueInfo(it.id, it.idReadable, it.summary) })
+            var value = calculateWorkloadValue(date, issuesOnDay)
+            DailyWorkloadItem(date, value, issuesOnDay.map { IssueInfo(it) })
+        }
+    }
+
+    private fun toTaskDailyWorkloadItem(issue: Issue): (LocalDate) -> TaskDailyWorkloadItem {
+        return { date ->
+            var issuesOnDay = listOf(issue)
+                    .filter { it.startDate <= date && it.endDate!! >= date }
+            var value = calculateWorkloadValue(date, issuesOnDay)
+            TaskDailyWorkloadItem(date, value)
         }
     }
 

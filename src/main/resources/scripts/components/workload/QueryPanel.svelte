@@ -21,6 +21,7 @@
                        name="query"
                        id="input-query"
                        placeholder="Input YouTrack query here"
+                       readonly={false}
                        bind:value={queryInput}/>
             </Col>
             <Col class="col-auto">

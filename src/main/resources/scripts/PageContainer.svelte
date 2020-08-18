@@ -4,15 +4,13 @@
     import PageHeader from "./components/PageHeader.svelte";
     import Workload from "./pages/Workload.svelte";
     import About from "./pages/About.svelte";
+    import UserTasks from "./pages/UserTasks.svelte";
 
     export let url = "";
 </script>
 
 <Router {url}>
     <Route path="/">
-        <PageHeader>
-            Workload analysis
-        </PageHeader>
         <Container class="page-container" fluid>
             <Workload/>
         </Container>
@@ -23,6 +21,14 @@
         </PageHeader>
         <Container class="page-container" fluid>
             <About/>
+        </Container>
+    </Route>
+    <Route path="/tasks/:login" let:params>
+        <PageHeader>
+            {params.login} tasks
+        </PageHeader>
+        <Container class="page-container" fluid>
+            <UserTasks user="{params.login}"/>
         </Container>
     </Route>
 </Router>

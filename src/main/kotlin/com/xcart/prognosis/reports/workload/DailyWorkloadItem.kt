@@ -1,4 +1,4 @@
-package com.xcart.prognosis.reports
+package com.xcart.prognosis.reports.workload
 
 import com.xcart.prognosis.domain.IssueInfo
 import java.time.LocalDate
