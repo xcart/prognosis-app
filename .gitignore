@@ -33,4 +33,5 @@ out/
 
 ### Project specific ###
 /src/main/resources/application-default.properties
+/src/main/resources/static
 /node_modules/
