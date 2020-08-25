@@ -6,6 +6,7 @@ import commonjs from '@rollup/plugin-commonjs'
 import typescript from "@rollup/plugin-typescript"
 import replace from "@rollup/plugin-replace";
 import postcss from 'rollup-plugin-postcss'
+import image from '@rollup/plugin-image';
 
 let production = false
 
@@ -23,6 +24,7 @@ export default {
       'process.env.NODE_ENV': JSON.stringify('development'),
     }),
     typescript({}),
+    image(),
     svelte({
       // enable run-time checks when not in production
       dev: true,

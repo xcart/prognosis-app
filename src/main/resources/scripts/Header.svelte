@@ -1,7 +1,7 @@
 <script>
     import {Router, Link} from "svelte-routing";
     import NavLink from "./components/NavLink.svelte"
-    import {Container, Collapse, Navbar, NavbarToggler, Nav, NavItem} from "sveltestrap";
+    import {Container, Collapse, Navbar, NavbarBrand, NavbarToggler, Nav, NavItem} from "sveltestrap";
 
     export let url = "";
 
@@ -12,17 +12,29 @@
     }
 </script>
 
+<style>
+    :global(.app-header .navbar-brand) {
+        font-size: 1rem;
+    }
+</style>
+
 <Navbar color="light" light expand="md">
     <Container class="app-header">
-        <NavbarToggler on:click={() => (isOpen = !isOpen)}/>
-        <Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
+        <NavbarBrand href="/" class="mr-auto">
+            <span>Workload planner</span>
+        </NavbarBrand>
+        <NavbarToggler class="ml-2" on:click={() => (isOpen = !isOpen)}/>
+        <Collapse {isOpen} navbar class="ml-2" expand="md" on:update={handleUpdate}>
             <Router {url}>
                 <Nav navbar>
-                    <NavItem>
+                    <NavItem class="d-md-none">
                         <NavLink to="/">Workload</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink to="/about">About</NavLink>
+                        <NavLink to="/projects" disabled>Projects</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink to="/performance" disabled>Performance</NavLink>
                     </NavItem>
                 </Nav>
             </Router>
