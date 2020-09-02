@@ -23,17 +23,13 @@ class WorkloadReportBuilder @Autowired constructor(val youTrack: YouTrack) {
     }
 
     fun getTeamsWorkload(users: List<User>, issues: List<Issue>): List<TeamWorkload> {
-        val teams = users.fold(mutableMapOf<Team, MutableList<User>>()) { acc, user ->
-            if (acc[user.team] != null)
-                acc[user.team]?.add(user)
-            else acc[user.team] = mutableListOf(user)
-            acc
-        }
-
-        return teams.map {
-            val skipEmpty = it.key == Team.NoTeam
-            TeamWorkload(it.key, getUsersWorkload(it.value, issues, skipEmpty), emptyList())
-        }.sortedBy { it.teamName }
+        return users
+                .groupBy { it.team }
+                .map {
+                    val skipEmpty = it.key == Team.NoTeam
+                    TeamWorkload(it.key, getUsersWorkload(it.value, issues, skipEmpty), emptyList())
+                }
+                .sortedBy { it.teamName }
     }
 
     fun getUsersWorkload(users: List<User>, issues: List<Issue>, skipEmpty: Boolean): List<UserWorkload> {
@@ -41,7 +37,7 @@ class WorkloadReportBuilder @Autowired constructor(val youTrack: YouTrack) {
         return users.fold(mutableListOf()) { acc, user ->
             val swimlane = analysis.getDailyWorkloadForUser(user, LocalDate.now())
             val stats = listOf(
-                StatValue(StatValueKey.SwimlaneDuration, swimlane.size)
+                    StatValue(StatValueKey.SwimlaneDuration, swimlane.size)
             )
             if (swimlane.isNotEmpty() || !skipEmpty) {
                 acc.add(UserWorkload(user, swimlane, stats))
@@ -51,8 +47,8 @@ class WorkloadReportBuilder @Autowired constructor(val youTrack: YouTrack) {
     }
 
     fun getReportDuration(teams: List<TeamWorkload>): Number {
-        return teams.fold (0) { max, team ->
-            val duration = team.users.fold (0) { max, user ->
+        return teams.fold(0) { max, team ->
+            val duration = team.users.fold(0) { max, user ->
                 val stat = user.stats.find { stat -> stat.key == StatValueKey.SwimlaneDuration }
                 if (stat != null && (stat.value as Int) > max) stat.value else max
             }

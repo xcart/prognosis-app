@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository
 class YouTrack @Autowired constructor(config: Configuration) {
     private val baseUrl: String = "https://xcart.myjetbrains.com/youtrack"
     private val permToken: String = config.youtrackToken
-    private val issueFields: String = "id,idReadable,created,isDraft,summary,customFields(id,name,value(id,isResolved,login,minutes,name,fullName,text))"
+    private val issueFields: String = "id,idReadable,created,isDraft,summary,customFields(id,name,value(id,isResolved,login,minutes,name,fullName,text)),reporter(id,login,fullName)"
     private val userFields: String = "id,login,fullName,email,name,jabberAccount,online,avatarUrl,banned,tags(id,name,untagOnResolve,updateableBy(id,name),visibleFor(name,id),owner(id,login))"
 
     fun fetchIssues(query: String): List<Issue> {

@@ -14,7 +14,7 @@ class UsertasksController @Autowired constructor(val reportBuilder: UsertasksRep
     @GetMapping("/{login}")
     fun getWorkloadPageState(@PathVariable login: String, @RequestParam query: String?): ResponseEntity<CommonPageState> {
         val queryToUse = if (query.isNullOrEmpty())
-            "Project: WD State: Open, Waiting, {In progress}"
+            "Project: WD State: New, Open, Waiting, {In progress}"
         else query
 
         val report = CommonPageState(queryToUse, reportBuilder.gather(login, queryToUse))

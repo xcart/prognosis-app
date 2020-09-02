@@ -1,6 +1,8 @@
 package com.xcart.prognosis.controllers
 
 import com.xcart.prognosis.presentation.CommonPageState
+import com.xcart.prognosis.reports.ProjectsReportBuilder
+import com.xcart.prognosis.reports.Report
 import com.xcart.prognosis.reports.UsertasksReportBuilder
 import com.xcart.prognosis.reports.WorkloadReportBuilder
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,26 +14,35 @@ import org.springframework.web.servlet.ModelAndView
 
 
 @Controller
-class PageController @Autowired constructor(val workload: WorkloadReportBuilder, val usertasks: UsertasksReportBuilder) {
+class PageController @Autowired constructor(val workload: WorkloadReportBuilder, val usertasks: UsertasksReportBuilder, val projects: ProjectsReportBuilder) {
 
     @RequestMapping("/")
-    fun index(@RequestParam query: String?): ModelAndView {
-        val mav = ModelAndView("index")
+    fun workload(@RequestParam query: String?): ModelAndView {
         val queryToUse = if (query.isNullOrEmpty())
-            "Project: WD State: Open, Waiting, {In progress}"
+            "Project: WD State: New, Open, Waiting, {In progress}"
         else query
-        val state = CommonPageState(queryToUse, workload.gather(queryToUse))
-        mav.addObject("state", state)
-        return mav
+        return buildReportMav(queryToUse, workload.gather(queryToUse))
     }
 
     @RequestMapping("/tasks/{login}")
-    fun index(@PathVariable login: String, @RequestParam query: String?): ModelAndView {
-        val mav = ModelAndView("index")
+    fun tasks(@PathVariable login: String, @RequestParam query: String?): ModelAndView {
         val queryToUse = if (query.isNullOrEmpty())
-            "Project: WD State: Open, Waiting, {In progress}"
+            "Project: WD State: New, Open, Waiting, {In progress}"
         else query
-        val state = CommonPageState(queryToUse, usertasks.gather(login, queryToUse))
+        return buildReportMav(queryToUse, usertasks.gather(login, queryToUse))
+    }
+
+    @RequestMapping("/projects")
+    fun projects(@RequestParam query: String?): ModelAndView {
+        val queryToUse = if (query.isNullOrEmpty())
+            "Project: WD State: New, Open, Waiting, {In progress}"
+        else query
+        return buildReportMav(queryToUse, projects.gather(queryToUse))
+    }
+
+    private fun buildReportMav(query: String, report: Report): ModelAndView {
+        val mav = ModelAndView("index")
+        val state = CommonPageState(query, report)
         mav.addObject("state", state)
         return mav
     }
