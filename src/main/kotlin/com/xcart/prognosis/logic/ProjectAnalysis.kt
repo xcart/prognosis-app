@@ -21,6 +21,7 @@ class ProjectAnalysis(private val issues: List<Issue>) {
                         endDate = findEndDate(it.value)
                 )
             }
+            .sortedByDescending { it.estimation }
     }
 
     private fun findManager(issues: List<Issue>): User? {
@@ -39,7 +40,7 @@ class ProjectAnalysis(private val issues: List<Issue>) {
         return issues.map { IssueInfo(it) }
     }
 
-    private fun sumEstimation(issues: List<Issue>): Number {
+    private fun sumEstimation(issues: List<Issue>): Int {
         return issues.filter { it.estimation != null }
             .sumBy { it.estimation!! }
     }

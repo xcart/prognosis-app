@@ -6,6 +6,19 @@
   --table-team-bg: #eee;
   --table-extended-row-v-padding: .25rem 0;
   --table-extended-row-height: 2.5rem;
+  --table-large-row-height: 3.5rem;
+  --table-large-row-v-padding: .25rem 0;
+  --badge-margin: .25rem;
+}
+
+.badge-row {
+  .badge {
+    margin: var(--badge-margin) 0;
+  }
+
+  .badge + .badge {
+    margin-left: var(--badge-margin);
+  }
 }
 
 @import '~bootstrap/scss/bootstrap';

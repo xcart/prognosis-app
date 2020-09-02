@@ -31,7 +31,7 @@
                         <NavLink to="/">Workload</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink to="/projects" disabled>Projects</NavLink>
+                        <NavLink to="/projects">Projects</NavLink>
                     </NavItem>
                     <NavItem>
                         <NavLink to="/performance" disabled>Performance</NavLink>

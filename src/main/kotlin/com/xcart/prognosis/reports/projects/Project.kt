@@ -7,7 +7,7 @@ import java.time.LocalDate
 data class Project(val client: String,
                    val team: List<User>,
                    val tasks: List<IssueInfo>,
-                   val estimation: Number,
+                   val estimation: Int,
                    val manager: User? = null,
                    val endDate: LocalDate? = null) {
 }
