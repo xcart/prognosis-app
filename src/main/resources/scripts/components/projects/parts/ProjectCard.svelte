@@ -1,13 +1,19 @@
 <script>
   import {Card, CardTitle, CardText, CardLink} from "sveltestrap"
+  import {storedQuery} from '../../../stores'
 
   export let project = null;
   let formatEstimation = (value) => (value / 60.0).toFixed(1) + "h"
+  let getClientLink = (client) => {
+    return "https://xcart.myjetbrains.com/youtrack/issues?q="
+      + encodeURIComponent($storedQuery)
+      + encodeURIComponent(" Client: {" + client + "}")
+  }
 </script>
 
 <Card body class="project-card">
     <CardTitle>
-        <a class="project-link" href="https://xcart.myjetbrains.com/youtrack/issue/"
+        <a class="project-link" href={getClientLink(project.client)}
            target="_blank">
             {project.client}
         </a>
@@ -24,7 +30,7 @@
             <span class="team-member badge badge-light">{member.login}</span>
         {/each}
     </CardText>
-    <CardLink href="#">{project.tasks.length} active tasks</CardLink>
+    <a class="card-link" target="_blank" href={getClientLink(project.client)}>{project.tasks.length} active tasks</a>
 </Card>
 
 <style>
