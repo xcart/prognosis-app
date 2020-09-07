@@ -1,13 +1,12 @@
 <script>
-    import ProjectList from "../components/projects/ProjectList.svelte"
-    import ProjectInfo from "../components/projects/ProjectInfo.svelte"
+    import ProjectGrid from "../components/projects/ProjectGrid.svelte"
     import {Container} from "sveltestrap"
     import {state, storedQuery} from '../stores'
     import {onMount} from 'svelte';
     import {loadProjectsReport} from "../actions";
 
     export let user = null
-    let projects = [],
+    let groups = [],
         query = null;
 
     function isReady(state) {
@@ -17,7 +16,7 @@
     $: {
         if (isReady($state)) {
             query = $state.query
-            projects = $state.report.projects
+            groups = $state.report.groups
         } else {
             query = $storedQuery
         }
@@ -33,22 +32,21 @@
 </script>
 
 <section class="page">
-<!--    <div class="projects-list">-->
-<!--    </div>-->
-    <div class="projects-table">
-        {#if projects.length > 0}
-            <ProjectList projects={projects}/>
-            <ProjectInfo projects={projects}/>
+    <Container>
+    <div class="projects-list">
+        {#if groups.length > 0}
+            <ProjectGrid groups={groups}/>
         {:else if isReady($state)}
             <div class="container">
                 <p class="lead">Alas, the list is empty :(</p>
             </div>
         {/if}
     </div>
+    </Container>
 </section>
 
 <style>
-    .projects-table {
+    .projects-list {
         display: flex;
     }
 </style>

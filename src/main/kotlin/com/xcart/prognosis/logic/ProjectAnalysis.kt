@@ -24,12 +24,12 @@ class ProjectAnalysis(private val issues: List<Issue>) {
             .sortedByDescending { it.estimation }
     }
 
-    private fun findManager(issues: List<Issue>): User? {
+    private fun findManager(issues: List<Issue>): User {
         return issues
-            .groupBy { it.reporter }
-            .filter { it.key != null }
-            .maxBy { it.value.size }
-            ?.key
+                .groupBy { it.reporter }
+                .filter { it.key != null }
+                .maxBy { it.value.size }
+                ?.key!!
     }
 
     private fun findTeam(issues: List<Issue>): List<User> {

@@ -6,6 +6,7 @@ import com.xcart.prognosis.domain.User
 import com.xcart.prognosis.logic.ProjectAnalysis
 import com.xcart.prognosis.logic.WorkloadAnalysis
 import com.xcart.prognosis.reports.projects.Project
+import com.xcart.prognosis.reports.projects.ProjectGroup
 import com.xcart.prognosis.reports.projects.ProjectsReport
 import com.xcart.prognosis.reports.workload.TeamWorkload
 import com.xcart.prognosis.reports.workload.UserWorkload
@@ -19,8 +20,13 @@ import java.time.LocalDate
 class ProjectsReportBuilder @Autowired constructor(val youTrack: YouTrack) {
     fun gather(query: String): ProjectsReport {
         val issues = youTrack.fetchIssues(query)
+        val groups = getProjectGroups(issues)
+        return ProjectsReport(groups)
+    }
+
+    fun getProjectGroups(issues: List<Issue>): List<ProjectGroup> {
         val projects = getProjects(issues)
-        return ProjectsReport(projects)
+        return projects.groupBy { it.manager }.map { ProjectGroup(it.key, it.value) }
     }
 
     fun getProjects(issues: List<Issue>): List<Project> {

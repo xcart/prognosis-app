@@ -8,6 +8,6 @@ data class Project(val client: String,
                    val team: List<User>,
                    val tasks: List<IssueInfo>,
                    val estimation: Int,
-                   val manager: User? = null,
+                   val manager: User,
                    val endDate: LocalDate? = null) {
 }
