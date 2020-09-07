@@ -1,11 +1,13 @@
 <!--suppress ES6CheckImport -->
 <script>
     import { Link } from "svelte-routing";
+    import {storedQuery} from "../../stores"
+
     export let teams = null
     export let query = null
 
     function buildUserUrl(user) {
-        return "/tasks/" + user.login
+        return "/tasks/" + user.login + "?query=" + encodeURIComponent($storedQuery)
     }
 </script>
 

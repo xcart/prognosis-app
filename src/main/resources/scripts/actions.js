@@ -42,6 +42,10 @@ export function loadUsertasksReport(user, query = "") {
     loadPageState("/usertasks/" + user, "/tasks/" + user, {query: query})
 }
 
+export function loadProjectsReport(query = "") {
+    loadPageState("/projects", "/projects", {query: query})
+}
+
 export function addError(message) {
     errors.update(val => {
         let error = {

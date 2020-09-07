@@ -1,10 +1,9 @@
-package com.xcart.prognosis.services
+package com.xcart.prognosis.logic
 
 import com.xcart.prognosis.domain.Issue
 import com.xcart.prognosis.domain.IssueCustomField
 import com.xcart.prognosis.domain.IssueInfo
 import com.xcart.prognosis.domain.User
-import com.xcart.prognosis.logic.WorkloadAnalysis
 import com.xcart.prognosis.reports.workload.DailyWorkloadItem
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

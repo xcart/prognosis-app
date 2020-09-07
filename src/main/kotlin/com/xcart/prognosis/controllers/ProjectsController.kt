@@ -1,18 +1,16 @@
 package com.xcart.prognosis.controllers
 
 import com.xcart.prognosis.presentation.CommonPageState
-import com.xcart.prognosis.reports.WorkloadReportBuilder
+import com.xcart.prognosis.reports.ProjectsReportBuilder
+import com.xcart.prognosis.reports.UsertasksReportBuilder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 
 @RestController
-@RequestMapping("/api/workload")
-class WorkloadController @Autowired constructor(val reportBuilder: WorkloadReportBuilder) {
+@RequestMapping("/api/projects")
+class ProjectsController @Autowired constructor(val reportBuilder: ProjectsReportBuilder) {
 
     @GetMapping("")
     fun getWorkloadPageState(@RequestParam query: String?): ResponseEntity<CommonPageState> {

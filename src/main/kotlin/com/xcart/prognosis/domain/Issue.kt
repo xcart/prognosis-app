@@ -9,7 +9,8 @@ data class Issue(
         val idReadable: String = "",
         val created: Long = 0,
         val summary: String? = null,
-        val isDraft: Boolean,
+        val isDraft: Boolean = false,
+        val reporter: User? = null,
         val customFields: List<IssueCustomField> = emptyList()
 ) {
     /**
@@ -90,6 +91,13 @@ data class Issue(
         get() {
             val cfield = customFields.find { it.name == "Assignee" }
             return if (cfield?.value is HashMap<*, *>) User(cfield.value) else null
+        }
+
+
+    val client: String?
+        get() {
+            val cfield = customFields.find { it.name == "Client" }
+            return if (cfield?.value is HashMap<*, *>) cfield.value["name"] as String else null
         }
 }
 
