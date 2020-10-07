@@ -45,7 +45,7 @@
         <QueryPanel query={query} on:search="{(event) => loadWorkloadReport(event.detail)}"></QueryPanel>
     </Container>
     <div class="workload-table">
-        <UserList {teams} {query}/>
+        <UserList {teams}/>
         <SwimlanesView {teams} {duration}/>
     </div>
 </section>

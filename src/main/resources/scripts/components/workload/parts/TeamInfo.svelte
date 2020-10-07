@@ -1,5 +1,4 @@
 <script>
-    export let team = null
 </script>
 
 <div class="table-row team-swimlane">

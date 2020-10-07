@@ -13,7 +13,7 @@
     </div>
     <div class="table-body">
       {#each teams as team}
-          <TeamInfo team={team.teamName} />
+          <TeamInfo/>
           {#each team.users as user}
               <WorkloadSwimlane swimlane={user.swimlane} />
           {/each}

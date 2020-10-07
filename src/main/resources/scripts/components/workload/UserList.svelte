@@ -4,7 +4,6 @@
     import {storedQuery} from "../../stores"
 
     export let teams = null
-    export let query = null
 
     function buildUserUrl(user) {
         return "/tasks/" + user.login + "?query=" + encodeURIComponent($storedQuery)
