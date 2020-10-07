@@ -4,7 +4,6 @@
     import {onMount} from 'svelte';
     import {loadProjectsReport} from "../actions";
 
-    export let user = null
     let groups = [],
         duration = null,
         query = null;

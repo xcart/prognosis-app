@@ -47,14 +47,17 @@ internal class ProjectAnalysisTest {
                         )
                 )
         )
-        val result = ProjectAnalysis(issues).getProjectsList()
+        val result = ProjectAnalysis(issues).getProjectsList(Timestamp(1577836800000).toLocalDateTime().toLocalDate())
         val expected = listOf(
                 Project(client = "Test Client",
                         team = listOf(User(assignee)),
                         tasks = issues.map { IssueInfo(it) },
                         estimation = 1800,
                         manager = reporter,
-                        endDate = Timestamp(1579046400000).toLocalDateTime().toLocalDate()
+                        startDate = Timestamp(1577836800000).toLocalDateTime().toLocalDate(),
+                        endDate = Timestamp(1579046400000).toLocalDateTime().toLocalDate(),
+                        duration = 14,
+                        offset = 0
                 )
         )
 
