@@ -1,5 +1,5 @@
 <script>
-    import getContinuousColorCode from "../../../util/colorCode"
+    import {getContinuousColorCode} from "../../../util/colorCode"
     import {tooltip} from "../../../actions/tooltip";
     import IssueListTooltip from "./IssueListTooltip.svelte"
 

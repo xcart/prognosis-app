@@ -1,4 +1,4 @@
-export default function getContinuousColorCode(value) {
+export function getContinuousColorCode(value) {
   if (value < 1) {
     return '#eee';
   }
@@ -6,6 +6,17 @@ export default function getContinuousColorCode(value) {
   const clampLimit = 1.1;
 
   let hsl = transitionOfHueRange(Math.min(value / absoluteMaxWorkloadMinutes, clampLimit), 180, 0);
+  return `hsl(${hsl.hue}deg ${hsl.saturation}% ${hsl.lightness}%)`;
+}
+
+export function getProjectCountColorCode(value) {
+  if (value < 1) {
+    return '#eee';
+  }
+  const maxProjects = 8;
+  const clampLimit = 1.1;
+
+  let hsl = transitionOfHueRange(Math.min(value / maxProjects, clampLimit), 180, 0);
   return `hsl(${hsl.hue}deg ${hsl.saturation}% ${hsl.lightness}%)`;
 }
 
