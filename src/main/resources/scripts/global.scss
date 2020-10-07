@@ -8,11 +8,16 @@
   --table-extended-row-height: 2.5rem;
   --table-large-row-height: 3.5rem;
   --table-large-row-v-padding: .25rem 0;
+  --table-item-separator: 1px solid #fff;
   --badge-margin: .25rem;
+  --dates-dayoff: #ccc;
   --grid-gap: 2rem;
   --grid-inner-margin: .25rem;
   --grid-group-margin: 2rem;
   --grid-group-border: 1px solid #eee;
+  --strip-start: 0;
+  --strip-bg-color: transparent;
+  --strip-line-color: #ccc;
 }
 
 .badge-row {

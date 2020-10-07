@@ -1,5 +1,5 @@
 <script>
-    import getContinuousColorCode from "../../../util/colorCode"
+    import {getContinuousColorCode} from "../../../util/colorCode"
 
     export let swimlane = null
 

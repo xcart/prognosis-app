@@ -1,5 +1,5 @@
-<script lang="ts">
-    export let team: String = null
+<script>
+    export let team = null
 </script>
 
 <div class="table-row team-swimlane">

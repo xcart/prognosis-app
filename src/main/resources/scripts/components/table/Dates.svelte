@@ -81,6 +81,7 @@
         text-align: left;
         border-left: 1px solid #eee;
         padding-left: .7rem;
+        overflow: hidden;
     }
 
     .month-column span {
@@ -93,6 +94,10 @@
         justify-content: center;
         flex-direction: column;
         position: relative;
+    }
+
+    :global(.date-column.sunday, .date-column.saturday) {
+        color: var(--dates-dayoff);
     }
 
     :global(.date-column.monday) {
