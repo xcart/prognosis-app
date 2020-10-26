@@ -1,7 +1,7 @@
 FROM nginx
 
 # install dehydrated and essential tools
-RUN apt-get update -qq && apt-get -y install apache2-utils curl && apt-get -y install dehydrated
+RUN apt-get update -qq && apt-get -y install apache2-utils curl dehydrated vim cron
 
 EXPOSE 80
 EXPOSE 443

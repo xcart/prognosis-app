@@ -59,6 +59,8 @@ if [ "$CA_SSL" = "true" ]; then
 #
 #  # retrieve/renew SSL certs
   dehydrated --cron
+
+  (crontab -l ; echo "0 0 * * 1 /usr/bin/dehydrated --cron >/dev/null 2>&1") | crontab -
 #
 #  # copy the fresh certs to where Nginx expects to find them
   # cp "$SSL_ROOT"/certs/"$DOMAIN"/fullchain.pem "$SSL_ROOT"/certs/"$DOMAIN"/privkey.pem "$SSL_CERT_HOME"
