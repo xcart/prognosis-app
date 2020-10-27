@@ -23,6 +23,7 @@ data class User(
                 "phill" -> Team.Alive
                 "savage" -> Team.Alive
                 "tito" -> Team.Alive
+                "airo" -> Team.Alive
                 "joy" -> Team.Joy
                 "anakonda" -> Team.Joy
                 "mixon" -> Team.Joy
