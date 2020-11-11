@@ -28,6 +28,7 @@ data class User(
                 "anakonda" -> Team.Joy
                 "mixon" -> Team.Joy
                 "lehach" -> Team.Joy
+                "velmesov" -> Team.Joy
                 "albert" -> Team.Mccornic
                 "tekton" -> Team.Mccornic
                 "sarta" -> Team.Mccornic
