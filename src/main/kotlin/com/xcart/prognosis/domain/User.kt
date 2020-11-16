@@ -24,11 +24,12 @@ data class User(
                 "savage" -> Team.Alive
                 "tito" -> Team.Alive
                 "airo" -> Team.Alive
+                "velmesov" -> Team.Joy
+                "araev" -> Team.Joy
                 "joy" -> Team.Joy
                 "anakonda" -> Team.Joy
                 "mixon" -> Team.Joy
                 "lehach" -> Team.Joy
-                "velmesov" -> Team.Joy
                 "albert" -> Team.Mccornic
                 "tekton" -> Team.Mccornic
                 "sarta" -> Team.Mccornic
