@@ -39,3 +39,4 @@ out/
 /src/main/resources/static/bundle.js.map
 /src/main/resources/static/global.css
 /node_modules/
+/log/*

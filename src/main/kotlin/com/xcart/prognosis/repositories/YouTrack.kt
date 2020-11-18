@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.core.Headers
 import com.github.kittinunf.fuel.core.Parameters
 import com.github.kittinunf.fuel.core.Request
 import com.github.kittinunf.fuel.core.extensions.authentication
+import com.github.kittinunf.fuel.core.interceptors.LogResponseInterceptor
 import com.github.kittinunf.fuel.jackson.responseObject
 import com.github.kittinunf.result.Result
 import com.xcart.prognosis.domain.Issue
@@ -25,6 +27,10 @@ class YouTrack @Autowired constructor(config: Configuration) {
     private val issueFields: String = "id,idReadable,created,isDraft,summary,customFields(id,name,value(id,isResolved,login,minutes,name,fullName,text)),reporter(id,login,fullName)"
     private val userFields: String = "id,login,fullName,email,name,jabberAccount,online,avatarUrl,banned,tags(id,name,untagOnResolve,updateableBy(id,name),visibleFor(name,id),owner(id,login))"
 
+//    init {
+//        FuelManager.instance.addResponseInterceptor(LogResponseInterceptor)
+//    }
+
     fun fetchIssues(query: String): List<Issue> {
         return performRequest("/api/issues", listOf(
                 "fields" to issueFields,
@@ -34,7 +40,8 @@ class YouTrack @Autowired constructor(config: Configuration) {
 
     fun fetchUsers(): List<User> {
         return performRequest("/api/users", listOf(
-                "fields" to userFields
+                "fields" to userFields,
+                "\$top" to 100
         ))
     }
 
