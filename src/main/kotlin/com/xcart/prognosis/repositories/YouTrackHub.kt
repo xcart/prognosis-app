@@ -2,8 +2,9 @@ package com.xcart.prognosis.repositories
 
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.Parameters
-import com.xcart.prognosis.domain.Issue
 import com.xcart.prognosis.domain.User
+import com.xcart.prognosis.domain.hub.HubUser
+import com.xcart.prognosis.domain.hub.UsersPage
 import com.xcart.prognosis.errors.YouTrackError
 import com.xcart.prognosis.services.Configuration
 import com.xcart.prognosis.transport.configure
@@ -12,23 +13,19 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 
 @Repository
-class YouTrack @Autowired constructor(config: Configuration) {
-    private val baseUrl: String = config.youtrackUrl + "/youtrack/api"
+class YouTrackHub @Autowired constructor(config: Configuration) {
+    private val baseUrl: String = config.youtrackUrl + "/hub/api/rest"
     private val permToken: String = config.youtrackToken
-    private val issueFields: String = "id,idReadable,created,isDraft,summary,customFields(id,name,value(id,isResolved,login,minutes,name,fullName,text)),reporter(id,login,fullName)"
-    private val userFields: String = "id,login,fullName,email,name,jabberAccount,online,avatarUrl,banned,tags(id,name,untagOnResolve,updateableBy(id,name),visibleFor(name,id),owner(id,login))"
+    private val userFields: String = "id,login,name,profile(avatar(url),email(email)),banned,groups(id,name)"
 
-    fun fetchIssues(query: String): List<Issue> {
-        return performRequest("/issues", listOf(
-                "fields" to issueFields,
-                "query" to query
-        ))
+    fun fetchUsers(): List<HubUser> {
+        return fetchUserPage().users
     }
 
-    fun fetchUsers(): List<User> {
+    fun fetchUserPage(): UsersPage {
         return performRequest("/users", listOf(
                 "fields" to userFields,
-                "\$top" to 100
+                "query" to "not is: banned"
         ))
     }
 
@@ -37,7 +34,8 @@ class YouTrack @Autowired constructor(config: Configuration) {
         try {
             return request.processResult()
         } catch (ex: Exception) {
-            throw YouTrackError("Error during communication with YouTrack API", ex)
+            throw YouTrackError("Error during communication with YouTrack Hub API", ex)
         }
     }
+
 }
