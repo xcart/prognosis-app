@@ -6,8 +6,8 @@
     let dates, months;
 
     function getMonthName (date) {
-        const options = {month: 'long'};
-        return new Intl.DateTimeFormat('en-US', options).format(date);
+        const options = {month: 'long'}
+        return new Intl.DateTimeFormat('en-US', options).format(date)
     }
 
     function getDayClass (date) {
@@ -33,12 +33,14 @@
                 label: label,
                 size: 1
             }
-            if (acc.has(month)) {
-                let existing = acc.get(month)
+
+            let key = month + "_" + item.getUTCFullYear()
+            if (acc.has(key)) {
+                let existing = acc.get(key)
                 object.size += existing.size
             }
 
-            acc.set(month, object)
+            acc.set(key, object)
             return acc
         }, new Map()).values())
     }
