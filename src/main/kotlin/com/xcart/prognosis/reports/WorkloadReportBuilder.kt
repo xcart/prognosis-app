@@ -8,14 +8,15 @@ import com.xcart.prognosis.reports.workload.TeamWorkload
 import com.xcart.prognosis.reports.workload.UserWorkload
 import com.xcart.prognosis.reports.workload.WorkloadReport
 import com.xcart.prognosis.repositories.YouTrack
+import com.xcart.prognosis.repositories.YouTrackHub
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
 @Service
-class WorkloadReportBuilder @Autowired constructor(val youTrack: YouTrack) {
+class WorkloadReportBuilder @Autowired constructor(val youTrack: YouTrack, val hub: YouTrackHub) {
     fun gather(query: String): WorkloadReport {
-        val users = youTrack.fetchUsers().filter { !it.banned }
+        val users = hub.fetchUsers().filter { !it.banned }.map { User(it) }
         val issues = youTrack.fetchIssues(query)
         val teams = getTeamsWorkload(users, issues)
         val duration = getReportDuration(teams)

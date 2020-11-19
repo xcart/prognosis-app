@@ -1,5 +1,6 @@
 package com.xcart.prognosis.domain
 
+import com.xcart.prognosis.domain.hub.HubUser
 import java.util.HashMap
 
 data class User(
@@ -7,7 +8,9 @@ data class User(
         val login: String = "",
         val fullName: String = "",
         val email: String? = null,
-        val banned: Boolean = false
+        val avatarUrl: String? = null,
+        val banned: Boolean = false,
+        val _team: Team? = null
 ) {
     constructor(data: HashMap<*, *>) : this(
             id = data["id"] as String,
@@ -15,29 +18,22 @@ data class User(
             fullName = data["fullName"] as String
     )
 
+    constructor(user: HubUser) : this(
+            id = user.id,
+            login = user.login,
+            fullName = user.name,
+            email = user.profile?.email?.email,
+            avatarUrl = user.profile?.avatar?.url,
+            banned = user.banned,
+            _team = user.team
+    )
+
     val team: Team
         get() {
-            return when (login) {
-                "alive" -> Team.Alive
-                "aster" -> Team.Alive
-                "phill" -> Team.Alive
-                "savage" -> Team.Alive
-                "tito" -> Team.Alive
-                "airo" -> Team.Alive
-                "velmesov" -> Team.Joy
-                "araev" -> Team.Joy
-                "joy" -> Team.Joy
-                "anakonda" -> Team.Joy
-                "mixon" -> Team.Joy
-                "lehach" -> Team.Joy
-                "albert" -> Team.Mccornic
-                "tekton" -> Team.Mccornic
-                "sarta" -> Team.Mccornic
-                "nogard" -> Team.Mccornic
-                "vjk" -> Team.Mccornic
-                "mccornic" -> Team.Mccornic
-                "luke" -> Team.Mccornic
-                else -> Team.NoTeam
+            if (_team != null) {
+                return _team!!
             }
+
+            return Team.NoTeam
         }
 }

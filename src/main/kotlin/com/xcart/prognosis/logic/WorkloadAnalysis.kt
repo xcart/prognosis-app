@@ -15,7 +15,7 @@ class WorkloadAnalysis(private val issues: List<Issue>) {
     private val holidays = emptyList<LocalDate>()
 
     fun getDailyWorkloadForUser(user: User, startDate: LocalDate): List<DailyWorkloadItem> {
-        val userIssues = issues.filter { it.assignee?.id == user.id }
+        val userIssues = issues.filter { it.assignee?.login == user.login }
         val filteredIssues = userIssues.filter { it.endDate != null }
         val lastIssue = filteredIssues.maxBy { it.endDate ?: LocalDate.MIN }
         if (lastIssue == null || filteredIssues.isNullOrEmpty()) {

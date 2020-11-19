@@ -42,7 +42,7 @@ internal class WorkloadAnalysisTest {
                 )
         )
         val startDate = Timestamp(1577836800000).toLocalDateTime().toLocalDate()
-        val result = WorkloadAnalysis(issues).getDailyWorkloadForUser(User(id = "1"), startDate)
+        val result = WorkloadAnalysis(issues).getDailyWorkloadForUser(User(login = "test"), startDate)
 
         val list1 = listOf(IssueInfo(issues[0]))
         val list2 = listOf(IssueInfo(issues[0]), IssueInfo(issues[1]))
