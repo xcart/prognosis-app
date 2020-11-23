@@ -5,6 +5,12 @@ import org.springframework.stereotype.Service
 
 @Service
 class Configuration {
+    @Value("\${xb.url}")
+    lateinit var xbUrl: String
+
+    @Value("\${xb.password}")
+    lateinit var xbPassword: String
+
     @Value("\${youtrack.url}")
     lateinit var youtrackUrl: String
 

@@ -2,10 +2,9 @@ package com.xcart.prognosis.repositories
 
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.Parameters
-import com.xcart.prognosis.domain.User
 import com.xcart.prognosis.domain.hub.HubUser
 import com.xcart.prognosis.domain.hub.UsersPage
-import com.xcart.prognosis.errors.YouTrackError
+import com.xcart.prognosis.errors.ExternalServiceError
 import com.xcart.prognosis.services.Configuration
 import com.xcart.prognosis.transport.configure
 import com.xcart.prognosis.transport.processResult
@@ -34,7 +33,7 @@ class YouTrackHub @Autowired constructor(config: Configuration) {
         try {
             return request.processResult()
         } catch (ex: Exception) {
-            throw YouTrackError("Error during communication with YouTrack Hub API", ex)
+            throw ExternalServiceError("Error during communication with YouTrack Hub API", ex)
         }
     }
 
