@@ -24,6 +24,7 @@
     }
 
     $: {
+        // TODO: change new Date() with input from backend. breaks at 0100 because of time zone differences on server and here
         dates = getDates(new Date(), new Date().addDays(duration - 1))
         months = Array.from(dates.reduce((acc, item) => {
             let month = item.getUTCMonth() + 1

@@ -2,17 +2,19 @@ package com.xcart.prognosis.logic
 
 import com.xcart.prognosis.domain.Issue
 import com.xcart.prognosis.domain.IssueInfo
+import com.xcart.prognosis.domain.LocalDateExtensions.isBusinessDay
+import com.xcart.prognosis.domain.LocalDateExtensions.isVacationDay
+import com.xcart.prognosis.domain.LocalDateExtensions.listDaysUntil
 import com.xcart.prognosis.domain.User
 import com.xcart.prognosis.reports.usertasks.TaskDailyWorkloadItem
 import com.xcart.prognosis.reports.workload.DailyWorkloadItem
-import java.time.DayOfWeek
+import com.xcart.prognosis.repositories.DayOff
+import com.xcart.prognosis.services.ContextUtil
 import java.time.LocalDate
-import java.time.temporal.ChronoUnit
-import java.util.stream.Stream
-import kotlin.streams.toList
 
 class WorkloadAnalysis(private val issues: List<Issue>) {
-    private val holidays = emptyList<LocalDate>()
+
+    private var dayOff: DayOff = ContextUtil.getBean(DayOff::class.java)
 
     fun getDailyWorkloadForUser(user: User, startDate: LocalDate): List<DailyWorkloadItem> {
         val userIssues = issues.filter { it.assignee?.login == user.login }
@@ -23,71 +25,46 @@ class WorkloadAnalysis(private val issues: List<Issue>) {
         }
         val endDate = lastIssue.endDate
         return if (startDate < endDate && endDate != null)
-            listDaysBetween(startDate, endDate)
-                    .map(toDailyWorkloadItem(filteredIssues))
+            startDate.listDaysUntil(endDate)
+                    .map(toDailyWorkloadItem(filteredIssues, user))
         else {
             emptyList()
         }
     }
 
     fun getIssueSwimlane(issue: Issue, startDate: LocalDate): List<TaskDailyWorkloadItem> {
-        if (issue.endDate == null || issue.endDate!! < startDate) {
+        if (issue.assignee == null || issue.endDate == null || issue.endDate!! < startDate) {
             return emptyList()
         }
-        return listDaysBetween(startDate, issue.endDate!!)
-                .map(toTaskDailyWorkloadItem(issue))
+        return startDate.listDaysUntil(issue.endDate!!)
+                .map(toTaskDailyWorkloadItem(issue, issue.assignee!!))
     }
 
-    private fun listDaysBetween(startDate: LocalDate, endDate: LocalDate): List<LocalDate> {
-        val daysBetween = ChronoUnit.DAYS.between(startDate, endDate)
-        return Stream.iterate(startDate, { date -> date.plusDays(1) })
-                .limit(daysBetween + 1)
-                .toList()
-    }
-
-    private fun LocalDate.isBusinessDay(): Boolean {
-        val isHoliday = { date: LocalDate -> holidays.contains(date) }
-        val isWeekend = { date: LocalDate ->
-            (date.dayOfWeek === DayOfWeek.SATURDAY
-                    || date.dayOfWeek === DayOfWeek.SUNDAY)
-        }
-
-        return !isHoliday(this) && !isWeekend(this)
-    }
-
-    private fun countBusinessDaysBetween(startDate: LocalDate, endDate: LocalDate): Int {
-        return listDaysBetween(startDate, endDate)
-                .filter { it.isBusinessDay() }
-                .count()
-    }
-
-    private fun toDailyWorkloadItem(issues: List<Issue>): (LocalDate) -> DailyWorkloadItem {
+    private fun toDailyWorkloadItem(issues: List<Issue>, user: User): (LocalDate) -> DailyWorkloadItem {
         return { date ->
             var issuesOnDay = issues
                     .filter { it.startDate <= date && it.endDate!! >= date }
-            var value = calculateWorkloadValue(date, issuesOnDay)
+            var value = calculateWorkloadValue(date, issuesOnDay, user)
             DailyWorkloadItem(date, value, issuesOnDay.map { IssueInfo(it) })
         }
     }
 
-    private fun toTaskDailyWorkloadItem(issue: Issue): (LocalDate) -> TaskDailyWorkloadItem {
+    private fun toTaskDailyWorkloadItem(issue: Issue, user: User): (LocalDate) -> TaskDailyWorkloadItem {
         return { date ->
             var issuesOnDay = listOf(issue)
                     .filter { it.startDate <= date && it.endDate!! >= date }
-            var value = calculateWorkloadValue(date, issuesOnDay)
+            var value = calculateWorkloadValue(date, issuesOnDay, user)
             TaskDailyWorkloadItem(date, value)
         }
     }
 
-    private fun calculateWorkloadValue(date: LocalDate, issuesOnDay: List<Issue>): Float {
-        if (!date.isBusinessDay()) {
+    private fun calculateWorkloadValue(date: LocalDate, issuesOnDay: List<Issue>, user: User): Float {
+        if (issuesOnDay.isEmpty() || !date.isBusinessDay() || date.isVacationDay(dayOff.getUserVacations(user))) {
             return 0f
         }
         return issuesOnDay.fold(0f) { acc, issue ->
-            val issueDays = issue.endDate?.let {
-                countBusinessDaysBetween(issue.startDate, it)
-            } ?: 1
-            val workload: Float = if (issue.estimation != null)
+            val issueDays = if (issue.businessDays == null) 1 else issue.businessDays!!
+            val workload: Float = if (issue.estimation != null && issueDays > 0)
                 (issue.estimation!! / issueDays).toFloat()
             else 150.0f
             acc + workload

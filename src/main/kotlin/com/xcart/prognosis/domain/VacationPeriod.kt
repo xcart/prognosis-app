@@ -14,8 +14,8 @@ import java.util.concurrent.TimeUnit
 data class VacationPeriod(
         val email: String,
         val status: VacationStatus,
-        @JsonDeserialize(using = TimestampToDate::class) @JsonProperty("start_period") val startPeriod: LocalDate,
-        @JsonDeserialize(using = TimestampToDate::class) @JsonProperty("end_period") val endPeriod: LocalDate
+        @JsonDeserialize(using = TimestampToDate::class) @JsonProperty("start_period") val startDate: LocalDate,
+        @JsonDeserialize(using = TimestampToDate::class) @JsonProperty("end_period") val endDate: LocalDate
 )
 
 enum class VacationStatus(@JsonValue val code: String) {

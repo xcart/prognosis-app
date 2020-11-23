@@ -1,5 +1,11 @@
 package com.xcart.prognosis.domain
 
+import com.xcart.prognosis.domain.LocalDateExtensions.isBusinessDay
+import com.xcart.prognosis.domain.LocalDateExtensions.isVacationDay
+import com.xcart.prognosis.domain.LocalDateExtensions.listDaysUntil
+import com.xcart.prognosis.repositories.DayOff
+import com.xcart.prognosis.services.ContextUtil
+import org.springframework.beans.factory.annotation.Autowired
 import java.sql.Timestamp
 import java.time.LocalDate
 import java.util.*
@@ -93,11 +99,23 @@ data class Issue(
             return if (cfield?.value is HashMap<*, *>) User(cfield.value) else null
         }
 
-
     val client: String?
         get() {
             val cfield = customFields.find { it.name == "Client" }
             return if (cfield?.value is HashMap<*, *>) cfield.value["name"] as String else null
+        }
+
+    val businessDays: Int?
+        get() {
+            if (endDate == null) {
+                return null
+            }
+
+            val dayOff = ContextUtil.getBean(DayOff::class.java)
+            return startDate.listDaysUntil(endDate!!)
+                    .filter { it.isBusinessDay() }
+                    .filter { assignee == null || !it.isVacationDay(dayOff.getUserVacations(assignee!!)) }
+                    .count()
         }
 }
 
