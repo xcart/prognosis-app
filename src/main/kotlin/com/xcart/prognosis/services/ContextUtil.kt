@@ -5,9 +5,6 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.stereotype.Service
 
-/**
- * @author Naresh Joshi
- */
 @Service
 class ContextUtil : ApplicationContextAware {
     @Throws(BeansException::class)
