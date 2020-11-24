@@ -7,7 +7,6 @@ import org.springframework.scheduling.annotation.EnableScheduling
 import java.util.*
 
 @SpringBootApplication
-@EnableCaching
 @EnableScheduling
 class PrognosisApplication
 
