@@ -5,6 +5,7 @@ import com.xcart.prognosis.reports.ProjectsReportBuilder
 import com.xcart.prognosis.reports.Report
 import com.xcart.prognosis.reports.UsertasksReportBuilder
 import com.xcart.prognosis.reports.WorkloadReportBuilder
+import com.xcart.prognosis.services.Configuration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PathVariable
@@ -14,12 +15,17 @@ import org.springframework.web.servlet.ModelAndView
 
 
 @Controller
-class PageController @Autowired constructor(val workload: WorkloadReportBuilder, val usertasks: UsertasksReportBuilder, val projects: ProjectsReportBuilder) {
+class PageController @Autowired constructor(
+        val workload: WorkloadReportBuilder,
+        val usertasks: UsertasksReportBuilder,
+        val projects: ProjectsReportBuilder,
+        val config: Configuration
+) {
 
     @RequestMapping("/")
     fun workload(@RequestParam query: String?): ModelAndView {
         val queryToUse = if (query.isNullOrEmpty())
-            "Project: WD State: New, Open, Waiting, {In progress}"
+            config.queryIssues
         else query
         return buildReportMav(queryToUse, workload.gather(queryToUse))
     }
@@ -27,7 +33,7 @@ class PageController @Autowired constructor(val workload: WorkloadReportBuilder,
     @RequestMapping("/tasks/{login}")
     fun tasks(@PathVariable login: String, @RequestParam query: String?): ModelAndView {
         val queryToUse = if (query.isNullOrEmpty())
-            "Project: WD State: New, Open, Waiting, {In progress}"
+             config.queryIssues
         else query
         return buildReportMav(queryToUse, usertasks.gather(login, queryToUse))
     }
@@ -35,7 +41,7 @@ class PageController @Autowired constructor(val workload: WorkloadReportBuilder,
     @RequestMapping("/projects")
     fun projects(@RequestParam query: String?): ModelAndView {
         val queryToUse = if (query.isNullOrEmpty())
-            "Project: WD State: New, Open, Waiting, {In progress}"
+             config.queryProjects
         else query
         return buildReportMav(queryToUse, projects.gather(queryToUse))
     }

@@ -24,10 +24,10 @@ class UsertasksReportBuilder @Autowired constructor(val youTrack: YouTrack) {
         return issues.fold(mutableListOf<TaskWorkload>()) { acc, issue ->
             val swimlane = analysis.getIssueSwimlane(issue, LocalDate.now())
             if (swimlane.isNotEmpty()) {
-                acc.add(TaskWorkload(swimlane, IssueInfo(issue), issue.startDate))
+                acc.add(TaskWorkload(swimlane, IssueInfo(issue), issue.startDate, issue.endDate!!))
             }
             acc
-        }.sortedBy { it.startDate }
+        }.sortedBy { it.endDate }
     }
 
     private fun modifyQuery(query: String, login: String): String {

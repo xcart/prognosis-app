@@ -31,7 +31,7 @@ data class User(
     val team: Team
         get() {
             if (_team != null) {
-                return _team!!
+                return _team
             }
 
             return Team.NoTeam

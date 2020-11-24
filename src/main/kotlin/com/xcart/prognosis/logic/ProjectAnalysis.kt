@@ -2,9 +2,13 @@ package com.xcart.prognosis.logic
 
 import com.xcart.prognosis.domain.Issue
 import com.xcart.prognosis.domain.IssueInfo
+import com.xcart.prognosis.domain.LocalDateExtensions.countDaysUntil
+import com.xcart.prognosis.domain.LocalDateExtensions.listDaysUntil
 import com.xcart.prognosis.domain.User
 import com.xcart.prognosis.reports.projects.Project
 import com.xcart.prognosis.reports.projects.WorkloadSpan
+import com.xcart.prognosis.repositories.DayOff
+import org.springframework.beans.factory.annotation.Autowired
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -13,7 +17,6 @@ import java.util.stream.Stream
 import kotlin.streams.toList
 
 class ProjectAnalysis(private val issues: List<Issue>) {
-    private val holidays = emptyList<LocalDate>()
 
     fun getProjectsList(from: LocalDate): List<Project> {
         return issues
@@ -22,15 +25,13 @@ class ProjectAnalysis(private val issues: List<Issue>) {
             .map {
                 val projectStartDate = findStartDate(it.value)
                 val projectEndDate = findEndDate(it.value)
-                val estimation = sumEstimation(it.value)
-                val duration = findDuration(projectStartDate, projectEndDate)
                 Project(client = it.key!!,
                         manager = findManager(it.value),
                         team = findTeam(it.value),
                         tasks = findTasks(it.value),
-                        estimation = estimation,
-                        offset = findDuration(from, projectStartDate),
-                        duration = duration,
+                        estimation = sumEstimation(it.value),
+                        offset = from.countDaysUntil(projectStartDate!!),
+                        duration = projectStartDate?.countDaysUntil(projectEndDate!!),
                         startDate = projectStartDate,
                         endDate = projectEndDate
                 )
@@ -40,7 +41,7 @@ class ProjectAnalysis(private val issues: List<Issue>) {
             .filter { it.estimation > 0 && it.endDate!! > from }
     }
 
-    public fun getWorkloadSpans(projects: List<Project>, from: LocalDate): List<WorkloadSpan> {
+    fun getWorkloadSpans(projects: List<Project>, from: LocalDate): List<WorkloadSpan> {
         val filteredProjects = projects.filter { it.endDate != null }
         val last = filteredProjects.maxBy { it.endDate ?: LocalDate.MIN }
         if (last == null || filteredProjects.isNullOrEmpty()) {
@@ -48,7 +49,7 @@ class ProjectAnalysis(private val issues: List<Issue>) {
         }
         val endDate = last.endDate
         return if (from < endDate && endDate != null)
-            listDaysBetween(from, endDate).fold(mutableMapOf<String, WorkloadSpan>(), { acc, date ->
+            from.listDaysUntil(endDate).fold(mutableMapOf<String, WorkloadSpan>(), { acc, date ->
                 val projectsOnDay = filteredProjects
                         .filter { it.startDate!! <= date && it.endDate!! >= date }
                 val key = projectsOnDay.fold("", { key, proj -> key + proj.client })
@@ -62,31 +63,6 @@ class ProjectAnalysis(private val issues: List<Issue>) {
         else {
             emptyList()
         }
-    }
-
-    private fun listDaysBetween(startDate: LocalDate, endDate: LocalDate): List<LocalDate> {
-        val daysBetween = ChronoUnit.DAYS.between(startDate, endDate)
-        return Stream.iterate(startDate, { date -> date.plusDays(1) })
-                .limit(daysBetween + 1)
-                .toList()
-    }
-
-    private fun LocalDate.isBusinessDay(): Boolean {
-        val isHoliday = { date: LocalDate -> holidays.contains(date) }
-        val isWeekend = { date: LocalDate ->
-            (date.dayOfWeek === DayOfWeek.SATURDAY
-                    || date.dayOfWeek === DayOfWeek.SUNDAY)
-        }
-
-        return !isHoliday(this) && !isWeekend(this)
-    }
-
-    private fun findDuration(startDate: LocalDate?, endDate: LocalDate?): Int {
-        if (startDate == null || endDate == null) {
-            return 0
-        }
-
-        return ChronoUnit.DAYS.between(startDate, endDate).toInt()
     }
 
     private fun findManager(issues: List<Issue>): User {

@@ -1,6 +1,6 @@
 <script>
     import Dates from "../table/Dates.svelte"
-    import WorkloadSwimlane from "./parts/WorkloadSwimlane.svelte"
+    import WorkloadSwimlane from "../table/WorkloadSwimlane.svelte"
     import TeamInfo from "./parts/TeamInfo.svelte"
 
     export let teams = null

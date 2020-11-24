@@ -21,7 +21,7 @@
                     <a class="issue-link" href="https://xcart.myjetbrains.com/youtrack/issue/{task.issue.idReadable}"
                        target="_blank"><small>{task.issue.idReadable}</small></a>
                     <small class="issue-summary"
-                        use:tooltip={{component: SummaryTooltip, props: {summary: task.issue.summary}, interactive: false, display: true }}
+                        use:tooltip={{component: SummaryTooltip, props: {summary: task.issue.summary}, interactive: false}}
                     >{task.issue.summary}</small>
                 </div>
             </div>
@@ -64,8 +64,8 @@
     }
 
     .task-column {
-        max-width: 150px;
-        min-width: 150px;
+        max-width: 200px;
+        min-width: 200px;
         padding: 0 1rem;
         text-align: right;
         display: flex;

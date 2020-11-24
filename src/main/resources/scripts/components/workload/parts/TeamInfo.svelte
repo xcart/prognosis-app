@@ -10,8 +10,9 @@
 <style>
     .table-row {
         display: flex;
-        height: 2rem;
-        min-height: 2rem;
+        height: var(--table-extended-row-height);
+        height: var(--table-extended-row-height);
+        padding: var(--table-extended-row-v-padding);
         align-items: center;
     }
 
