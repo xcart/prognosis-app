@@ -11,6 +11,12 @@ class Configuration {
     @Value("\${xb.password}")
     lateinit var xbPassword: String
 
+    @Value("\${youtrack.query.issues}")
+    lateinit var queryIssues: String
+
+    @Value("\${youtrack.query.projects}")
+    lateinit var queryProjects: String
+
     @Value("\${youtrack.url}")
     lateinit var youtrackUrl: String
 

@@ -11,8 +11,8 @@
 
 <div class="table-row user-swimlane">
   {#each swimlane as item}
-      <div class="data-column"
-           style="background: {getContinuousColorCode(item.workload)}"
+      <div class="data-column {item.workload == 0 ? 'day-off' : ''}"
+           style="background: {getContinuousColorCode(item.workload)};"
            use:tooltip={{component: IssueListTooltip, props: {issues: item.issues}, interactive: true, display: hasIssues(item.issues) }}>
           <span class="workload-value ">{formatWorkload(item.workload)}</span>
       </div>
@@ -43,12 +43,16 @@
         text-align: center;
     }
 
+    .data-column.day-off .workload-value {
+        opacity: 0;
+    }
+
     .data-column .workload-value {
-        opacity: .2;
+        opacity: .4;
         cursor: default;
     }
 
     .data-column:hover .workload-value {
-        opacity: .9;
+        opacity: 1;
     }
 </style>

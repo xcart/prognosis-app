@@ -5,10 +5,11 @@ import com.xcart.prognosis.domain.LocalDateExtensions.isVacationDay
 import com.xcart.prognosis.domain.LocalDateExtensions.listDaysUntil
 import com.xcart.prognosis.repositories.DayOff
 import com.xcart.prognosis.services.ContextUtil
-import org.springframework.beans.factory.annotation.Autowired
 import java.sql.Timestamp
 import java.time.LocalDate
 import java.util.*
+
+internal const val DEFAULT_ESTIMATION: Int = 60
 
 data class Issue(
         val id: String = "",
@@ -19,13 +20,28 @@ data class Issue(
         val reporter: User? = null,
         val customFields: List<IssueCustomField> = emptyList()
 ) {
+
     /**
      * Issue estimation in minutes
      */
-    val estimation: Int?
+    val estimation: Int
         get() {
             val cfield = customFields.find { it.name == "Estimation" }
-            return if (cfield?.value is HashMap<*, *>) cfield.value["minutes"] as Int else null
+            val estimation = if (cfield?.value is HashMap<*, *>)
+                cfield.value["minutes"] as Int
+            else DEFAULT_ESTIMATION
+
+            return when (state) {
+                IssueState.QualityAssurance,
+                IssueState.HasDefects,
+                IssueState.QaInProgress -> (estimation * 0.1f).toInt()
+
+                IssueState.QaPassed,
+                IssueState.Completed,
+                IssueState.Canceled -> 0
+
+                else -> estimation
+            }
         }
 
     /**
@@ -59,6 +75,7 @@ data class Issue(
                 "In progress" -> IssueState.InProgress
                 "Waiting" -> IssueState.Waiting
                 "Quality Assurance" -> IssueState.QualityAssurance
+                "Has Defects" -> IssueState.HasDefects
                 "QA In Progress" -> IssueState.QaInProgress
                 "QA Passed" -> IssueState.QaPassed
                 "Completed" -> IssueState.Completed

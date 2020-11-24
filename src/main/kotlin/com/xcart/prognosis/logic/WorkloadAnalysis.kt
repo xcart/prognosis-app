@@ -64,8 +64,8 @@ class WorkloadAnalysis(private val issues: List<Issue>) {
         }
         return issuesOnDay.fold(0f) { acc, issue ->
             val issueDays = if (issue.businessDays == null) 1 else issue.businessDays!!
-            val workload: Float = if (issue.estimation != null && issueDays > 0)
-                (issue.estimation!! / issueDays).toFloat()
+            val workload: Float = if (issueDays > 0)
+                (issue.estimation / issueDays).toFloat()
             else 150.0f
             acc + workload
         }
