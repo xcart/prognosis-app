@@ -18,6 +18,7 @@ export type UserWorkload = {
 export type User = {
     id: String
     login: String
+    avatarUrl: String
     fullName: String
     email: String
     banned: Boolean

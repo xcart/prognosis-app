@@ -32,9 +32,12 @@
             </div>
             {#each team.users as userInfo}
                 <div class="table-row">
+                    <div class="avatar-column">
+                        <img src="{userInfo.user.avatarUrl}" alt="{userInfo.user.login} avatar"/>
+                    </div>
                     <div class="user-column">
-                        <Link class="user-login" to="{buildUserUrl(userInfo.user)}"><small>{userInfo.user.login}</small></Link>
-                        <small class="user-summary">{userInfo.user.fullName}</small>
+                        <small class="user-login"><Link to="{buildUserUrl(userInfo.user)}">{userInfo.user.login}</Link></small>
+                        <small class="user-summary">16h</small>
                     </div>
                 </div>
             {/each}
@@ -67,8 +70,11 @@
     }
 
     .user-column, .team-column {
-        min-width: 150px;
+        min-width: 118px;
         padding: 0 1rem;
+    }
+
+    .avatar-column, .user-column, .team-column {
         text-align: right;
         display: flex;
         height: 100%;
@@ -77,12 +83,24 @@
         position: relative;
     }
 
+    .avatar-column {
+        width: 32px;
+    }
+
+    .avatar-column img {
+        border-radius: 3px;
+        max-width: 100%;
+        max-height: 100%;
+    }
+
     .team-row {
         background: var(--table-team-bg);
     }
 
-    .user-login, .user-summary {
-        line-height: 1rem;
+    .user-summary {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
     }
 
     .user-section .table-row {

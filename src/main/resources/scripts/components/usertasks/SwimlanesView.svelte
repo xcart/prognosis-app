@@ -12,7 +12,7 @@
     </div>
     <div class="table-body">
       {#each tasks as task}
-          <WorkloadSwimlane swimlane={task.swimlane} />
+          <WorkloadSwimlane swimlane={task.swimlane} isSingleIssue={true} />
       {/each}
     </div>
 </div>
