@@ -38,7 +38,7 @@ class WorkloadAnalysis(private val issues: List<Issue>) {
             return emptyList()
         }
         return startDate.listDaysUntil(issue.endDate!!)
-                .map(toDailyWorkloadItem(listOf(issue), issue.assignee!!))
+                .map(toDailyWorkloadItem(listOf(issue), issue.assignee!!, true))
     }
 
     private fun toDailyWorkloadItem(issues: List<Issue>, user: User, singleIssue: Boolean = false): (LocalDate) -> DailyWorkloadItem {

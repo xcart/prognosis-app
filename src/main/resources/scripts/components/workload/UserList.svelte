@@ -33,7 +33,8 @@
             {#each team.users as userInfo}
                 <div class="table-row">
                     <div class="user-column">
-                        <Link to="{buildUserUrl(userInfo.user)}">{userInfo.user.login}</Link>
+                        <Link class="user-login" to="{buildUserUrl(userInfo.user)}"><small>{userInfo.user.login}</small></Link>
+                        <small class="user-summary">{userInfo.user.fullName}</small>
                     </div>
                 </div>
             {/each}
@@ -57,6 +58,10 @@
         align-items: center;
     }
 
+    .table-body .table-row {
+        height: var(--table-extended-row-height);
+    }
+
     .table-body .table-row + .table-row {
         margin-top: var(--table-line-margin);
     }
@@ -74,6 +79,10 @@
 
     .team-row {
         background: var(--table-team-bg);
+    }
+
+    .user-login, .user-summary {
+        line-height: 1rem;
     }
 
     .user-section .table-row {

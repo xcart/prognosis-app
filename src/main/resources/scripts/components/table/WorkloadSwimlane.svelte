@@ -1,20 +1,24 @@
 <script>
-    import {getContinuousColorCode} from "../../../util/colorCode"
-    import {tooltip} from "../../../actions/tooltip";
-    import IssueListTooltip from "./IssueListTooltip.svelte"
+    import {getContinuousColorCode} from "../../util/colorCode"
+    import {tooltip} from "../../actions/tooltip";
+    import WorkloadItemTooltip from "./WorkloadItemTooltip.svelte"
 
     export let swimlane = null
 
     let formatWorkload = (value) => (value / 60.0).toFixed(1)
-    let hasIssues = (issues) => issues && issues.length > 0
-    let getItemClass = (item) => item.type
+    let getCellStyle = (item) => item.workload > 0 ? 'background: ' + getContinuousColorCode(item.workload) + ';' : ''
+    let tooltipParams = (item) => {
+      item.issues && item.issues.length > 0
+        ? {component: WorkloadItemTooltip, props: {issues: item.issues}, interactive: true}
+        : null
+    }
 </script>
 
 <div class="table-row user-swimlane">
   {#each swimlane as item}
-      <div class="data-column {getItemClass(item)}"
-           style="{item.workload > 0 ? 'background: ' + getContinuousColorCode(item.workload) + ';' : ''}"
-           use:tooltip={{component: IssueListTooltip, props: {issues: item.issues}, interactive: true, display: hasIssues(item.issues) }}>
+      <div class="data-column {item.type}"
+           style="{getCellStyle(item)}"
+           use:tooltip={tooltipParams(item)}>
           <span class="workload-value ">{formatWorkload(item.workload)}</span>
       </div>
   {/each}
@@ -23,8 +27,9 @@
 <style>
     .table-row {
         display: flex;
-        height: var(--table-row-height);
-        min-height: var(--table-row-height);
+        height: var(--table-extended-row-height);
+        height: var(--table-extended-row-height);
+        padding: var(--table-extended-row-v-padding);
         align-items: center;
     }
 

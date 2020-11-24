@@ -1,6 +1,6 @@
 <script>
     import Dates from "../table/Dates.svelte"
-    import TaskSwimlane from "./parts/TaskSwimlane.svelte"
+    import WorkloadSwimlane from "../table/WorkloadSwimlane.svelte"
 
     export let tasks = null
     export let duration = null
@@ -12,7 +12,7 @@
     </div>
     <div class="table-body">
       {#each tasks as task}
-          <TaskSwimlane swimlane={task.swimlane} />
+          <WorkloadSwimlane swimlane={task.swimlane} />
       {/each}
     </div>
 </div>

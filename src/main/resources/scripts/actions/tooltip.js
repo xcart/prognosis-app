@@ -19,7 +19,7 @@ function buildComponent(component, props) {
 }
 
 function initializeTippy(node, parameters) {
-    if (parameters.display) {
+    if (parameters && parameters.display) {
         let component = buildComponent(parameters.component, parameters.props)
         return tippy(node, {
             content: component,
