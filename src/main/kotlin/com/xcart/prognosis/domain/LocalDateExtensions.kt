@@ -2,9 +2,6 @@ package com.xcart.prognosis.domain
 
 import com.xcart.prognosis.repositories.DayOff
 import com.xcart.prognosis.services.ContextUtil
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
-import org.springframework.stereotype.Service
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -14,14 +11,16 @@ import kotlin.streams.toList
 object LocalDateExtensions {
 
     fun LocalDate.isBusinessDay(): Boolean {
-        val dayOff = ContextUtil.getBean(DayOff::class.java)
-        val isHoliday = { date: LocalDate -> dayOff.getHolidays().contains(date) }
-        val isWeekend = { date: LocalDate ->
-            (date.dayOfWeek === DayOfWeek.SATURDAY
-                    || date.dayOfWeek === DayOfWeek.SUNDAY)
-        }
+        return !this.isHoliday() && !this.isWeekend()
+    }
 
-        return !isHoliday(this) && !isWeekend(this)
+    fun LocalDate.isWeekend(): Boolean {
+        return (this.dayOfWeek === DayOfWeek.SATURDAY || this.dayOfWeek === DayOfWeek.SUNDAY)
+    }
+
+    fun LocalDate.isHoliday(): Boolean {
+        val dayOff = ContextUtil.getBean(DayOff::class.java)
+        return dayOff.getHolidays().contains(this)
     }
 
     fun LocalDate.isVacationDay(vacations: List<VacationPeriod>): Boolean {
