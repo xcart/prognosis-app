@@ -14,6 +14,7 @@ import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class XbApi @Autowired constructor(config: Configuration) {
@@ -42,9 +43,13 @@ class XbApi @Autowired constructor(config: Configuration) {
     fun cacheEvict() {}
 
     fun deserializeVacations(json: String): List<VacationPeriod> {
+        // Fix for XB api inconsistency
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+4:00"))
         val mapper = ObjectMapper().registerKotlinModule()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
         val result = mapper.readValue(json, VacationInfoRef())
+        // Return TimeZone back
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
         return result.map { it.value }
     }
 }
