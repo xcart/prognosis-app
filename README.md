@@ -23,6 +23,7 @@ Properties can be set either via `user.properties` resource file or via environm
 
 | Property name | ENV variable name | Description |
 | --- | --- | --- |
+| xb.password | XB_PASSWORD | XB API password, required |
 | youtrack.token | YOUTRACK_TOKEN | Youtrack API permanent token, required |
 | auth.user | AUTH_USER | Application BasicAuth username (default: solutions) |
 | auth.password | AUTH_PASSWORD | Application BasicAuth password |
