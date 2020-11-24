@@ -11,7 +11,7 @@
     }
 
     function getDayClass (date) {
-        let day = date.getDay()
+        let day = date.getUTCDay()
         switch(day) {
             case 0: return 'sunday'
             case 1: return 'monday'
