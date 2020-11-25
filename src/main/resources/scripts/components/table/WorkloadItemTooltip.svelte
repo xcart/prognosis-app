@@ -1,4 +1,5 @@
 <script>
+  import IssueState from "../common/IssueState.svelte"
     export let id = null
     export let issues = null
 
@@ -10,6 +11,7 @@
     <ul class="issues-list">
     {#each issues as issue}
         <li class="issue-item">
+            <IssueState state={issue.state} />
             <a class="issue-link" href="https://xcart.myjetbrains.com/youtrack/issue/{issue.idReadable}"
            target="_blank">{issue.idReadable}</a>
         </li>
@@ -18,8 +20,19 @@
 </div>
 
 <style>
+    .issue-item + .issue-item {
+        margin-top: var(--list-line-margin);
+    }
+
+    .issue-link {
+        margin-left: .25rem;
+        line-height: 1rem;
+        vertical-align: middle;
+    }
+
     .extra-info .issues-list {
         list-style: none;
+        margin-top: var(--list-line-margin);
         margin-bottom: 0;
         padding-left: 0;
     }

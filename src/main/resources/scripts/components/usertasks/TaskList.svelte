@@ -1,8 +1,9 @@
 <script>
-    import {tooltip} from "../../actions/tooltip";
-    import SummaryTooltip from "./parts/SummaryTooltip.svelte"
+  import {tooltip} from "../../actions/tooltip";
+  import SummaryTooltip from "./parts/SummaryTooltip.svelte"
+  import IssueState from "../common/IssueState.svelte"
 
-    export let tasks = null
+  export let tasks = null
 </script>
 
 <div class="task-section">
@@ -17,11 +18,16 @@
     <div class="table-body">
         {#each tasks as task}
             <div class="table-row">
+                <div class="issue-state-column">
+                    <IssueState state={task.issue.state} />
+                </div>
                 <div class="task-column">
                     <a class="issue-link" href="https://xcart.myjetbrains.com/youtrack/issue/{task.issue.idReadable}"
-                       target="_blank"><small>{task.issue.idReadable}</small></a>
+                       target="_blank">
+                        <small>{task.issue.idReadable}</small>
+                    </a>
                     <small class="issue-summary"
-                        use:tooltip={{component: SummaryTooltip, props: {summary: task.issue.summary}, interactive: false}}
+                           use:tooltip={{component: SummaryTooltip, props: {summary: task.issue.summary}, interactive: false}}
                     >{task.issue.summary}</small>
                 </div>
             </div>
@@ -64,8 +70,8 @@
     }
 
     .task-column {
-        max-width: 200px;
-        min-width: 200px;
+        max-width: 176px;
+        min-width: 176px;
         padding: 0 1rem;
         text-align: right;
         display: flex;

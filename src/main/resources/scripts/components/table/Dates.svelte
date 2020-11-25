@@ -87,7 +87,7 @@
     }
 
     .month-column:not(:first-child) {
-        border-left: 1px solid #eee;
+        border-left: 1px solid var(--calendar-lines-color);
     }
 
     .month-column span {
@@ -107,7 +107,7 @@
     }
 
     :global(.date-column.monday) {
-        border-left: 1px solid #eee;
+        border-left: 1px solid var(--calendar-lines-color);
     }
 
     :global(.date-column.monday span) {
