@@ -70,7 +70,6 @@
         border-left: 1px solid #ccc;
     }
 
-    .data-column.WorkingDay:first-child,
     .data-column:not(.WorkingDay) + .data-column.WorkingDay,
     .data-column.WorkingDay + .data-column:not(.WorkingDay) {
         border-left: 1px solid #ccc;

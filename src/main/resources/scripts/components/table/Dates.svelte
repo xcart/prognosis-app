@@ -82,9 +82,12 @@
         min-width: calc(var(--table-row-width) * var(--data-size));
         max-width: calc(var(--table-row-width) * var(--data-size));
         text-align: left;
-        border-left: 1px solid #eee;
         padding-left: .7rem;
         overflow: hidden;
+    }
+
+    .month-column:not(:first-child) {
+        border-left: 1px solid #eee;
     }
 
     .month-column span {

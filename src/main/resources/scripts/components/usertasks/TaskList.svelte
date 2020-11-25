@@ -78,8 +78,4 @@
     .task-section .table-row {
         justify-content: flex-end;
     }
-
-    .task-section + :global(div) {
-        margin-left: 1rem;
-    }
 </style>

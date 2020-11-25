@@ -106,8 +106,4 @@
     .user-section .table-row {
         justify-content: flex-end;
     }
-
-    .user-section + :global(div) {
-        margin-left: 1rem;
-    }
 </style>
