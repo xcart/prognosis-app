@@ -6,7 +6,7 @@
   export let groups = null
   export let duration = null
 
-  let stripOffset = () => (7 - (new Date()).getDay() + 1)
+  let stripOffset = () => (7 - (new Date()).getUTCDay() + 1)
 </script>
 
 <div class="swimlanes-section">

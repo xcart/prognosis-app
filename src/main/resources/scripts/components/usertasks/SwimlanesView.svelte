@@ -1,19 +1,21 @@
 <script>
-    import Dates from "../table/Dates.svelte"
-    import WorkloadSwimlane from "../table/WorkloadSwimlane.svelte"
+  import Dates from "../table/Dates.svelte"
+  import WorkloadSwimlane from "../table/WorkloadSwimlane.svelte"
 
-    export let tasks = null
-    export let duration = null
+  export let tasks = null
+  export let duration = null
+
+  let stripOffset = () => (7 - (new Date()).getUTCDay() + 1)
 </script>
 
 <div class="swimlanes-section">
     <div class="table-header">
         <Dates duration={duration}/>
     </div>
-    <div class="table-body">
-      {#each tasks as task}
-          <WorkloadSwimlane swimlane={task.swimlane} isSingleIssue={true} />
-      {/each}
+    <div class="table-body calendar-strip" style="--data-offset: {stripOffset()}">
+        {#each tasks as task}
+            <WorkloadSwimlane swimlane={task.swimlane} isSingleIssue={true}/>
+        {/each}
     </div>
 </div>
 
@@ -32,5 +34,13 @@
         max-width: 90vw;
         overflow: scroll;
         overflow-y: hidden;
+    }
+
+    .calendar-strip {
+        --data-offset: 0;
+        background-image: repeating-linear-gradient(90deg,
+                var(--strip-line-color) calc(var(--data-offset) * var(--table-row-width)), var(--strip-line-color) calc(var(--data-offset) * var(--table-row-width)),
+                var(--strip-bg-color) calc(var(--data-offset) * var(--table-row-width) + 1px), var(--strip-bg-color) calc(var(--data-offset) * var(--table-row-width) + var(--table-row-width) * 7)
+        );
     }
 </style>
