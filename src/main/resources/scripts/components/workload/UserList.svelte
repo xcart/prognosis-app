@@ -1,13 +1,14 @@
 <!--suppress ES6CheckImport -->
 <script>
-    import { Link } from "svelte-routing";
-    import {storedQuery} from "../../stores"
+  import {Link} from "svelte-routing";
+  import {storedQuery} from "../../stores"
+  import Avatar from "../common/Avatar.svelte"
 
-    export let teams = null
+  export let teams = null
 
-    function buildUserUrl(user) {
-        return "/tasks/" + user.login + "?query=" + encodeURIComponent($storedQuery)
-    }
+  function buildUserUrl(user) {
+    return "/tasks/" + user.login + "?query=" + encodeURIComponent($storedQuery)
+  }
 </script>
 
 <div class="user-section">
@@ -33,7 +34,7 @@
             {#each team.users as userInfo}
                 <div class="table-row">
                     <div class="avatar-column">
-                        <img src="{userInfo.user.avatarUrl}" alt="{userInfo.user.login} avatar"/>
+                        <Avatar user={userInfo.user} />
                     </div>
                     <div class="user-column">
                         <small class="user-login"><Link to="{buildUserUrl(userInfo.user)}">{userInfo.user.login}</Link></small>
@@ -82,17 +83,6 @@
         flex-direction: column;
         position: relative;
     }
-
-    .avatar-column {
-        width: 32px;
-    }
-
-    .avatar-column img {
-        border-radius: 3px;
-        max-width: 100%;
-        max-height: 100%;
-    }
-
     .team-row {
         background: var(--table-team-bg);
     }

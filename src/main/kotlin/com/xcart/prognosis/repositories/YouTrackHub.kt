@@ -21,10 +21,18 @@ class YouTrackHub @Autowired constructor(config: Configuration) {
         return fetchUserPage().users
     }
 
-    fun fetchUserPage(): UsersPage {
+    fun fetchUser(login: String): HubUser? {
+        val list = fetchUserPage("login: $login").users
+        if (list.isEmpty()) {
+            return null
+        }
+        return list.first()
+    }
+
+    fun fetchUserPage(query: String = "not is: banned"): UsersPage {
         return performRequest("/users", listOf(
                 "fields" to userFields,
-                "query" to "not is: banned"
+                "query" to query
         ))
     }
 

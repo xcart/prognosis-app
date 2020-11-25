@@ -6,20 +6,23 @@
   import {loadUsertasksReport} from "../actions";
   import SwimlanesCalendar from "../components/table/SwimlanesCalendar.svelte"
   import WorkloadSwimlane from "../components/table/WorkloadSwimlane.svelte"
+  import Avatar from "../components/common/Avatar.svelte"
 
-  export let user = null
+  export let login = null
   let tasks = [],
     duration = null,
+    user = null,
     query = null;
 
   function isReady(state) {
-    return state.report.type === 'Usertasks' && state.report.login === user
+    return state.report.type === 'Usertasks' && state.report.login === login
   }
 
   $: {
     if (isReady($state)) {
       query = $state.query
       tasks = $state.report.tasks
+      user = $state.report.user
       duration = $state.report.duration
     } else {
       query = $storedQuery
@@ -28,7 +31,7 @@
 
   onMount(() => {
     if (!isReady($state)) {
-      loadUsertasksReport(user, $storedQuery)
+      loadUsertasksReport(login, $storedQuery)
     } else {
       storedQuery.set($state.query)
     }
@@ -50,10 +53,17 @@
             </div>
         {/if}
     </div>
+    <Avatar {user} />
 </section>
 
 <style>
     .usertasks-table {
         display: flex;
+    }
+
+    .page > :global(.user-avatar-block) {
+        position: absolute;
+        top: 100px;
+        left: 110px;
     }
 </style>
