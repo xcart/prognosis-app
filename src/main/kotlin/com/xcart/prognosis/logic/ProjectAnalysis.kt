@@ -7,14 +7,7 @@ import com.xcart.prognosis.domain.LocalDateExtensions.listDaysUntil
 import com.xcart.prognosis.domain.User
 import com.xcart.prognosis.reports.projects.Project
 import com.xcart.prognosis.reports.projects.WorkloadSpan
-import com.xcart.prognosis.repositories.DayOff
-import org.springframework.beans.factory.annotation.Autowired
-import java.time.DayOfWeek
 import java.time.LocalDate
-import java.time.temporal.ChronoUnit
-import java.util.*
-import java.util.stream.Stream
-import kotlin.streams.toList
 
 class ProjectAnalysis(private val issues: List<Issue>) {
 
@@ -22,6 +15,7 @@ class ProjectAnalysis(private val issues: List<Issue>) {
         return issues
             .groupBy { it.client }
             .filterKeys { !it.isNullOrEmpty() }
+            .filterValues { findStartDate(it) != null && findEndDate(it) != null }
             .map {
                 val projectStartDate = findStartDate(it.value)
                 val projectEndDate = findEndDate(it.value)
@@ -31,7 +25,7 @@ class ProjectAnalysis(private val issues: List<Issue>) {
                         tasks = findTasks(it.value),
                         estimation = sumEstimation(it.value),
                         offset = from.countDaysUntil(projectStartDate!!),
-                        duration = projectStartDate?.countDaysUntil(projectEndDate!!),
+                        duration = projectStartDate.countDaysUntil(projectEndDate!!),
                         startDate = projectStartDate,
                         endDate = projectEndDate
                 )
@@ -82,13 +76,11 @@ class ProjectAnalysis(private val issues: List<Issue>) {
     }
 
     private fun sumEstimation(issues: List<Issue>): Int {
-        return issues.filter { it.estimation != null }
-            .sumBy { it.estimation!! }
+        return issues.sumBy { it.estimation }
     }
 
     private fun avgLoad(issues: List<Issue>): Int {
-        return issues.filter { it.estimation != null }
-            .sumBy { it.estimation!! }
+        return issues.sumBy { it.estimation }
     }
 
     private fun findStartDate(issues: List<Issue>): LocalDate? {

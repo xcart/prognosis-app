@@ -43,13 +43,13 @@ class WorkloadAnalysis(private val issues: List<Issue>) {
 
     private fun toDailyWorkloadItem(issues: List<Issue>, user: User, singleIssue: Boolean = false): (LocalDate) -> DailyWorkloadItem {
         return { date ->
-            var issuesOnDay = issues
+            val issuesOnDay = issues
                     .filter { it.startDate <= date && it.endDate!! >= date }
             val issueInfo = if (singleIssue) null else issuesOnDay.map { IssueInfo(it) }
             val type = when {
-                date.isWeekend() -> DailyWorkloadItemType.Weekend
-                date.isHoliday() -> DailyWorkloadItemType.Holiday
                 date.isVacationDay(dayOff.getUserVacations(user)) -> DailyWorkloadItemType.Vacation
+                date.isHoliday() -> DailyWorkloadItemType.Holiday
+                date.isWeekend() -> DailyWorkloadItemType.Weekend
                 else -> DailyWorkloadItemType.WorkingDay
             }
             val value = when {
