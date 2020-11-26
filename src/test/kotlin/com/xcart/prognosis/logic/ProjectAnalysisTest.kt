@@ -5,13 +5,29 @@ import com.xcart.prognosis.domain.IssueCustomField
 import com.xcart.prognosis.domain.IssueInfo
 import com.xcart.prognosis.domain.User
 import com.xcart.prognosis.reports.projects.Project
+import com.xcart.prognosis.repositories.XbApi
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.TestInstance
+import org.mockito.Mockito
+import org.mockito.MockitoAnnotations
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.mock.mockito.MockBean
 import java.sql.Timestamp
-import java.time.LocalDate
 
+@SpringBootTest
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class ProjectAnalysisTest {
+
+    @MockBean
+    lateinit var xbApi: XbApi
+
+    @BeforeAll
+    fun setUp() {
+        MockitoAnnotations.initMocks(this);
+        Mockito.`when`(xbApi.getVacationsInfo()).thenReturn(emptyList())
+    }
 
     @Test
     fun getProjectsList() {

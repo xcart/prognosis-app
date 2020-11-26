@@ -113,16 +113,17 @@ data class Issue(
         if (cfield?.value is HashMap<*, *>) cfield.value["name"] as String else null
     }()
 
-    val businessDays = {
-        if (endDate == null) {
+    fun getBusinessDaysCount(): Int? {
+        return if (endDate == null) {
             null
         } else {
+            // TODO: Rewrite without this ugly hack
             val dayOff = ContextUtil.getBean(DayOff::class.java)
             startDate.listDaysUntil(endDate)
                     .filter { it.isBusinessDay() }
                     .filter { assignee == null || !it.isVacationDay(dayOff.getUserVacations(assignee)) }
                     .count()
         }
-    }()
+    }
 }
 
