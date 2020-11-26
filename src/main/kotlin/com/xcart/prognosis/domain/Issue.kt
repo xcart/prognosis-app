@@ -97,7 +97,7 @@ data class Issue(
             IssueState.Open,
             IssueState.InProgress,
             IssueState.Waiting -> {
-                if (verificationDate !== null) verificationDate else dueDate
+                if (verificationDate !== null && verificationDate > LocalDate.now()) verificationDate else dueDate
             }
             else -> dueDate
         }
@@ -122,9 +122,7 @@ data class Issue(
                     .filter { it.isBusinessDay() }
                     .filter { assignee == null || !it.isVacationDay(dayOff.getUserVacations(assignee)) }
                     .count()
-
         }
-
     }()
 }
 
