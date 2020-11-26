@@ -1,8 +1,5 @@
 package com.xcart.prognosis.reports
 
-import com.xcart.prognosis.domain.IssueInfo
-import java.time.LocalDate
-
 enum class StatValueKey {
     SwimlaneDuration
 }

@@ -20,56 +20,50 @@ data class Issue(
         val reporter: User? = null,
         val customFields: List<IssueCustomField> = emptyList()
 ) {
-
     /**
      * Issue estimation in minutes
      */
-    val estimation: Int
-        get() {
-            val cfield = customFields.find { it.name == "Estimation" }
-            val estimation = if (cfield?.value is HashMap<*, *>)
-                cfield.value["minutes"] as Int
-            else DEFAULT_ESTIMATION
+    val estimation = {
+        val cfield = customFields.find { it.name == "Estimation" }
+        val estimation = if (cfield?.value is HashMap<*, *>)
+            cfield.value["minutes"] as Int
+        else DEFAULT_ESTIMATION
 
-            return when (state) {
-                IssueState.QualityAssurance,
-                IssueState.HasDefects,
-                IssueState.QaInProgress -> (estimation * 0.1f).toInt()
+        when (state) {
+            IssueState.QualityAssurance,
+            IssueState.HasDefects,
+            IssueState.QaInProgress -> (estimation * 0.1f).toInt()
 
-                IssueState.QaPassed,
-                IssueState.Completed,
-                IssueState.Canceled -> 0
+            IssueState.QaPassed,
+            IssueState.Completed,
+            IssueState.Canceled -> 0
 
-                else -> estimation
-            }
+            else -> estimation
         }
+    }()
 
     /**
      * Due date timestamp
      */
-    val dueDate: LocalDate?
-        get() {
-            val cfield = customFields.find { it.name == "Due Date" }
-            return if (cfield?.value !== null) Timestamp(cfield.value as Long).toLocalDateTime().toLocalDate() else null
-        }
+    val dueDate = {
+        val cfield = customFields.find { it.name == "Due Date" }
+        if (cfield?.value !== null) Timestamp(cfield.value as Long).toLocalDateTime().toLocalDate() else null
+    }()
 
     /**
      * Due date timestamp
      */
-    val verificationDate: LocalDate?
-        get() {
-            val cfield = customFields.find { it.name == "Verification date" }
-            return if (cfield?.value !== null) Timestamp(cfield.value as Long).toLocalDateTime().toLocalDate() else null
-        }
+    private val verificationDate = {
+        val cfield = customFields.find { it.name == "Verification date" }
+        if (cfield?.value !== null) Timestamp(cfield.value as Long).toLocalDateTime().toLocalDate() else null
+    }()
 
-    val state: Enum<IssueState>?
-        get() {
-            val cfield = customFields.find { it.name == "State" }
-            if (cfield?.value === null || cfield.value !is HashMap<*, *>) {
-                return null
-            }
-
-            return when (cfield.value["name"]) {
+    val state = {
+        val cfield = customFields.find { it.name == "State" }
+        if (cfield?.value === null || cfield.value !is HashMap<*, *>) {
+            null
+        } else {
+            when (cfield.value["name"]) {
                 "New" -> IssueState.New
                 "Open" -> IssueState.Open
                 "In progress" -> IssueState.InProgress
@@ -83,56 +77,54 @@ data class Issue(
                 else -> null
             }
         }
+    }()
 
     /**
      * Start date timestamp (approximate)
      */
-    val startDate: LocalDate
-        get() {
-            val cfield = customFields.find { it.name == "Start Date" }
-            val timestamp = if (cfield?.value !== null) cfield.value as Long else created
-            return Timestamp(timestamp).toLocalDateTime().toLocalDate()
-        }
+    val startDate: LocalDate = {
+        val cfield = customFields.find { it.name == "Start Date" }
+        val timestamp = if (cfield?.value !== null) cfield.value as Long else created
+        Timestamp(timestamp).toLocalDateTime().toLocalDate()
+    }()
 
     /**
      * Start date timestamp (approximate)
      */
-    val endDate: LocalDate?
-        get() {
-            return when (state) {
-                IssueState.New,
-                IssueState.Open,
-                IssueState.InProgress,
-                IssueState.Waiting -> {
-                    if (verificationDate !== null) verificationDate else dueDate
-                }
-                else -> dueDate
+    val endDate = {
+        when (state) {
+            IssueState.New,
+            IssueState.Open,
+            IssueState.InProgress,
+            IssueState.Waiting -> {
+                if (verificationDate !== null) verificationDate else dueDate
             }
+            else -> dueDate
         }
+    }()
 
-    val assignee: User?
-        get() {
-            val cfield = customFields.find { it.name == "Assignee" }
-            return if (cfield?.value is HashMap<*, *>) User(cfield.value) else null
-        }
+    val assignee = {
+        val cfield = customFields.find { it.name == "Assignee" }
+        if (cfield?.value is HashMap<*, *>) User(cfield.value) else null
+    }()
 
-    val client: String?
-        get() {
-            val cfield = customFields.find { it.name == "Client" }
-            return if (cfield?.value is HashMap<*, *>) cfield.value["name"] as String else null
-        }
+    val client = {
+        val cfield = customFields.find { it.name == "Client" }
+        if (cfield?.value is HashMap<*, *>) cfield.value["name"] as String else null
+    }()
 
-    val businessDays: Int?
-        get() {
-            if (endDate == null) {
-                return null
-            }
-
+    val businessDays = {
+        if (endDate == null) {
+            null
+        } else {
             val dayOff = ContextUtil.getBean(DayOff::class.java)
-            return startDate.listDaysUntil(endDate!!)
+            startDate.listDaysUntil(endDate)
                     .filter { it.isBusinessDay() }
-                    .filter { assignee == null || !it.isVacationDay(dayOff.getUserVacations(assignee!!)) }
+                    .filter { assignee == null || !it.isVacationDay(dayOff.getUserVacations(assignee)) }
                     .count()
+
         }
+
+    }()
 }
 

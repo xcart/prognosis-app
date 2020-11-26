@@ -22,6 +22,6 @@ class ProjectsController @Autowired constructor(val reportBuilder: ProjectsRepor
         else query
 
         val report = CommonPageState(queryToUse, reportBuilder.gather(queryToUse))
-        return ResponseEntity.ok(report);
+        return ResponseEntity.ok(report)
     }
 }

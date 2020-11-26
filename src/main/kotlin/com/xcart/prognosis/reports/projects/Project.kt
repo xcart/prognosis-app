@@ -12,5 +12,4 @@ data class Project(val client: String,
                    val offset: Int,
                    val manager: User,
                    val startDate: LocalDate? = null,
-                   val endDate: LocalDate? = null) {
-}
+                   val endDate: LocalDate? = null)

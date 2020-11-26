@@ -37,7 +37,7 @@ class YouTrackHub @Autowired constructor(config: Configuration) {
     }
 
     private final inline fun <reified T : Any> performRequest(url: String, params: Parameters): T {
-        var request = Fuel.get(baseUrl + url, params).configure(permToken)
+        val request = Fuel.get(baseUrl + url, params).configure(permToken)
         try {
             return request.processResult()
         } catch (ex: Exception) {
