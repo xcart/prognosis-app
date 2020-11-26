@@ -17,6 +17,14 @@ class WorkloadAnalysis(private val issues: List<Issue>) {
 
     private var dayOff: DayOff = ContextUtil.getBean(DayOff::class.java)
 
+    fun getOverdueIssues(user: User, after: LocalDate): Int {
+        val overdueIssues = issues
+                .filter { it.assignee?.login == user.login
+                        && it.endDate != null
+                        && it.endDate < LocalDate.now() }
+        return overdueIssues.sumBy { it.estimation }
+    }
+
     fun getDailyWorkloadForUser(user: User, startDate: LocalDate): List<DailyWorkloadItem> {
         val userIssues = issues.filter { it.assignee?.login == user.login }
         val filteredIssues = userIssues.filter { it.endDate != null }

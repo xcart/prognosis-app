@@ -2,14 +2,16 @@
   import {tooltip} from "../../actions/tooltip";
   import SummaryTooltip from "./parts/SummaryTooltip.svelte"
   import IssueState from "../common/IssueState.svelte"
+  import Avatar from "../common/Avatar.svelte"
 
   export let tasks = null
+  export let user = null
 </script>
 
 <div class="task-section">
     <div class="table-header">
         <div class="table-row">
-            <span></span>
+            <Avatar {user} size="large" />
         </div>
         <div class="table-row">
             <span></span>
@@ -81,7 +83,7 @@
         position: relative;
     }
 
-    .task-section .table-row {
-        justify-content: flex-end;
+    .task-section :global(.user-avatar-block) {
+        align-self: flex-start;
     }
 </style>

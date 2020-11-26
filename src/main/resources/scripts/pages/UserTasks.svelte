@@ -6,7 +6,6 @@
   import {loadUsertasksReport} from "../actions";
   import SwimlanesCalendar from "../components/table/SwimlanesCalendar.svelte"
   import WorkloadSwimlane from "../components/table/WorkloadSwimlane.svelte"
-  import Avatar from "../components/common/Avatar.svelte"
 
   export let login = null
   let tasks = [],
@@ -41,7 +40,7 @@
 <section class="page">
     <div class="usertasks-table">
         {#if tasks.length > 0}
-            <TaskList {tasks}/>
+            <TaskList {tasks} {user}/>
             <SwimlanesCalendar {duration}>
                 {#each tasks as task}
                     <WorkloadSwimlane swimlane={task.swimlane} isSingleIssue={true}/>
@@ -53,17 +52,10 @@
             </div>
         {/if}
     </div>
-    <Avatar {user} />
 </section>
 
 <style>
     .usertasks-table {
         display: flex;
-    }
-
-    .page > :global(.user-avatar-block) {
-        position: absolute;
-        top: 100px;
-        left: 110px;
     }
 </style>

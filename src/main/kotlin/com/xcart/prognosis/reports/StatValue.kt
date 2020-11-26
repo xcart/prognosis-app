@@ -1,7 +1,7 @@
 package com.xcart.prognosis.reports
 
 enum class StatValueKey {
-    SwimlaneDuration
+    SwimlaneDuration, OverdueEstimation
 }
 
 data class StatValue (

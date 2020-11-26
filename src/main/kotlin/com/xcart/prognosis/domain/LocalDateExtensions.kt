@@ -33,6 +33,9 @@ object LocalDateExtensions {
 
     fun LocalDate.listDaysUntil(endDate: LocalDate): List<LocalDate> {
         val daysBetween = ChronoUnit.DAYS.between(this, endDate)
+        if (this >= endDate) {
+            return emptyList()
+        }
         return Stream.iterate(this, { date -> date.plusDays(1) })
                 .limit(daysBetween + 1)
                 .toList()

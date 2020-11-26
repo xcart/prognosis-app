@@ -37,8 +37,10 @@ class WorkloadReportBuilder @Autowired constructor(val youTrack: YouTrack, val h
         val analysis = WorkloadAnalysis(issues)
         return users.fold(mutableListOf()) { acc, user ->
             val swimlane = analysis.getDailyWorkloadForUser(user, LocalDate.now())
+            val overdue = analysis.getOverdueIssues(user, LocalDate.now())
             val stats = listOf(
-                    StatValue(StatValueKey.SwimlaneDuration, swimlane.size)
+                    StatValue(StatValueKey.SwimlaneDuration, swimlane.size),
+                    StatValue(StatValueKey.OverdueEstimation, overdue)
             )
             if (swimlane.isNotEmpty() || !skipEmpty) {
                 acc.add(UserWorkload(user, swimlane, stats))
