@@ -20,26 +20,23 @@ data class Issue(
         val reporter: User? = null,
         val customFields: List<IssueCustomField> = emptyList()
 ) {
+    val assignee = {
+        val cfield = customFields.find { it.name == "Assignee" }
+        if (cfield?.value is HashMap<*, *>) User(cfield.value) else null
+    }()
+
+    val client = {
+        val cfield = customFields.find { it.name == "Client" }
+        if (cfield?.value is HashMap<*, *>) cfield.value["name"] as String else null
+    }()
+
     /**
-     * Issue estimation in minutes
+     * Start date timestamp (approximate)
      */
-    val estimation = {
-        val cfield = customFields.find { it.name == "Estimation" }
-        val estimation = if (cfield?.value is HashMap<*, *>)
-            cfield.value["minutes"] as Int
-        else DEFAULT_ESTIMATION
-
-        when (state) {
-            IssueState.QualityAssurance,
-            IssueState.HasDefects,
-            IssueState.QaInProgress -> (estimation * 0.1f).toInt()
-
-            IssueState.QaPassed,
-            IssueState.Completed,
-            IssueState.Canceled -> 0
-
-            else -> estimation
-        }
+    val startDate: LocalDate = {
+        val cfield = customFields.find { it.name == "Start Date" }
+        val timestamp = if (cfield?.value !== null) cfield.value as Long else created
+        Timestamp(timestamp).toLocalDateTime().toLocalDate()
     }()
 
     /**
@@ -82,15 +79,6 @@ data class Issue(
     /**
      * Start date timestamp (approximate)
      */
-    val startDate: LocalDate = {
-        val cfield = customFields.find { it.name == "Start Date" }
-        val timestamp = if (cfield?.value !== null) cfield.value as Long else created
-        Timestamp(timestamp).toLocalDateTime().toLocalDate()
-    }()
-
-    /**
-     * Start date timestamp (approximate)
-     */
     val endDate = {
         when (state) {
             IssueState.New,
@@ -103,14 +91,26 @@ data class Issue(
         }
     }()
 
-    val assignee = {
-        val cfield = customFields.find { it.name == "Assignee" }
-        if (cfield?.value is HashMap<*, *>) User(cfield.value) else null
-    }()
+    /**
+     * Issue estimation in minutes
+     */
+    val estimation = {
+        val cfield = customFields.find { it.name == "Estimation" }
+        val estimation = if (cfield?.value is HashMap<*, *>)
+            cfield.value["minutes"] as Int
+        else DEFAULT_ESTIMATION
 
-    val client = {
-        val cfield = customFields.find { it.name == "Client" }
-        if (cfield?.value is HashMap<*, *>) cfield.value["name"] as String else null
+        when (state) {
+            IssueState.QualityAssurance,
+            IssueState.HasDefects,
+            IssueState.QaInProgress -> (estimation * 0.1f).toInt()
+
+            IssueState.QaPassed,
+            IssueState.Completed,
+            IssueState.Canceled -> 0
+
+            else -> estimation
+        }
     }()
 
     fun getBusinessDaysCount(): Int? {
