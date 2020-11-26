@@ -1,6 +1,8 @@
 <script>
   import ManagerList from "./timeline/ManagerList.svelte"
-  import ProjectSwimlanes from "./timeline/ProjectSwimlanes.svelte"
+  import SwimlanesCalendar from "../table/SwimlanesCalendar.svelte"
+  import AggregatedProjectSwimlane from "./timeline/AggregatedProjectSwimlane.svelte"
+  import ProjectSwimlane from "./timeline/ProjectSwimlane.svelte"
 
   export let groups = []
   export let duration = null
@@ -8,7 +10,14 @@
 
 <div class="table-body project-timeline">
     <ManagerList groups={groups}/>
-    <ProjectSwimlanes groups={groups} duration={duration}/>
+    <SwimlanesCalendar {duration}>
+      {#each groups as group}
+          <AggregatedProjectSwimlane swimlane={group.spans} />
+          {#each group.projects as project}
+            <ProjectSwimlane project={project} />
+          {/each}
+      {/each}
+    </SwimlanesCalendar>
 </div>
 
 <style>

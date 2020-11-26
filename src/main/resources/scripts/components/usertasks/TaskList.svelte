@@ -1,14 +1,17 @@
 <script>
-    import {tooltip} from "../../actions/tooltip";
-    import SummaryTooltip from "./parts/SummaryTooltip.svelte"
+  import {tooltip} from "../../actions/tooltip";
+  import SummaryTooltip from "./parts/SummaryTooltip.svelte"
+  import IssueState from "../common/IssueState.svelte"
+  import Avatar from "../common/Avatar.svelte"
 
-    export let tasks = null
+  export let tasks = null
+  export let user = null
 </script>
 
 <div class="task-section">
     <div class="table-header">
         <div class="table-row">
-            <span></span>
+            <Avatar {user} size="large" />
         </div>
         <div class="table-row">
             <span></span>
@@ -17,11 +20,16 @@
     <div class="table-body">
         {#each tasks as task}
             <div class="table-row">
+                <div class="issue-state-column">
+                    <IssueState state={task.issue.state} />
+                </div>
                 <div class="task-column">
                     <a class="issue-link" href="https://xcart.myjetbrains.com/youtrack/issue/{task.issue.idReadable}"
-                       target="_blank"><small>{task.issue.idReadable}</small></a>
+                       target="_blank">
+                        <small>{task.issue.idReadable}</small>
+                    </a>
                     <small class="issue-summary"
-                        use:tooltip={{component: SummaryTooltip, props: {summary: task.issue.summary}, interactive: false}}
+                           use:tooltip={{component: SummaryTooltip, props: {summary: task.issue.summary}, interactive: false}}
                     >{task.issue.summary}</small>
                 </div>
             </div>
@@ -64,8 +72,8 @@
     }
 
     .task-column {
-        max-width: 200px;
-        min-width: 200px;
+        max-width: 176px;
+        min-width: 176px;
         padding: 0 1rem;
         text-align: right;
         display: flex;
@@ -75,11 +83,7 @@
         position: relative;
     }
 
-    .task-section .table-row {
-        justify-content: flex-end;
-    }
-
-    .task-section + :global(div) {
-        margin-left: 1rem;
+    .task-section :global(.user-avatar-block) {
+        align-self: flex-start;
     }
 </style>

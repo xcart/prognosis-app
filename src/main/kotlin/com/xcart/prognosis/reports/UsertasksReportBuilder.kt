@@ -2,21 +2,29 @@ package com.xcart.prognosis.reports
 
 import com.xcart.prognosis.domain.Issue
 import com.xcart.prognosis.domain.IssueInfo
+import com.xcart.prognosis.domain.User
 import com.xcart.prognosis.logic.WorkloadAnalysis
 import com.xcart.prognosis.reports.usertasks.TaskWorkload
 import com.xcart.prognosis.reports.usertasks.UsertasksReport
 import com.xcart.prognosis.repositories.YouTrack
+import com.xcart.prognosis.repositories.YouTrackHub
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
 @Service
-class UsertasksReportBuilder @Autowired constructor(val youTrack: YouTrack) {
+class UsertasksReportBuilder @Autowired constructor(val youTrack: YouTrack, val youTrackHub: YouTrackHub) {
     fun gather(login: String, query: String): UsertasksReport {
-        val issues = youTrack.fetchIssues(modifyQuery(query, login))
-        val tasks = getTaskWorkloadList(issues)
-        val duration = getReportDuration(tasks)
-        return UsertasksReport(tasks, duration, login)
+        val hubUser = youTrackHub.fetchUser(login)
+        return if (hubUser == null) {
+            UsertasksReport(emptyList(), 0, null, login)
+        } else {
+            val user = User(hubUser)
+            val issues = youTrack.fetchIssues(modifyQuery(query, login))
+            val tasks = getTaskWorkloadList(issues)
+            val duration = getReportDuration(tasks)
+            UsertasksReport(tasks, duration, user, login)
+        }
     }
 
     private fun getTaskWorkloadList(issues: List<Issue>): List<TaskWorkload> {

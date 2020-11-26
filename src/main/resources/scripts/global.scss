@@ -1,4 +1,5 @@
 :root {
+  --list-line-margin: .25rem;
   --table-row-height: 2rem;
   --table-row-width: 2rem;
   --table-line-margin: .25rem;
@@ -17,7 +18,8 @@
   --grid-group-border: 1px solid #eee;
   --strip-start: 0;
   --strip-bg-color: transparent;
-  --strip-line-color: #ccc;
+  --strip-line-color: #ddd;
+  --calendar-lines-color: #eee;
 }
 
 .badge-row {

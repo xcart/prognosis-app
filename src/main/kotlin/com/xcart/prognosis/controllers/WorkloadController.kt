@@ -22,6 +22,6 @@ class WorkloadController @Autowired constructor(val reportBuilder: WorkloadRepor
         else query
 
         val report = CommonPageState(queryToUse, reportBuilder.gather(queryToUse))
-        return ResponseEntity.ok(report);
+        return ResponseEntity.ok(report)
     }
 }

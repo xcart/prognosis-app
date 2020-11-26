@@ -82,9 +82,12 @@
         min-width: calc(var(--table-row-width) * var(--data-size));
         max-width: calc(var(--table-row-width) * var(--data-size));
         text-align: left;
-        border-left: 1px solid #eee;
         padding-left: .7rem;
         overflow: hidden;
+    }
+
+    .month-column:not(:first-child) {
+        border-left: 1px solid var(--calendar-lines-color);
     }
 
     .month-column span {
@@ -104,7 +107,7 @@
     }
 
     :global(.date-column.monday) {
-        border-left: 1px solid #eee;
+        border-left: 1px solid var(--calendar-lines-color);
     }
 
     :global(.date-column.monday span) {

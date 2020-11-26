@@ -5,6 +5,7 @@
   import Workload from "./pages/Workload.svelte";
   import UserTasks from "./pages/UserTasks.svelte";
   import Projects from "./pages/Projects.svelte"
+  import Avatar from "./components/common/Avatar.svelte"
 
   export let url = "";
 </script>
@@ -25,7 +26,7 @@
             {params.login} tasks
         </PageHeader>
         <Container class="page-container" fluid>
-            <UserTasks user="{params.login}"/>
+            <UserTasks login="{params.login}"/>
         </Container>
     </Route>
 </Router>

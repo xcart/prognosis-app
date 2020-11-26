@@ -19,6 +19,6 @@ class UsertasksController @Autowired constructor(val reportBuilder: UsertasksRep
         else query
 
         val report = CommonPageState(queryToUse, reportBuilder.gather(login, queryToUse))
-        return ResponseEntity.ok(report);
+        return ResponseEntity.ok(report)
     }
 }

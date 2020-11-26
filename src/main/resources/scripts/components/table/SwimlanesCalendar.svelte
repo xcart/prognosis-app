@@ -1,12 +1,8 @@
 <script>
-  import Dates from "../../table/Dates.svelte"
-  import ProjectSwimlane from "./ProjectSwimlane.svelte"
-  import AggregatedProjectSwimlane from "./AggregatedProjectSwimlane.svelte"
-
-  export let groups = null
+  import Dates from "../table/Dates.svelte"
   export let duration = null
 
-  let stripOffset = () => (7 - (new Date()).getDay() + 1)
+  let stripOffset = () => (7 - (new Date()).getUTCDay() + 1)
 </script>
 
 <div class="swimlanes-section">
@@ -14,12 +10,7 @@
         <Dates duration={duration}/>
     </div>
     <div class="table-body calendar-strip" style="--data-offset: {stripOffset()}">
-      {#each groups as group}
-          <AggregatedProjectSwimlane swimlane={group.spans} />
-          {#each group.projects as project}
-            <ProjectSwimlane project={project} />
-          {/each}
-      {/each}
+        <slot></slot>
     </div>
 </div>
 

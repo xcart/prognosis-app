@@ -1,7 +1,7 @@
 package com.xcart.prognosis.domain
 
 import com.xcart.prognosis.domain.hub.HubUser
-import java.util.HashMap
+import java.util.*
 
 data class User(
         val id: String = "",
@@ -28,12 +28,7 @@ data class User(
             _team = user.team
     )
 
-    val team: Team
-        get() {
-            if (_team != null) {
-                return _team
-            }
-
-            return Team.NoTeam
-        }
+    val team = {
+        _team ?: Team.NoTeam
+    }()
 }

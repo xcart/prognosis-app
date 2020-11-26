@@ -1,13 +1,25 @@
 <!--suppress ES6CheckImport -->
 <script>
-    import { Link } from "svelte-routing";
-    import {storedQuery} from "../../stores"
+  import {Link} from "svelte-routing";
+  import {storedQuery} from "../../stores"
+  import Avatar from "../common/Avatar.svelte"
+  import {tooltip} from "../../actions/tooltip";
+  import UserSummaryTooltip from "./parts/UserSummaryTooltip.svelte"
 
-    export let teams = null
+  export let teams = null
 
-    function buildUserUrl(user) {
-        return "/tasks/" + user.login + "?query=" + encodeURIComponent($storedQuery)
-    }
+  const formatWorkload = (value) => (value / 60.0).toFixed(1) + "h"
+
+  const getOverdueMinutes = (stats) => {
+    let stat = stats.find(it => it.key === "OverdueEstimation")
+    return stat ? stat.value : 0
+  }
+
+  const formatStats = (stats) => formatWorkload(getOverdueMinutes(stats))
+
+  function buildUserUrl(user) {
+    return "/tasks/" + user.login + "?query=" + encodeURIComponent($storedQuery)
+  }
 </script>
 
 <div class="user-section">
@@ -33,11 +45,13 @@
             {#each team.users as userInfo}
                 <div class="table-row">
                     <div class="avatar-column">
-                        <img src="{userInfo.user.avatarUrl}" alt="{userInfo.user.login} avatar"/>
+                        <Avatar user={userInfo.user} />
                     </div>
                     <div class="user-column">
                         <small class="user-login"><Link to="{buildUserUrl(userInfo.user)}">{userInfo.user.login}</Link></small>
-                        <small class="user-summary">16h</small>
+                        <small class="user-summary" use:tooltip={{component: UserSummaryTooltip, props: {stats: userInfo.stats}}}>
+                            <span class="overdue-value {getOverdueMinutes(userInfo.stats) > 300 ? 'non-zero' : 'zero'}">{formatStats(userInfo.stats)}</span>
+                        </small>
                     </div>
                 </div>
             {/each}
@@ -82,17 +96,6 @@
         flex-direction: column;
         position: relative;
     }
-
-    .avatar-column {
-        width: 32px;
-    }
-
-    .avatar-column img {
-        border-radius: 3px;
-        max-width: 100%;
-        max-height: 100%;
-    }
-
     .team-row {
         background: var(--table-team-bg);
     }
@@ -103,11 +106,16 @@
         white-space: nowrap;
     }
 
-    .user-section .table-row {
-        justify-content: flex-end;
+    .overdue-value {
+        border-bottom: 1px dashed #21252980;
     }
 
-    .user-section + :global(div) {
-        margin-left: 1rem;
+    .overdue-value.non-zero {
+        color: red;
+        border-bottom: 1px dashed #d8000085;
+    }
+
+    .user-section .table-row {
+        justify-content: flex-end;
     }
 </style>

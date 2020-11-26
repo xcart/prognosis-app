@@ -21,15 +21,23 @@ class YouTrackHub @Autowired constructor(config: Configuration) {
         return fetchUserPage().users
     }
 
-    fun fetchUserPage(): UsersPage {
+    fun fetchUser(login: String): HubUser? {
+        val list = fetchUserPage("login: $login").users
+        if (list.isEmpty()) {
+            return null
+        }
+        return list.first()
+    }
+
+    fun fetchUserPage(query: String = "not is: banned"): UsersPage {
         return performRequest("/users", listOf(
                 "fields" to userFields,
-                "query" to "not is: banned"
+                "query" to query
         ))
     }
 
     private final inline fun <reified T : Any> performRequest(url: String, params: Parameters): T {
-        var request = Fuel.get(baseUrl + url, params).configure(permToken)
+        val request = Fuel.get(baseUrl + url, params).configure(permToken)
         try {
             return request.processResult()
         } catch (ex: Exception) {
