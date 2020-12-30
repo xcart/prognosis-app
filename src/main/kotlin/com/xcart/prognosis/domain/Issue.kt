@@ -55,6 +55,7 @@ data class Issue(
         if (cfield?.value !== null) Timestamp(cfield.value as Long).toLocalDateTime().toLocalDate() else null
     }()
 
+    // TODO: Add tests on depending fields
     val state = {
         val cfield = customFields.find { it.name == "State" }
         if (cfield?.value === null || cfield.value !is HashMap<*, *>) {
