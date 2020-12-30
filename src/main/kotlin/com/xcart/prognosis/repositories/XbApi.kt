@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.result.Result
-import com.xcart.prognosis.domain.VacationInfoRef
+import com.xcart.prognosis.domain.VacationInfo
 import com.xcart.prognosis.domain.VacationPeriod
 import com.xcart.prognosis.errors.ExternalServiceError
 import com.xcart.prognosis.services.Configuration
@@ -47,9 +47,9 @@ class XbApi @Autowired constructor(config: Configuration) {
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+4:00"))
         val mapper = ObjectMapper().registerKotlinModule()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-        val result = mapper.readValue(json, VacationInfoRef())
+        val result = mapper.readValue(json, VacationInfo::class.java)
         // Return TimeZone back
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
-        return result.map { it.value }
+        return result.users
     }
 }

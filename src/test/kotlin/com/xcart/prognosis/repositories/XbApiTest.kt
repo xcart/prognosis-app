@@ -2,7 +2,7 @@ package com.xcart.prognosis.repositories
 
 import com.xcart.prognosis.domain.VacationPeriod
 import com.xcart.prognosis.domain.VacationStatus
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -15,30 +15,37 @@ internal class XbApiTest @Autowired constructor(val xbApi: XbApi) {
     fun deserializeVacations() {
         val json = """
 {
-  "150242": {
-    "email": "anakonda@x-cart.com",
-    "status": "7",
-    "start_period": "1605470400",
-    "end_period": "1605902399"
-  },
-  "150248": {
-    "email": "savage@x-cart.com",
-    "status": "8",
-    "start_period": "1606075200",
-    "end_period": "1606247999"
-  },
-  "150249": {
-    "email": "savage@x-cart.com",
-    "status": "8",
-    "start_period": "1606852800",
-    "end_period": "1607025599"
-  },
-  "150250": {
-    "email": "savage@x-cart.com",
-    "status": "8",
-    "start_period": "1607457600",
-    "end_period": "1607543999"
-  }
+  "users": [
+      {
+        "truancy_id": "150242",
+        "email": "anakonda@x-cart.com",
+        "status": "7",
+        "start_period": "1605470400",
+        "end_period": "1605902399"
+      },
+      {
+        "truancy_id": "150248",
+        "email": "savage@x-cart.com",
+        "status": "8",
+        "start_period": "1606075200",
+        "end_period": "1606247999"
+      },
+      {
+        "truancy_id": "150249",
+        "email": "savage@x-cart.com",
+        "status": "8",
+        "start_period": "1606852800",
+        "end_period": "1607025599"
+      },
+      {
+        "truancy_id": "150250",
+        "email": "savage@x-cart.com",
+        "status": "8",
+        "start_period": "1607457600",
+        "end_period": "1607543999"
+      }
+  ],
+  "total_count": 4
 }
 """.trimIndent()
         val actual = xbApi.deserializeVacations(json)
