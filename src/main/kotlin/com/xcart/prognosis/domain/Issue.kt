@@ -25,6 +25,11 @@ data class Issue(
         if (cfield?.value is HashMap<*, *>) User(cfield.value) else null
     }()
 
+    val manager = {
+        val cfield = customFields.find { it.name == "PM" }
+        if (cfield?.value is HashMap<*, *>) User(cfield.value) else reporter
+    }()
+
     val client = {
         val cfield = customFields.find { it.name == "Client" }
         if (cfield?.value is HashMap<*, *>) cfield.value["name"] as String else null

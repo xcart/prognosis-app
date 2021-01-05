@@ -61,7 +61,7 @@ class ProjectAnalysis(private val issues: List<Issue>) {
 
     private fun findManager(issues: List<Issue>): User {
         return issues
-                .groupBy { it.reporter }
+                .groupBy { it.manager }
                 .filter { it.key != null }
                 .maxBy { it.value.size }
                 ?.key!!
