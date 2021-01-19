@@ -37,7 +37,7 @@ class YouTrack @Autowired constructor(config: Configuration) {
         try {
             return request.processResult()
         } catch (ex: Exception) {
-            throw ExternalServiceError("Error during communication with YouTrack API", ex)
+            throw ExternalServiceError("Error during communication with YouTrack API: " + ex.message, ex)
         }
     }
 }
