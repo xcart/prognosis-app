@@ -21,7 +21,7 @@ class XbApi @Autowired constructor(config: Configuration) {
     private val baseUrl = config.xbUrl
     private val xbPassword = config.xbPassword
 
-    @Cacheable("getAllVacations")
+    @Cacheable("getVacationsInfo")
     fun getVacationsInfo(): List<VacationPeriod> {
         val params = listOf(
                 "target" to "vacations_info",
@@ -38,7 +38,7 @@ class XbApi @Autowired constructor(config: Configuration) {
         }
     }
 
-    @CacheEvict("vacationsInfo")
+    @CacheEvict("getVacationsInfo")
     @Scheduled(fixedDelay = 3600000)
     fun cacheEvict() {}
 
