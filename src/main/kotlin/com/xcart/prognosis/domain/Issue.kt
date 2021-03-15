@@ -26,7 +26,7 @@ data class Issue(
     }()
 
     val manager = {
-        val cfield = customFields.find { it.name == "PM" }
+        val cfield = customFields.find { it.name == "Delivery Manager" }
         if (cfield?.value is HashMap<*, *>) User(cfield.value) else reporter
     }()
 
@@ -56,7 +56,7 @@ data class Issue(
      * Due date timestamp
      */
     private val verificationDate = {
-        val cfield = customFields.find { it.name == "Verification date" }
+        val cfield = customFields.find { it.name == "Verification Date" }
         if (cfield?.value !== null) Timestamp(cfield.value as Long).toLocalDateTime().toLocalDate() else null
     }()
 
