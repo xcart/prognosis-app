@@ -20,104 +20,103 @@ data class Issue(
         val reporter: User? = null,
         val customFields: List<IssueCustomField> = emptyList()
 ) {
-    val assignee = {
+    val assignee = run {
         val cfield = customFields.find { it.name == "Assignee" }
         if (cfield?.value is HashMap<*, *>) User(cfield.value) else null
-    }()
+    }
 
-    val manager = {
+    val manager = run {
         val cfield = customFields.find { it.name == "Delivery Manager" }
         if (cfield?.value is HashMap<*, *>) User(cfield.value) else reporter
-    }()
+    }
 
-    val client = {
+    val client = run {
         val cfield = customFields.find { it.name == "Client" }
         if (cfield?.value is HashMap<*, *>) cfield.value["name"] as String else null
-    }()
+    }
 
     /**
      * Start date timestamp (approximate)
      */
-    val startDate: LocalDate = {
+    val startDate: LocalDate = run {
         val cfield = customFields.find { it.name == "Start Date" }
         val timestamp = if (cfield?.value !== null) cfield.value as Long else created
         Timestamp(timestamp).toLocalDateTime().toLocalDate()
-    }()
+    }
 
     /**
      * Due date timestamp
      */
-    val dueDate = {
+    val dueDate = run {
         val cfield = customFields.find { it.name == "Due Date" }
         if (cfield?.value !== null) Timestamp(cfield.value as Long).toLocalDateTime().toLocalDate() else null
-    }()
+    }
 
     /**
      * Due date timestamp
      */
-    private val verificationDate = {
+    private val verificationDate = run {
         val cfield = customFields.find { it.name == "Verification Date" }
         if (cfield?.value !== null) Timestamp(cfield.value as Long).toLocalDateTime().toLocalDate() else null
-    }()
+    }
 
     // TODO: Add tests on depending fields
-    val state = {
+    val state = run {
         val cfield = customFields.find { it.name == "State" }
         if (cfield?.value === null || cfield.value !is HashMap<*, *>) {
             null
         } else {
             when (cfield.value["name"]) {
-                "New" -> IssueState.New
+                "Requested" -> IssueState.Requested
+                "Assigned" -> IssueState.Assigned
                 "Open" -> IssueState.Open
                 "In progress" -> IssueState.InProgress
                 "Waiting" -> IssueState.Waiting
                 "Quality Assurance" -> IssueState.QualityAssurance
                 "Has Defects" -> IssueState.HasDefects
-                "QA In Progress" -> IssueState.QaInProgress
+                "Ready To Deploy" -> IssueState.ReadyToDeploy
                 "QA Passed" -> IssueState.QaPassed
                 "Completed" -> IssueState.Completed
                 "Canceled" -> IssueState.Canceled
                 else -> null
             }
         }
-    }()
+    }
 
     /**
      * Start date timestamp (approximate)
      */
-    val endDate = {
-        when (state) {
-            IssueState.New,
-            IssueState.Open,
-            IssueState.InProgress,
-            IssueState.Waiting -> {
-                if (verificationDate !== null && verificationDate > LocalDate.now()) verificationDate else dueDate
-            }
-            else -> dueDate
+    val endDate = when (state) {
+        IssueState.Requested,
+        IssueState.Assigned,
+        IssueState.Open,
+        IssueState.InProgress,
+        IssueState.Waiting -> {
+            if (verificationDate !== null && verificationDate > LocalDate.now()) verificationDate else dueDate
         }
-    }()
+        else -> dueDate
+    }
 
     /**
      * Issue estimation in minutes
      */
-    val estimation = {
+    val estimation = run {
         val cfield = customFields.find { it.name == "Estimation" }
         val estimation = if (cfield?.value is HashMap<*, *>)
             cfield.value["minutes"] as Int
         else DEFAULT_ESTIMATION
-
         when (state) {
             IssueState.QualityAssurance,
-            IssueState.HasDefects,
-            IssueState.QaInProgress -> (estimation * 0.1f).toInt()
+            IssueState.HasDefects -> (estimation * 0.1f).toInt()
 
+            IssueState.ReadyToDeploy,
             IssueState.QaPassed,
             IssueState.Completed,
             IssueState.Canceled -> 0
 
             else -> estimation
         }
-    }()
+    }
 
     fun getBusinessDaysCount(): Int? {
         return if (endDate == null) {

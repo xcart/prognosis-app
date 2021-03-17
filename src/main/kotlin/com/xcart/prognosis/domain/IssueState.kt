@@ -1,5 +1,5 @@
 package com.xcart.prognosis.domain
 
 enum class IssueState {
-    New, Open, InProgress, Waiting, QualityAssurance, HasDefects, QaInProgress, QaPassed, Completed, Canceled
+    Requested, Assigned, Open, InProgress, Waiting, QualityAssurance, HasDefects, ReadyToDeploy, QaPassed, Completed, Canceled
 }
