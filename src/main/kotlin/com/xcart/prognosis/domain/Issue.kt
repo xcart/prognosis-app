@@ -75,7 +75,7 @@ data class Issue(
                 "Waiting" -> IssueState.Waiting
                 "Quality Assurance" -> IssueState.QualityAssurance
                 "Has Defects" -> IssueState.HasDefects
-                "Ready To Deploy" -> IssueState.ReadyToDeploy
+                "On Review" -> IssueState.OnReview
                 "QA Passed" -> IssueState.QaPassed
                 "Completed" -> IssueState.Completed
                 "Canceled" -> IssueState.Canceled
@@ -111,7 +111,7 @@ data class Issue(
             IssueState.QualityAssurance,
             IssueState.HasDefects -> (estimation * 0.1f).toInt()
 
-            IssueState.ReadyToDeploy,
+            IssueState.OnReview,
             IssueState.QaPassed,
             IssueState.Completed,
             IssueState.Canceled -> 0
