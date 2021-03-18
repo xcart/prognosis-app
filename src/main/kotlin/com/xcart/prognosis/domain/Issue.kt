@@ -67,7 +67,8 @@ data class Issue(
             null
         } else {
             when (cfield.value["name"]) {
-                "Requested" -> IssueState.Requested
+                "Scheduled" -> IssueState.Scheduled
+                "Submitted" -> IssueState.Submitted
                 "Assigned" -> IssueState.Assigned
                 "Open" -> IssueState.Open
                 "In progress" -> IssueState.InProgress
@@ -87,7 +88,8 @@ data class Issue(
      * Start date timestamp (approximate)
      */
     val endDate = when (state) {
-        IssueState.Requested,
+        IssueState.Scheduled,
+        IssueState.Submitted,
         IssueState.Assigned,
         IssueState.Open,
         IssueState.InProgress,
