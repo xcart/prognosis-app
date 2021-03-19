@@ -2,6 +2,13 @@
   export let state = null
 
   const getShortState = (state) => {
+    if (state === "Submitted") {
+      return "Su"
+    }
+    if (state === "Scheduled") {
+      return "Sc"
+    }
+
     return state.replace(/[^A-Z]/g, "")
   }
 </script>
@@ -17,16 +24,21 @@
         color: #fff;
     }
 
+    .issue-state.Su {
+        background-color: #D8F7F3;
+        color: #45818E;
+    }
+
+    .issue-state.Sc {
+        background-color: #25BEB2;
+    }
+
     .issue-state.W {
         background-color: #FF7BC3;
     }
 
     .issue-state.N {
         background-color: #A6E0FC;
-    }
-
-    .issue-state.O {
-        background-color: #25BEB2;
     }
 
     .issue-state.IP {
@@ -43,6 +55,10 @@
 
     .issue-state.QP {
         background-color: #8D5100;
+    }
+
+    .issue-state.OR {
+        background-color: #553000;
     }
 
     .issue-state.C {
