@@ -40,10 +40,6 @@
         align-items: center;
     }
 
-    .table-row + .table-row {
-        margin-top: var(--table-line-margin);
-    }
-
     .data-column {
         width: calc(var(--table-row-width) * var(--data-size));
         min-width: calc(var(--table-row-width) * var(--data-size));
@@ -58,11 +54,5 @@
 
     .data-column + .data-column {
         border-left: var(--table-item-separator);
-    }
-
-    .data-column .project-name {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
     }
 </style>

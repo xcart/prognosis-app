@@ -25,6 +25,10 @@
         width: max-content;
     }
 
+    :global(.table-body .table-row + .table-row) {
+        margin-top: var(--table-line-margin);
+    }
+
     .swimlanes-section {
         max-width: 90vw;
         overflow: scroll;

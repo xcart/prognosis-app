@@ -10,21 +10,21 @@
     let formatWorkload = (value) => (value / 60.0).toFixed(1)
     let getCellStyle = (item) => item.workload > 0 ? 'background: ' + getContinuousColorCode(item.workload) + ';' : ''
     let tooltipParams = (item) => {
-      if (item.type == "WorkingDay" && !isSingleIssue && item.issues && item.issues.length > 0) {
+      if (item.type === "WorkingDay" && !isSingleIssue && item.issues && item.issues.length > 0) {
         return {component: WorkloadItemTooltip, props: {issues: item.issues}, interactive: true}
-      } else if (item.type != "WorkingDay") {
+      } else if (item.type !== "WorkingDay") {
         return {component: DayOffTooltip, props: {type: item.type}}
       }
       return null
     }
     let getItemClass = (item) => {
-      return isSingleIssue && item.type == "WorkingDay" && item.workload == 0
+      return isSingleIssue && item.type === "WorkingDay" && item.workload == 0
         ? "empty"
         : item.type
     }
 </script>
 
-<div class="table-row user-swimlane">
+<div class="table-row">
   {#each swimlane as item}
       <div class="data-column {getItemClass(item)}"
            style="{getCellStyle(item)}"

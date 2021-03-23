@@ -21,7 +21,7 @@
   }
 </script>
 
-<div class="table-row user-swimlane">
+<div class="table-row">
     {#if project.offset > 0}
         <div class="data-column offset"
              style="--data-size: {project.offset}"></div>
@@ -42,10 +42,6 @@
         height: var(--table-extended-row-height);
         padding: var(--table-extended-row-v-padding);
         align-items: center;
-    }
-
-    .table-row + .table-row {
-        margin-top: var(--table-line-margin);
     }
 
     .data-column {

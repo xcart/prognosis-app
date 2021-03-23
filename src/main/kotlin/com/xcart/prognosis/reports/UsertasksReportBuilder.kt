@@ -14,7 +14,11 @@ import org.springframework.stereotype.Service
 import java.time.LocalDate
 
 @Service
-class UsertasksReportBuilder @Autowired constructor(val youTrack: YouTrack, val youTrackHub: YouTrackHub, val dayOff: DayOff) {
+class UsertasksReportBuilder @Autowired constructor(
+    val youTrack: YouTrack,
+    val youTrackHub: YouTrackHub,
+    val dayOff: DayOff
+) {
     fun gather(login: String, query: String): UsertasksReport {
         val hubUser = youTrackHub.fetchUser(login)
         return if (hubUser == null) {
@@ -31,9 +35,16 @@ class UsertasksReportBuilder @Autowired constructor(val youTrack: YouTrack, val 
     private fun getTaskWorkloadList(issues: List<Issue>): List<TaskWorkload> {
         val analysis = WorkloadAnalysis(issues, dayOff)
         return issues.fold(mutableListOf<TaskWorkload>()) { acc, issue ->
-            val swimlane = analysis.getIssueSwimlane(issue, LocalDate.now())
-            if (swimlane.isNotEmpty()) {
-                acc.add(TaskWorkload(swimlane, IssueInfo(issue), issue.startDate, issue.endDate!!))
+            if (issue.endDate != null) {
+                val swimlane = analysis.getIssueSwimlane(issue, LocalDate.now())
+                acc.add(
+                    TaskWorkload(
+                        swimlane,
+                        IssueInfo(issue),
+                        issue.startDate,
+                        issue.endDate
+                    )
+                )
             }
             acc
         }.sortedBy { it.startDate }

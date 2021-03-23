@@ -7,13 +7,13 @@ import java.util.*
 internal const val DEFAULT_ESTIMATION: Int = 4 * 60 // four hours
 
 data class Issue(
-        val id: String = "",
-        val idReadable: String = "",
-        val created: Long = 0,
-        val summary: String? = null,
-        val isDraft: Boolean = false,
-        val reporter: User? = null,
-        val customFields: List<IssueCustomField> = emptyList()
+    val id: String = "",
+    val idReadable: String = "",
+    val created: Long = 0,
+    val summary: String? = null,
+    val isDraft: Boolean = false,
+    val reporter: User? = null,
+    val customFields: List<IssueCustomField> = emptyList()
 ) {
     val assignee = run {
         val cfield = customFields.find { it.name == "Assignee" }
@@ -31,28 +31,32 @@ data class Issue(
     }
 
     /**
-     * Start date timestamp (approximate)
+     * Start date
      */
     val startDate: LocalDate = run {
         val cfield = customFields.find { it.name == "Start Date" }
-        val timestamp = if (cfield?.value !== null) cfield.value as Long else created
+        val timestamp =
+            if (cfield?.value !== null) cfield.value as Long else created
         Timestamp(timestamp).toLocalDateTime().toLocalDate()
     }
 
     /**
-     * Due date timestamp
+     * Due date
      */
     val dueDate = run {
         val cfield = customFields.find { it.name == "Due Date" }
-        if (cfield?.value !== null) Timestamp(cfield.value as Long).toLocalDateTime().toLocalDate() else null
+        if (cfield?.value !== null) Timestamp(
+            cfield.value as Long
+        ).toLocalDateTime().toLocalDate() else null
     }
 
     /**
-     * Due date timestamp
+     * Verification date
      */
     val verificationDate = run {
         val cfield = customFields.find { it.name == "Verification Date" }
-        if (cfield?.value !== null) Timestamp(cfield.value as Long).toLocalDateTime().toLocalDate() else null
+        if (cfield?.value !== null) Timestamp(cfield.value as Long)
+            .toLocalDateTime().toLocalDate() else dueDate
     }
 
     // TODO: Add tests on depending fields
@@ -84,7 +88,7 @@ data class Issue(
     }
 
     /**
-     * Start date timestamp (approximate)
+     * End date
      */
     val endDate = run {
         if (dueDate !== null)

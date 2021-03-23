@@ -16,10 +16,6 @@
         align-items: center;
     }
 
-    .table-row + .table-row {
-        margin-top: var(--table-line-margin);
-    }
-
     .full-column {
         width: 100%;
         display: flex;

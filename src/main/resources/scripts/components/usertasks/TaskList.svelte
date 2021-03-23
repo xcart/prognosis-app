@@ -67,10 +67,6 @@
         line-height: 1rem;
     }
 
-    .table-body .table-row + .table-row {
-        margin-top: var(--table-line-margin);
-    }
-
     .task-column {
         max-width: 176px;
         min-width: 176px;

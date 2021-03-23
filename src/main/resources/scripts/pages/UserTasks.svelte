@@ -6,6 +6,7 @@
   import {loadUsertasksReport} from "../actions";
   import SwimlanesCalendar from "../components/table/SwimlanesCalendar.svelte"
   import WorkloadSwimlane from "../components/table/WorkloadSwimlane.svelte"
+  import EmptySwimlane from "../components/table/EmptySwimlane.svelte"
 
   export let login = null
   let tasks = [],
@@ -43,7 +44,13 @@
             <TaskList {tasks} {user}/>
             <SwimlanesCalendar {duration}>
                 {#each tasks as task}
-                    <WorkloadSwimlane swimlane={task.swimlane} isSingleIssue={true}/>
+                    {#if task.overdue}
+                        <EmptySwimlane reason="Over due date" type="danger"/>
+                    {:else if task.missedVerification}
+                        <EmptySwimlane reason="Missed verification date (still in progress)"/>
+                    {:else}
+                        <WorkloadSwimlane swimlane={task.swimlane} isSingleIssue={true}/>
+                    {/if}
                 {/each}
             </SwimlanesCalendar>
         {:else if isReady($state)}

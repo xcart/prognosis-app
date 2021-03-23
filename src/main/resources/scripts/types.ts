@@ -36,6 +36,7 @@ export type IssueInfo = {
     idReadable: String
     summary: String
     startDate: String
+    verificationDate: String
     endDate: String
 }
 
