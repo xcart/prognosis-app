@@ -6,12 +6,12 @@
   export let type = "warning"
 </script>
 
-<div class="table-row">
+<div class="swimlane-note">
     <div class="reason-icon {type}">
         {#if type === "danger"}
-            <DangerIcon width="24"/>
+            <DangerIcon width="20" height="20"/>
         {:else}
-            <WarningIcon width="24"/>
+            <WarningIcon width="20" height="20"/>
         {/if}
     </div>
     <div class="reason-text">
@@ -20,10 +20,9 @@
 </div>
 
 <style>
-    .table-row {
+    .swimlane-note {
         display: flex;
-        height: var(--table-extended-row-height);
-        padding: var(--table-extended-row-v-padding);
+        height: 100%;
         align-items: center;
     }
 
@@ -33,7 +32,11 @@
         justify-content: center;
         flex-direction: column;
         position: relative;
-        margin-left: .5rem;
+        margin-left: 1rem;
+    }
+
+    .reason-text {
+        margin-left: .75rem;
     }
 
     .reason-icon.warning {

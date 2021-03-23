@@ -8,6 +8,7 @@ data class TaskWorkload(
     val swimlane: List<DailyWorkloadItem>,
     val issue: IssueInfo,
     val startDate: LocalDate,
+    val verificationDate: LocalDate,
     val endDate: LocalDate
 ) {
     val isOverdue = run {
@@ -15,6 +16,6 @@ data class TaskWorkload(
     }
 
     var isMissedVerification = run {
-        LocalDate.now() > issue.verificationDate
+        LocalDate.now() > verificationDate && issue.notImplemented
     }
 }

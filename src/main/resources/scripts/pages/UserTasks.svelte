@@ -1,12 +1,11 @@
 <script>
   import TaskList from "../components/usertasks/TaskList.svelte"
-  import {Container} from "sveltestrap"
   import {state, storedQuery} from '../stores'
   import {onMount} from 'svelte';
   import {loadUsertasksReport} from "../actions";
   import SwimlanesCalendar from "../components/table/SwimlanesCalendar.svelte"
   import WorkloadSwimlane from "../components/table/WorkloadSwimlane.svelte"
-  import EmptySwimlane from "../components/table/EmptySwimlane.svelte"
+  import SwimlaneNote from "../components/table/SwimlaneNote.svelte"
 
   export let login = null
   let tasks = [],
@@ -14,8 +13,18 @@
     user = null,
     query = null;
 
+  const MS_PER_DAY = 1000 * 60 * 60 * 24;
+
   function isReady(state) {
     return state.report.type === 'Usertasks' && state.report.login === login
+  }
+
+  function daysAfter(date) {
+    let now = new Date()
+    let due = new Date(date)
+    let start = Date.UTC(due.getFullYear(), due.getMonth(), due.getDate());
+    let end = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+    return Math.floor((end - start) / MS_PER_DAY);
   }
 
   $: {
@@ -44,13 +53,13 @@
             <TaskList {tasks} {user}/>
             <SwimlanesCalendar {duration}>
                 {#each tasks as task}
-                    {#if task.overdue}
-                        <EmptySwimlane reason="Over due date" type="danger"/>
-                    {:else if task.missedVerification}
-                        <EmptySwimlane reason="Missed verification date (still in progress)"/>
-                    {:else}
-                        <WorkloadSwimlane swimlane={task.swimlane} isSingleIssue={true}/>
-                    {/if}
+                    <WorkloadSwimlane swimlane={task.swimlane} isSingleIssue={true}>
+                        {#if task.overdue}
+                            <SwimlaneNote reason="Over due date by {daysAfter(task.endDate)} days ({task.endDate})" type="danger"/>
+                        {:else if task.missedVerification}
+                            <SwimlaneNote reason="Missed verification date by {daysAfter(task.verificationDate)} days"/>
+                        {/if}
+                    </WorkloadSwimlane>
                 {/each}
             </SwimlanesCalendar>
         {:else if isReady($state)}

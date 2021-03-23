@@ -9,11 +9,13 @@ data class IssueInfo(
     val startDate: LocalDate? = null,
     val verificationDate: LocalDate? = null,
     val endDate: LocalDate? = null,
-    val state: Enum<IssueState>? = null
+    val state: Enum<IssueState>? = null,
+    val notImplemented: Boolean = true
 ) {
     constructor(issue: Issue) : this(
         issue.id, issue.idReadable, issue.summary, issue.startDate,
         issue.verificationDate, issue.endDate,
-        issue.state
+        issue.state,
+        issue.isOnImplementationStage
     )
 }

@@ -42,6 +42,7 @@ class UsertasksReportBuilder @Autowired constructor(
                         swimlane,
                         IssueInfo(issue),
                         issue.startDate,
+                        issue.verificationDate!!,
                         issue.endDate
                     )
                 )
