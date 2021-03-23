@@ -36,7 +36,7 @@ class UsertasksReportBuilder @Autowired constructor(val youTrack: YouTrack, val 
                 acc.add(TaskWorkload(swimlane, IssueInfo(issue), issue.startDate, issue.endDate!!))
             }
             acc
-        }.sortedBy { it.endDate }
+        }.sortedBy { it.startDate }
     }
 
     private fun modifyQuery(query: String, login: String): String {

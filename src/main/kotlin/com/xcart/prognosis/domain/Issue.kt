@@ -4,7 +4,7 @@ import java.sql.Timestamp
 import java.time.LocalDate
 import java.util.*
 
-internal const val DEFAULT_ESTIMATION: Int = 150
+internal const val DEFAULT_ESTIMATION: Int = 4 * 60 // four hours
 
 data class Issue(
         val id: String = "",
@@ -50,7 +50,7 @@ data class Issue(
     /**
      * Due date timestamp
      */
-    private val verificationDate = run {
+    val verificationDate = run {
         val cfield = customFields.find { it.name == "Verification Date" }
         if (cfield?.value !== null) Timestamp(cfield.value as Long).toLocalDateTime().toLocalDate() else null
     }
@@ -77,6 +77,10 @@ data class Issue(
                 else -> null
             }
         }
+    }
+
+    val isOnImplementationStage = run {
+        (state?.ordinal ?: 0) < IssueState.QualityAssurance.ordinal
     }
 
     /**

@@ -24,6 +24,10 @@ object LocalDateExtensions {
         LocalDate.of(2021, 12, 31)
     )
 
+    fun LocalDate.nextDay(): LocalDate {
+        return this.plusDays(1)
+    }
+
     fun LocalDate.isBusinessDay(): Boolean {
         return !this.isHoliday() && !this.isWeekend()
     }
