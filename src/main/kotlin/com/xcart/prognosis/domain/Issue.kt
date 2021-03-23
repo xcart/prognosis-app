@@ -1,15 +1,10 @@
 package com.xcart.prognosis.domain
 
-import com.xcart.prognosis.domain.LocalDateExtensions.isBusinessDay
-import com.xcart.prognosis.domain.LocalDateExtensions.isVacationDay
-import com.xcart.prognosis.domain.LocalDateExtensions.listDaysUntil
-import com.xcart.prognosis.repositories.DayOff
-import com.xcart.prognosis.services.ContextUtil
 import java.sql.Timestamp
 import java.time.LocalDate
 import java.util.*
 
-internal const val DEFAULT_ESTIMATION: Int = 60
+internal const val DEFAULT_ESTIMATION: Int = 150
 
 data class Issue(
         val id: String = "",
@@ -87,16 +82,10 @@ data class Issue(
     /**
      * Start date timestamp (approximate)
      */
-    val endDate = when (state) {
-        IssueState.Scheduled,
-        IssueState.Submitted,
-        IssueState.Assigned,
-        IssueState.Open,
-        IssueState.InProgress,
-        IssueState.Waiting -> {
-            if (verificationDate !== null && verificationDate > LocalDate.now()) verificationDate else dueDate
-        }
-        else -> dueDate
+    val endDate = run {
+        if (dueDate !== null)
+            dueDate
+        else verificationDate
     }
 
     /**
@@ -108,28 +97,12 @@ data class Issue(
             cfield.value["minutes"] as Int
         else DEFAULT_ESTIMATION
         when (state) {
-            IssueState.QualityAssurance,
-            IssueState.HasDefects -> (estimation * 0.1f).toInt()
-
             IssueState.OnReview,
             IssueState.QaPassed,
             IssueState.Completed,
             IssueState.Canceled -> 0
 
             else -> estimation
-        }
-    }
-
-    fun getBusinessDaysCount(): Int? {
-        return if (endDate == null) {
-            null
-        } else {
-            // TODO: Rewrite without this ugly hack
-            val dayOff = ContextUtil.getBean(DayOff::class.java)
-            startDate.listDaysUntil(endDate)
-                    .filter { it.isBusinessDay() }
-                    .filter { assignee == null || !it.isVacationDay(dayOff.getUserVacations(assignee)) }
-                    .count()
         }
     }
 }

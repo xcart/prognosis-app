@@ -6,7 +6,6 @@ import com.xcart.prognosis.reports.workload.DailyWorkloadItem
 import com.xcart.prognosis.reports.workload.DailyWorkloadItemType
 import com.xcart.prognosis.repositories.DayOff
 import com.xcart.prognosis.repositories.XbApi
-import com.xcart.prognosis.services.ContextUtil
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -25,10 +24,14 @@ internal class WorkloadAnalysisTest {
     @MockBean
     lateinit var xbApi: XbApi
 
+    @MockBean
+    lateinit var dayOff: DayOff
+
     @BeforeAll
     fun setUp() {
         MockitoAnnotations.initMocks(this);
         Mockito.`when`(xbApi.getVacationsInfo()).thenReturn(emptyList())
+        Mockito.`when`(dayOff.getAllVacations()).thenReturn(emptyList())
     }
 
     @Test
@@ -60,11 +63,11 @@ internal class WorkloadAnalysisTest {
                 )
             )
         )
-        val vacations = ContextUtil.getBean(DayOff::class.java).getAllVacations()
+        val vacations = dayOff.getAllVacations()
         assertEquals(emptyList<VacationPeriod>(), vacations)
 
         val startDate = Timestamp(1577836800000).toLocalDateTime().toLocalDate()
-        val result = WorkloadAnalysis(issues).getDailyWorkloadForUser(User(login = "test"), startDate)
+        val result = WorkloadAnalysis(issues, dayOff).getDailyWorkloadForUser(User(login = "test"), startDate)
 
         val list1 = listOf(IssueInfo(issues[0]))
         val list2 = listOf(IssueInfo(issues[0]), IssueInfo(issues[1]))

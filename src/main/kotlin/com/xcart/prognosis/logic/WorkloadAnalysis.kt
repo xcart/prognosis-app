@@ -2,6 +2,7 @@ package com.xcart.prognosis.logic
 
 import com.xcart.prognosis.domain.Issue
 import com.xcart.prognosis.domain.IssueInfo
+import com.xcart.prognosis.domain.LocalDateExtensions.isBusinessDay
 import com.xcart.prognosis.domain.LocalDateExtensions.isHoliday
 import com.xcart.prognosis.domain.LocalDateExtensions.isVacationDay
 import com.xcart.prognosis.domain.LocalDateExtensions.isWeekend
@@ -10,12 +11,9 @@ import com.xcart.prognosis.domain.User
 import com.xcart.prognosis.reports.workload.DailyWorkloadItem
 import com.xcart.prognosis.reports.workload.DailyWorkloadItemType
 import com.xcart.prognosis.repositories.DayOff
-import com.xcart.prognosis.services.ContextUtil
 import java.time.LocalDate
 
-class WorkloadAnalysis(private val issues: List<Issue>) {
-
-    private var dayOff: DayOff = ContextUtil.getBean(DayOff::class.java)
+class WorkloadAnalysis (private val issues: List<Issue>, private val dayOff: DayOff) {
 
     fun getOverdueIssues(user: User, after: LocalDate): Int {
         val overdueIssues = issues
@@ -71,11 +69,22 @@ class WorkloadAnalysis(private val issues: List<Issue>) {
 
     private fun calculateWorkloadValue(issuesOnDay: List<Issue>): Float {
         return issuesOnDay.fold(0f) { acc, issue ->
-            val issueDays = issue.getBusinessDaysCount()
-            val workload: Float = if (issueDays != null && issueDays > 0)
+            val issueDays = getBusinessDaysCountForIssue(issue)
+            val workload: Float = if (issueDays > 0)
                 (issue.estimation / issueDays).toFloat()
             else 150.0f
             acc + workload
+        }
+    }
+
+    private fun getBusinessDaysCountForIssue(issue: Issue): Int {
+        return if (issue.endDate == null) {
+            0
+        } else {
+            issue.startDate.listDaysUntil(issue.endDate)
+                    .filter { it.isBusinessDay() }
+                    .filter { issue.assignee == null || !it.isVacationDay(dayOff.getUserVacations(issue.assignee)) }
+                    .count()
         }
     }
 }
