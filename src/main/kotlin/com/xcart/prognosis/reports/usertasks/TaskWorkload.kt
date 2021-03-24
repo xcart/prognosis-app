@@ -11,11 +11,11 @@ data class TaskWorkload(
     val verificationDate: LocalDate,
     val endDate: LocalDate
 ) {
-    val isOverdue = run {
+    val overdue = run {
         LocalDate.now() > endDate
     }
 
-    var isMissedVerification = run {
+    val missedVerification = run {
         LocalDate.now() > verificationDate && issue.notImplemented
     }
 }
