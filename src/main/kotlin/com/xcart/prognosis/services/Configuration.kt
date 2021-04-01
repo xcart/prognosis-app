@@ -28,4 +28,7 @@ class Configuration {
 
     @Value("\${auth.password}")
     lateinit var authPassword: String
+
+    @Value("\${auth.domains}")
+    lateinit var authorizedDomains: List<String>
 }

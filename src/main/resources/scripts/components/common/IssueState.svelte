@@ -2,6 +2,10 @@
   export let state = null
 
   const getShortState = (state) => {
+    if (!state) {
+      return ""
+    }
+
     if (state === "Submitted") {
       return "Su"
     }

@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "auth.password",
+      "type": "java.lang.String",
+      "description": "Basic Auth password."
+    },
+    {
+      "name": "xb.password",
+      "type": "java.lang.String",
+      "description": "XB API password."
+    },
+    {
+      "name": "youtrack.token",
+      "type": "java.lang.String",
+      "description": "Youtrack API permanent bearer token."
+    }
+  ]
+}

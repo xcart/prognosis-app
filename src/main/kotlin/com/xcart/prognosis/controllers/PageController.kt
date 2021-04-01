@@ -1,10 +1,12 @@
 package com.xcart.prognosis.controllers
 
 import com.xcart.prognosis.presentation.CommonPageState
+import com.xcart.prognosis.presentation.PageContext
 import com.xcart.prognosis.reports.ProjectsReportBuilder
 import com.xcart.prognosis.reports.Report
 import com.xcart.prognosis.reports.UsertasksReportBuilder
 import com.xcart.prognosis.reports.WorkloadReportBuilder
+import com.xcart.prognosis.services.AuthenticationFacade
 import com.xcart.prognosis.services.Configuration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
@@ -19,6 +21,7 @@ class PageController @Autowired constructor(
         val workload: WorkloadReportBuilder,
         val usertasks: UsertasksReportBuilder,
         val projects: ProjectsReportBuilder,
+        val authentication: AuthenticationFacade,
         val config: Configuration
 ) {
 
@@ -48,7 +51,8 @@ class PageController @Autowired constructor(
 
     private fun buildReportMav(query: String, report: Report): ModelAndView {
         val mav = ModelAndView("index")
-        val state = CommonPageState(query, report)
+        val context = PageContext(username = authentication.getUsername())
+        val state = CommonPageState(query, report, context)
         mav.addObject("state", state)
         return mav
     }
