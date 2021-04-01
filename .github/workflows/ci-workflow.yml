@@ -30,4 +30,4 @@ jobs:
             docker stop backend
             docker rm backend
             docker pull xcart/prognosis-app:latest
-            docker run -d --network shared --env XB_PASSWORD=${{ secrets.XB_PASSWORD }} --env YOUTRACK_TOKEN=${{ secrets.YOUTRACK_TOKEN }} --env AUTH_PASSWORD=${{ secrets.AUTH_PWD }} --name backend xcart/prognosis-app:latest
+            docker run -d --network shared --env XB_PASSWORD=${{ secrets.XB_PASSWORD }} --env YOUTRACK_TOKEN=${{ secrets.YOUTRACK_TOKEN }} --env SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID=${{ secrets.GOOGLE_CLIENTID }} --env SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET=${{ secrets.GOOGLE_CLIENTSECRET }} --name backend xcart/prognosis-app:latest
