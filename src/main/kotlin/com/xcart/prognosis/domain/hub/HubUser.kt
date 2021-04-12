@@ -16,6 +16,7 @@ data class HubUser(
             groups.find { it.name.contains("Alive Team") } != null -> Team.Alive
             groups.find { it.name.contains("Joy Team") } != null -> Team.Joy
             groups.find { it.name.contains("Mccornic Team") } != null -> Team.Mccornic
+            groups.find { it.name.contains("Sarta Team") } != null -> Team.Sarta
             else -> Team.NoTeam
         }
     }()
