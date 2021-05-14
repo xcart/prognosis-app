@@ -9,6 +9,9 @@ import com.xcart.prognosis.services.Configuration
 import com.xcart.prognosis.transport.configure
 import com.xcart.prognosis.transport.processResult
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -17,6 +20,7 @@ class YouTrackHub @Autowired constructor(config: Configuration) {
     private val permToken: String = config.youtrackToken
     private val userFields: String = "id,login,name,profile(avatar(url),email(email)),banned,groups(id,name)"
 
+    @Cacheable("getUsersFromYoutrackHub")
     fun fetchUsers(): List<HubUser> {
         return fetchUserPage().users
     }
@@ -35,6 +39,10 @@ class YouTrackHub @Autowired constructor(config: Configuration) {
                 "query" to query
         ))
     }
+
+    @CacheEvict("getUsersFromYoutrackHub")
+    @Scheduled(fixedDelay = 300000)
+    fun cacheEvict() {}
 
     private final inline fun <reified T : Any> performRequest(url: String, params: Parameters): T {
         val request = Fuel.get(baseUrl + url, params).configure(permToken)
