@@ -20,8 +20,9 @@
   --strip-bg-color: transparent;
   --strip-line-color: #ddd;
   --calendar-lines-color: #eee;
-  --icon-warning-color: #ffc107; // bootstrap $yellow
-  --icon-danger-color: #dc3545; // bootstrap $red
+  --icon-warning-color: var(--yellow);
+  --icon-danger-color: var(--red);
+  --verification-day: var(--pink);
 }
 
 .badge-row {

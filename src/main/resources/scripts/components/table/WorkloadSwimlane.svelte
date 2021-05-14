@@ -20,7 +20,7 @@
   let getItemClass = (item) => {
     return isSingleIssue && item.type === "WorkingDay" && item.workload == 0
       ? "empty"
-      : item.type
+      : item.type + " " + item.phase
   }
 </script>
 
@@ -83,6 +83,28 @@
         background: #fff;
         border-top: 1px solid #ccc;
         border-bottom: 1px solid #ccc;
+    }
+
+    .data-column.VerificationDay {
+        position: relative;
+        border-right: 2px solid var(--verification-day);
+    }
+
+    .data-column.VerificationDay::after {
+        position: absolute;
+        right: -7px;
+        z-index: 1;
+        top: -1px;
+        content: "";
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid var(--verification-day);
+    }
+
+    .data-column.WorkingDay.Testing {
+        opacity: .7;
     }
 
     .data-column.Vacation {

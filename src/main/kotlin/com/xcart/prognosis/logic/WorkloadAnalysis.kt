@@ -11,13 +11,17 @@ import com.xcart.prognosis.domain.LocalDateExtensions.nextDay
 import com.xcart.prognosis.domain.User
 import com.xcart.prognosis.domain.VacationPeriod
 import com.xcart.prognosis.reports.workload.DailyWorkloadItem
+import com.xcart.prognosis.reports.workload.DailyWorkloadItemPhase
 import com.xcart.prognosis.reports.workload.DailyWorkloadItemType
 import com.xcart.prognosis.repositories.DayOff
 import java.time.LocalDate
 
 internal const val TESTING_PHASE_RATE: Float = 0.2f
 
-class WorkloadAnalysis(private val issues: List<Issue>, private val dayOff: DayOff) {
+class WorkloadAnalysis(
+    private val issues: List<Issue>,
+    private val dayOff: DayOff
+) {
 
     fun getOverdueIssues(user: User, after: LocalDate): Int {
         val overdueIssues = issues
@@ -29,7 +33,10 @@ class WorkloadAnalysis(private val issues: List<Issue>, private val dayOff: DayO
         return overdueIssues.sumBy { it.estimation }
     }
 
-    fun getDailyWorkloadForUser(user: User, startDate: LocalDate): List<DailyWorkloadItem> {
+    fun getDailyWorkloadForUser(
+        user: User,
+        startDate: LocalDate
+    ): List<DailyWorkloadItem> {
         val userIssues = issues.filter { it.assignee?.login == user.login }
         val filteredIssues = userIssues.filter { it.endDate != null }
         val lastIssue = filteredIssues.maxBy { it.endDate ?: LocalDate.MIN }
@@ -45,7 +52,10 @@ class WorkloadAnalysis(private val issues: List<Issue>, private val dayOff: DayO
         }
     }
 
-    fun getIssueSwimlane(issue: Issue, startDate: LocalDate): List<DailyWorkloadItem> {
+    fun getIssueSwimlane(
+        issue: Issue,
+        startDate: LocalDate
+    ): List<DailyWorkloadItem> {
         if (issue.assignee == null || issue.endDate == null || issue.endDate < startDate) {
             return emptyList()
         }
@@ -61,20 +71,37 @@ class WorkloadAnalysis(private val issues: List<Issue>, private val dayOff: DayO
         return { date ->
             val issuesOnDay = issues
                 .filter { it.startDate <= date && it.endDate!! >= date }
-            val issueInfo = if (singleIssue) null else issuesOnDay.map { IssueInfo(it) }
+            val issueInfo = if (singleIssue) null
+            else issuesOnDay.map { IssueInfo(it) }
             val vacations = dayOff.getUserVacations(user)
+            val verificationDate =
+                if (singleIssue && !issuesOnDay.isNullOrEmpty())
+                    issuesOnDay.first()
+                        .verificationDate else null
+
             val type = when {
                 date.isVacationDay(vacations) -> DailyWorkloadItemType.Vacation
                 date.isHoliday() -> DailyWorkloadItemType.Holiday
                 date.isWeekend() -> DailyWorkloadItemType.Weekend
                 else -> DailyWorkloadItemType.WorkingDay
             }
+
+            val phase = when {
+                verificationDate != null && date == verificationDate ->
+                    DailyWorkloadItemPhase.VerificationDay
+                verificationDate != null && date > verificationDate ->
+                    DailyWorkloadItemPhase.Testing
+                else -> DailyWorkloadItemPhase.Implementation
+            }
+
             val value = when {
                 type == DailyWorkloadItemType.WorkingDay
-                    && issuesOnDay.isNotEmpty() -> calculateWorkloadValue(date, issuesOnDay, vacations)
+                    && issuesOnDay.isNotEmpty() -> calculateWorkloadValue(
+                    date, issuesOnDay, vacations
+                )
                 else -> 0f
             }
-            DailyWorkloadItem(date, value, issueInfo, type)
+            DailyWorkloadItem(date, value, issueInfo, type, phase)
         }
     }
 
@@ -89,7 +116,8 @@ class WorkloadAnalysis(private val issues: List<Issue>, private val dayOff: DayO
             val workload = if (day <= verificationDate) {
                 if (issue.isOnImplementationStage) {
                     getDistributedWorkload(
-                        issue.estimation, issue.startDate, verificationDate, vacations
+                        issue.estimation, issue.startDate, verificationDate,
+                        vacations
                     )
                 } else {
                     0.0f
