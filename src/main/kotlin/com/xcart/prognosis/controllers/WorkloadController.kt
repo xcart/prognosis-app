@@ -27,7 +27,10 @@ class WorkloadController @Autowired constructor(
             config.queryIssues
         else query
 
-        val context = PageContext(username = authentication.getUsername())
+        val context = PageContext(
+            username = authentication.getUsername(),
+            youtrackUrl = config.youtrackUrl
+        )
         val report =
             CommonPageState(
                 queryToUse, reportBuilder.gather(queryToUse),

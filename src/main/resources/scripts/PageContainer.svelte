@@ -5,6 +5,7 @@
   import Workload from "./pages/Workload.svelte";
   import UserTasks from "./pages/UserTasks.svelte";
   import Projects from "./pages/Projects.svelte"
+  import Project from "./pages/Project.svelte"
   import Avatar from "./components/common/Avatar.svelte"
 
   export let url = "";
@@ -19,6 +20,14 @@
     <Route path="/projects">
         <Container class="page-container" fluid>
             <Projects/>
+        </Container>
+    </Route>
+    <Route path="/projects/:client" let:params>
+        <PageHeader>
+            {params.client} tasks
+        </PageHeader>
+        <Container class="page-container" fluid>
+            <Project client="{params.client}"/>
         </Container>
     </Route>
     <Route path="/tasks/:login" let:params>

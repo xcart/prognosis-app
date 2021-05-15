@@ -31,7 +31,7 @@ class AuthenticationConfiguration @Autowired constructor(
 
     override fun configure(http: HttpSecurity) {
         http
-            .authorizeRequests { it.anyRequest().authenticated() }
+            .authorizeRequests { it.anyRequest().permitAll() }
             .exceptionHandling {
                 it.defaultAuthenticationEntryPointFor(
                     HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED),

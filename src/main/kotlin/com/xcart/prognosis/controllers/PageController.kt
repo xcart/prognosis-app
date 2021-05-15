@@ -2,10 +2,7 @@ package com.xcart.prognosis.controllers
 
 import com.xcart.prognosis.presentation.CommonPageState
 import com.xcart.prognosis.presentation.PageContext
-import com.xcart.prognosis.reports.ProjectsReportBuilder
-import com.xcart.prognosis.reports.Report
-import com.xcart.prognosis.reports.UsertasksReportBuilder
-import com.xcart.prognosis.reports.WorkloadReportBuilder
+import com.xcart.prognosis.reports.*
 import com.xcart.prognosis.services.AuthenticationFacade
 import com.xcart.prognosis.services.Configuration
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,11 +15,12 @@ import org.springframework.web.servlet.ModelAndView
 
 @Controller
 class PageController @Autowired constructor(
-        val workload: WorkloadReportBuilder,
-        val usertasks: UsertasksReportBuilder,
-        val projects: ProjectsReportBuilder,
-        val authentication: AuthenticationFacade,
-        val config: Configuration
+    val workload: WorkloadReportBuilder,
+    val usertasks: UsertasksReportBuilder,
+    val project: ProjectReportBuilder,
+    val projects: ProjectsReportBuilder,
+    val authentication: AuthenticationFacade,
+    val config: Configuration
 ) {
 
     @RequestMapping("/")
@@ -34,9 +32,12 @@ class PageController @Autowired constructor(
     }
 
     @RequestMapping("/tasks/{login}")
-    fun tasks(@PathVariable login: String, @RequestParam query: String?): ModelAndView {
+    fun tasks(
+        @PathVariable login: String,
+        @RequestParam query: String?
+    ): ModelAndView {
         val queryToUse = if (query.isNullOrEmpty())
-             config.queryIssues
+            config.queryIssues
         else query
         return buildReportMav(queryToUse, usertasks.gather(login, queryToUse))
     }
@@ -44,14 +45,26 @@ class PageController @Autowired constructor(
     @RequestMapping("/projects")
     fun projects(@RequestParam query: String?): ModelAndView {
         val queryToUse = if (query.isNullOrEmpty())
-             config.queryProjects
+            config.queryProjects
         else query
         return buildReportMav(queryToUse, projects.gather(queryToUse))
     }
 
+    @RequestMapping("/projects/{client}")
+    fun project(@PathVariable client: String, @RequestParam query: String?):
+        ModelAndView {
+        val queryToUse = if (query.isNullOrEmpty())
+            config.queryIssues
+        else query
+        return buildReportMav(queryToUse, project.gather(client, queryToUse))
+    }
+
     private fun buildReportMav(query: String, report: Report): ModelAndView {
         val mav = ModelAndView("index")
-        val context = PageContext(username = authentication.getUsername())
+        val context = PageContext(
+            username = authentication.getUsername(),
+            youtrackUrl = config.youtrackUrl
+        )
         val state = CommonPageState(query, report, context)
         mav.addObject("state", state)
         return mav

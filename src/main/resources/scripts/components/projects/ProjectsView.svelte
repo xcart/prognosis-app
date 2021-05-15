@@ -6,10 +6,16 @@
 
   export let groups = null
   export let duration = null
-  let displayMode = "cards"
+  let displayMode = localStorage.getItem("projects.displayMode") || "timeline"
 
-  let displayCards = () => displayMode = "cards"
-  let displayTimeline = () => displayMode = "timeline"
+  let displayCards = () => {
+    displayMode = "cards"
+    localStorage.setItem("projects.displayMode", displayMode)
+  }
+  let displayTimeline = () => {
+    displayMode = "timeline"
+    localStorage.setItem("projects.displayMode", displayMode)
+  }
 </script>
 
 <div class="project-section">

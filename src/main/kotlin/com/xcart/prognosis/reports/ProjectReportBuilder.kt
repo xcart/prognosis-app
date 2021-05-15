@@ -2,9 +2,8 @@ package com.xcart.prognosis.reports
 
 import com.xcart.prognosis.domain.Issue
 import com.xcart.prognosis.domain.IssueInfo
-import com.xcart.prognosis.domain.User
 import com.xcart.prognosis.logic.WorkloadAnalysis
-import com.xcart.prognosis.reports.usertasks.UsertasksReport
+import com.xcart.prognosis.reports.project.ProjectReport
 import com.xcart.prognosis.reports.workload.TaskWorkload
 import com.xcart.prognosis.repositories.DayOff
 import com.xcart.prognosis.repositories.YouTrack
@@ -14,26 +13,25 @@ import org.springframework.stereotype.Service
 import java.time.LocalDate
 
 @Service
-class UsertasksReportBuilder @Autowired constructor(
+class ProjectReportBuilder @Autowired constructor(
     val youTrack: YouTrack,
     val youTrackHub: YouTrackHub,
     val dayOff: DayOff
 ) {
-    fun gather(login: String, query: String): UsertasksReport {
-        val hubUser = youTrackHub.fetchUser(login)
-        return if (hubUser == null) {
-            UsertasksReport(emptyList(), 0, null, login)
-        } else {
-            val user = User(hubUser)
-            val issues = youTrack.fetchIssues(modifyQuery(query, login))
+    fun gather(client: String, query: String): ProjectReport {
+//        val hubUser = youTrackHub.fetchUser(login)
+//        return if (hubUser == null) {
+//            UsertasksReport(emptyList(), 0, null, login)
+//        } else {
+//            val user = User(hubUser)
+            val issues = youTrack.fetchIssues(modifyQuery(query, client))
             val tasks = getTaskWorkloadList(issues)
             val duration = getReportDuration(tasks)
-            UsertasksReport(tasks, duration, user, login)
-        }
+            return ProjectReport(tasks, duration, null, client)
+//        }
     }
 
-    private fun getTaskWorkloadList(issues: List<Issue>):
-        List<TaskWorkload> {
+    private fun getTaskWorkloadList(issues: List<Issue>): List<TaskWorkload> {
         val analysis = WorkloadAnalysis(issues, dayOff)
         return issues.fold(mutableListOf<TaskWorkload>()) { acc, issue ->
             if (issue.endDate != null) {
@@ -53,8 +51,8 @@ class UsertasksReportBuilder @Autowired constructor(
         }.sortedBy { it.startDate }
     }
 
-    private fun modifyQuery(query: String, login: String): String {
-        return "$query Assignee: $login"
+    private fun modifyQuery(query: String, client: String): String {
+        return "$query Client: {$client}"
     }
 
     private fun getReportDuration(tasks: List<TaskWorkload>): Number {

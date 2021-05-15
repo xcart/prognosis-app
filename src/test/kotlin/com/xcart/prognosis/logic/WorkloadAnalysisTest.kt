@@ -39,7 +39,8 @@ internal class WorkloadAnalysisTest {
         val user = hashMapOf<String, Any?>(
             "id" to "1",
             "login" to "test",
-            "fullName" to "Test User"
+            "fullName" to "Test User",
+            "avatarUrl" to "/test.jpg"
         )
         val issues = listOf<Issue>(
             // 2020-01-01 - 2020-01-10
@@ -97,7 +98,8 @@ internal class WorkloadAnalysisTest {
         val user = hashMapOf<String, Any?>(
             "id" to "1",
             "login" to "test",
-            "fullName" to "Test User"
+            "fullName" to "Test User",
+            "avatarUrl" to "/test.jpg"
         )
 
         val issueSameDay = Issue(

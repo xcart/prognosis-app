@@ -1,7 +1,7 @@
-package com.xcart.prognosis.reports.usertasks
+package com.xcart.prognosis.reports.workload
 
 import com.xcart.prognosis.domain.IssueInfo
-import com.xcart.prognosis.reports.workload.DailyWorkloadItem
+import com.xcart.prognosis.domain.User
 import java.time.LocalDate
 
 data class TaskWorkload(
@@ -9,7 +9,8 @@ data class TaskWorkload(
     val issue: IssueInfo,
     val startDate: LocalDate,
     val verificationDate: LocalDate,
-    val endDate: LocalDate
+    val endDate: LocalDate,
+    val assignee: User? = null
 ) {
     val overdue = run {
         LocalDate.now() > endDate

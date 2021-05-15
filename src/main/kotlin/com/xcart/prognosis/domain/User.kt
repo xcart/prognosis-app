@@ -1,7 +1,6 @@
 package com.xcart.prognosis.domain
 
 import com.xcart.prognosis.domain.hub.HubUser
-import java.util.*
 
 data class User(
         val id: String = "",
@@ -15,7 +14,8 @@ data class User(
     constructor(data: HashMap<*, *>) : this(
             id = data["id"] as String,
             login = data["login"] as String,
-            fullName = data["fullName"] as String
+            fullName = data["fullName"] as String,
+            avatarUrl = data["avatarUrl"] as String
     )
 
     constructor(user: HubUser) : this(
@@ -28,7 +28,5 @@ data class User(
             _team = user.team
     )
 
-    val team = {
-        _team ?: Team.NoTeam
-    }()
+    val team = _team ?: Team.NoTeam
 }

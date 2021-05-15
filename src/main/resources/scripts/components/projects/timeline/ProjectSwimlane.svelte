@@ -1,14 +1,14 @@
 <script>
   import {getContinuousColorCode} from "../../../util/colorCode"
+  import {Link} from "svelte-routing";
   import {storedQuery} from '../../../stores'
 
   export let project = null
 
   let formatEstimation = (value) => (value / 60.0).toFixed(1) + "h"
-  let getClientLink = (client) => {
-    return "https://xcart.myjetbrains.com/youtrack/issues?q="
-      + encodeURIComponent($storedQuery)
-      + encodeURIComponent(" Client: {" + client + "}")
+
+  let buildProjectUrl = (client) => {
+    return "/projects/" + encodeURIComponent(client) + "?query=" + encodeURIComponent($storedQuery)
   }
 
   let formatProjectName = (project) => project.client + " " + formatEstimation(project.estimation)
@@ -28,17 +28,13 @@
     {/if}
     <div class="data-column"
          style="--data-size: {getSize(project)};">
-        <a class="project-name" href={getClientLink(project.client)}
-           target="_blank">
-            {formatProjectName(project)}
-        </a>
+        <Link to="{buildProjectUrl(project.client)}">{formatProjectName(project)}</Link>
     </div>
 </div>
 
 <style>
     .table-row {
         display: flex;
-        height: var(--table-extended-row-height);
         height: var(--table-extended-row-height);
         padding: var(--table-extended-row-v-padding);
         align-items: center;
@@ -61,7 +57,7 @@
         visibility: hidden;
     }
 
-    .data-column .project-name {
+    .data-column :global(a) {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;

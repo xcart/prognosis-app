@@ -5,13 +5,21 @@
   import Avatar from "../common/Avatar.svelte"
 
   export let tasks = null
-  export let user = null
+
+  const clientRegex = /^\[.+?\]\s+(.*)/
+
+  let formatTaskName = (name) => {
+    let matches = name.match(clientRegex)
+    return matches
+      ? matches[1]
+      : name;
+  }
 </script>
 
-<div class="task-section">
+<div class="project-task-section">
     <div class="table-header">
         <div class="table-row">
-            <Avatar {user} size="large" />
+            <span></span>
         </div>
         <div class="table-row">
             <span></span>
@@ -20,8 +28,11 @@
     <div class="table-body">
         {#each tasks as task}
             <div class="table-row">
+                <div class="avatar-column">
+                    <Avatar user={task.assignee}/>
+                </div>
                 <div class="issue-state-column">
-                    <IssueState state={task.issue.state} />
+                    <IssueState state={task.issue.state}/>
                 </div>
                 <div class="task-column">
                     <a class="issue-link" href="https://xcart.myjetbrains.com/youtrack/issue/{task.issue.idReadable}"
@@ -30,7 +41,7 @@
                     </a>
                     <small class="issue-summary"
                            use:tooltip={{component: TaskSummaryTooltip, props: {summary: task.issue.summary}, interactive: false}}
-                    >{task.issue.summary}</small>
+                    >{formatTaskName(task.issue.summary)}</small>
                 </div>
             </div>
         {/each}
@@ -44,7 +55,7 @@
         white-space: nowrap;
     }
 
-    .task-section {
+    .project-task-section {
         border-right: var(--table-border);
     }
 
@@ -79,7 +90,11 @@
         position: relative;
     }
 
-    .task-section :global(.user-avatar-block) {
+    .issue-state-column {
+        padding-left: 1rem;
+    }
+
+    .project-task-section :global(.user-avatar-block) {
         align-self: flex-start;
     }
 </style>

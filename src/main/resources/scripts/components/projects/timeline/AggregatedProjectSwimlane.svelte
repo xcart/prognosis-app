@@ -5,20 +5,6 @@
   export let swimlane = null
 
   let formatEstimation = (value) => (value / 60.0).toFixed(1) + "h"
-  // let getClientLink = (client) => {
-  //   return "https://xcart.myjetbrains.com/youtrack/issues?q="
-  //     + encodeURIComponent($storedQuery)
-  //     + encodeURIComponent(" Client: {" + client + "}")
-  // }
-  //
-  // let formatProjectName = (project) => project.client + " " + formatEstimation(project.estimation)
-  // let getBackgroundCode = (project) => getContinuousColorCode(project.estimation / project.duration)
-  // let getSize = (project) => {
-  //   if (project.offset >= 0) {
-  //     return project.duration
-  //   }
-  //   return project.duration + project.offset
-  // }
 </script>
 
 <div class="table-row aggregated-swimlane">
@@ -34,7 +20,6 @@
 <style>
     .table-row {
         display: flex;
-        height: var(--table-extended-row-height);
         height: var(--table-extended-row-height);
         padding: var(--table-extended-row-v-padding);
         align-items: center;

@@ -42,6 +42,10 @@ export function loadUsertasksReport(user, query = "") {
     loadPageState("/usertasks/" + user, "/tasks/" + user, {query: query})
 }
 
+export function loadProjectReport(client, query = "") {
+    loadPageState("/projects/" + client, "/projects/" + client, {query: query})
+}
+
 export function loadProjectsReport(query = "") {
     loadPageState("/projects", "/projects", {query: query})
 }
