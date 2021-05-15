@@ -1,6 +1,11 @@
 <script>
   import Dates from "../table/Dates.svelte"
   export let duration = null
+  $: {
+    if (duration < 40) {
+      duration = 40
+    }
+  }
 
   let stripOffset = () => (7 - (new Date()).getUTCDay() + 1)
 </script>
