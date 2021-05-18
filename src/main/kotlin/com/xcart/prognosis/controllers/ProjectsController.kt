@@ -43,7 +43,7 @@ class ProjectsController @Autowired constructor(
         @RequestParam query: String?
     ): ResponseEntity<CommonPageState> {
         val queryToUse = if (query.isNullOrEmpty())
-            config.queryIssues
+            config.queryProjects
         else query
 
         val context = PageContext(

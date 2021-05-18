@@ -35,6 +35,10 @@
   }
 }
 
+.hidden {
+  display: none !important;
+}
+
 @import '~bootstrap/scss/bootstrap';
 @import '~tippy.js/dist/tippy';
 @import '~tippy.js/themes/light';

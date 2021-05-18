@@ -10,8 +10,15 @@
   export let client = null
   let tasks = [],
     duration = null,
-    // user = null,
     query = null;
+
+  let showTestingPhase = localStorage.getItem("project.showTestingPhase") !== null
+      ? JSON.parse(localStorage.getItem("project.showTestingPhase"))
+      : true
+
+  $: if (showTestingPhase !== null) {
+    localStorage.setItem("project.showTestingPhase", JSON.stringify(showTestingPhase))
+  }
 
   const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
@@ -29,31 +36,42 @@
 
   $: {
     if (isReady($state)) {
-      query = $state.query
+      // query = $state.query
       tasks = $state.report.tasks
-      // user = $state.report.user
       duration = $state.report.duration
     } else {
-      query = $storedQuery
+      // query = $storedQuery
     }
   }
 
   onMount(() => {
     if (!isReady($state)) {
-      loadProjectReport(client, $storedQuery)
+      loadProjectReport(client)
+      // loadProjectReport(client, $storedQuery)
     } else {
-      storedQuery.set($state.query)
+      // storedQuery.set($state.query)
     }
   })
 </script>
 
 <section class="page">
+    <div class="table-header container">
+        <div></div>
+        <form class="ml-auto title-aside">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" bind:checked="{showTestingPhase}" value="" id="showTestingPhase">
+                <label class="form-check-label" for="showTestingPhase">
+                    Show testing phase
+                </label>
+            </div>
+        </form>
+    </div>
     <div class="project-table">
         {#if tasks.length > 0}
             <ProjectTaskList {tasks}/>
             <SwimlanesCalendar {duration}>
                 {#each tasks as task}
-                    <WorkloadSwimlane swimlane={task.swimlane} isSingleIssue={true}>
+                    <WorkloadSwimlane swimlane={task.swimlane} isSingleIssue={true} showTestingPhase={showTestingPhase}>
                         {#if task.overdue}
                             <SwimlaneNote reason="Over due date by {daysAfter(task.endDate)} days ({task.endDate})" type="danger"/>
                         {:else if task.missedVerification}
@@ -73,5 +91,16 @@
 <style>
     .project-table {
         display: flex;
+    }
+
+    .table-header {
+        display: flex;
+        position: relative
+    }
+
+    .title-aside {
+        position: absolute;
+        top: -60px;
+        right: 15px;
     }
 </style>

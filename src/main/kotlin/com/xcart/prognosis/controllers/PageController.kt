@@ -54,7 +54,7 @@ class PageController @Autowired constructor(
     fun project(@PathVariable client: String, @RequestParam query: String?):
         ModelAndView {
         val queryToUse = if (query.isNullOrEmpty())
-            config.queryIssues
+            config.queryProjects
         else query
         return buildReportMav(queryToUse, project.gather(client, queryToUse))
     }

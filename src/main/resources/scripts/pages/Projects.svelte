@@ -14,19 +14,20 @@
 
     $: {
         if (isReady($state)) {
-            query = $state.query
+            // query = $state.query
             duration = $state.report.duration
             groups = $state.report.groups
         } else {
-            query = $storedQuery
+            // query = $storedQuery
         }
     }
 
     onMount(() => {
         if (!isReady($state)) {
-            loadProjectsReport($storedQuery)
+            loadProjectsReport()
+            // loadProjectsReport($storedQuery)
         } else {
-            storedQuery.set($state.query)
+            // storedQuery.set($state.query)
         }
     })
 </script>

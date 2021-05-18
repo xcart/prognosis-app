@@ -6,10 +6,11 @@
 
   export let swimlane = null
   export let isSingleIssue = false
+  export let showTestingPhase = true
 
   let formatWorkload = (value) => (value / 60.0).toFixed(1)
   let getCellStyle = (item) => item.workload > 0 ? 'background: ' + getContinuousColorCode(item.workload) + ';' : ''
-  let tooltipParams = (item) => {
+  let tooltipParams = (item, isSingleIssue) => {
     if (item.type === "WorkingDay" && !isSingleIssue && item.issues && item.issues.length > 0) {
       return {component: WorkloadItemTooltip, props: {issues: item.issues}, interactive: true}
     } else if (item.type !== "WorkingDay") {
@@ -17,18 +18,25 @@
     }
     return null
   }
-  let getItemClass = (item) => {
-    return isSingleIssue && item.type === "WorkingDay" && item.workload == 0
-      ? "empty"
-      : item.type + " " + item.phase
+
+  let getItemClass = (item, isSingleIssue, showTestingPhase) => {
+    if (isSingleIssue && item.type === "WorkingDay" && item.workload == 0) {
+      return "empty"
+    }
+
+    if (isSingleIssue && !showTestingPhase && item.phase === "Testing") {
+      return "hidden"
+    }
+
+    return item.type + " " + item.phase
   }
 </script>
 
 <div class="table-row">
     {#each swimlane as item}
-        <div class="data-column {getItemClass(item)}"
+        <div class="data-column {getItemClass(item, isSingleIssue, showTestingPhase)}"
              style="{getCellStyle(item)}"
-             use:tooltip={tooltipParams(item)}>
+             use:tooltip={tooltipParams(item, isSingleIssue)}>
             <span class="workload-value ">{formatWorkload(item.workload)}</span>
         </div>
     {/each}
