@@ -3,6 +3,7 @@ package com.xcart.prognosis.reports.workload
 import com.xcart.prognosis.domain.IssueInfo
 import com.xcart.prognosis.domain.User
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 data class TaskWorkload(
     val swimlane: List<DailyWorkloadItem>,
@@ -12,6 +13,10 @@ data class TaskWorkload(
     val endDate: LocalDate,
     val assignee: User? = null
 ) {
+    val offset = run {
+        ChronoUnit.DAYS.between(LocalDate.now(), startDate)
+    }
+
     val overdue = run {
         LocalDate.now() > endDate
     }

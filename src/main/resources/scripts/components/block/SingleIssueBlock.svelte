@@ -1,30 +1,28 @@
 <script>
   import {getContinuousColorCode} from "../../util/colorCode"
   import {tooltip} from "../../actions/tooltip";
-  import WorkloadItemTooltip from "./WorkloadItemTooltip.svelte"
-  import DayOffTooltip from "./DayOffTooltip.svelte"
+  import WorkloadItemTooltip from "../tooltip/WorkloadItemTooltip.svelte"
+  import DayOffTooltip from "../tooltip/DayOffTooltip.svelte"
+  import RowContainer from "../table/RowContainer.svelte"
 
-  export let swimlane = null
-  export let isSingleIssue = false
+  export let swimlane = []
   export let showTestingPhase = true
 
   let formatWorkload = (value) => (value / 60.0).toFixed(1)
   let getCellStyle = (item) => item.workload > 0 ? 'background: ' + getContinuousColorCode(item.workload) + ';' : ''
-  let tooltipParams = (item, isSingleIssue) => {
-    if (item.type === "WorkingDay" && !isSingleIssue && item.issues && item.issues.length > 0) {
-      return {component: WorkloadItemTooltip, props: {issues: item.issues}, interactive: true}
-    } else if (item.type !== "WorkingDay") {
+  let tooltipParams = (item) => {
+    if (item.type !== "WorkingDay") {
       return {component: DayOffTooltip, props: {type: item.type}}
     }
     return null
   }
 
-  let getItemClass = (item, isSingleIssue, showTestingPhase) => {
-    if (isSingleIssue && item.type === "WorkingDay" && item.workload == 0) {
+  let getItemClass = (item, showTestingPhase) => {
+    if (item.type === "WorkingDay" && item.workload == 0) {
       return "empty"
     }
 
-    if (isSingleIssue && !showTestingPhase && item.phase === "Testing") {
+    if (!showTestingPhase && item.phase === "Testing") {
       return "hidden"
     }
 
@@ -32,34 +30,23 @@
   }
 </script>
 
-<div class="table-row">
+<RowContainer className="single-issue-block">
     {#each swimlane as item}
-        <div class="data-column {getItemClass(item, isSingleIssue, showTestingPhase)}"
+        <div class="data-column {getItemClass(item, showTestingPhase)}"
              style="{getCellStyle(item)}"
-             use:tooltip={tooltipParams(item, isSingleIssue)}>
+             use:tooltip={tooltipParams(item)}>
             <span class="workload-value ">{formatWorkload(item.workload)}</span>
         </div>
     {/each}
     <slot></slot>
-</div>
+</RowContainer>
 
 <style>
-    .table-row {
-        display: flex;
-        height: var(--table-extended-row-height);
-        padding: var(--table-extended-row-v-padding);
-        align-items: center;
-    }
-
-    .table-row + .table-row {
-        margin-top: var(--table-line-margin);
-    }
-
     .data-column {
-        width: var(--table-row-width);
-        min-width: var(--table-row-width);
-        max-width: var(--table-row-width);
-        display: flex;
+        width: var(--table-cell-width);
+        min-width: var(--table-cell-width);
+        max-width: var(--table-cell-width);
+        display: inline-flex;
         height: 100%;
         justify-content: center;
         flex-direction: column;
@@ -143,7 +130,6 @@
 
     .data-column .workload-value {
         opacity: .4;
-        cursor: default;
     }
 
     .data-column.WorkingDay:hover .workload-value {

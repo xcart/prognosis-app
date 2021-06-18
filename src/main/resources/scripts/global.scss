@@ -1,7 +1,7 @@
 :root {
   --list-line-margin: .25rem;
   --table-row-height: 2rem;
-  --table-row-width: 2rem;
+  --table-cell-width: 2rem;
   --table-line-margin: .25rem;
   --table-border: 1px solid #eee;
   --table-team-bg: #eee;
@@ -37,6 +37,12 @@
 
 .hidden {
   display: none !important;
+}
+
+.btn svg {
+  margin-bottom: 4px;
+  margin-right: 4px;
+  margin-left: -2px;
 }
 
 @import '~bootstrap/scss/bootstrap';

@@ -23,11 +23,8 @@ class Configuration {
     @Value("\${youtrack.token}")
     lateinit var youtrackToken: String
 
-    @Value("\${auth.user}")
-    lateinit var authUser: String
-
-    @Value("\${auth.password}")
-    lateinit var authPassword: String
+    @Value("\${auth.require:true}")
+    var authRequire: Boolean = true
 
     @Value("\${auth.domains}")
     lateinit var authorizedDomains: List<String>

@@ -30,6 +30,14 @@ class YouTrack @Autowired constructor(config: Configuration) {
         )
     }
 
+    fun fetchIssue(issueId: String): Issue {
+        return performRequest(
+            "/issues/$issueId", listOf(
+                "fields" to issueFields
+            )
+        )
+    }
+
     fun fetchUsers(): List<User> {
         return performRequest(
             "/users", listOf(
@@ -39,7 +47,7 @@ class YouTrack @Autowired constructor(config: Configuration) {
         )
     }
 
-    private final inline fun <reified T : Any> performRequest(
+    private inline fun <reified T : Any> performRequest(
         url: String,
         params: Parameters
     ): T {

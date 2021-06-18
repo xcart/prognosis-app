@@ -71,16 +71,16 @@
     }
 
     .date-column {
-        width: var(--table-row-width);
-        min-width: var(--table-row-width);
-        max-width: var(--table-row-width);
+        width: var(--table-cell-width);
+        min-width: var(--table-cell-width);
+        max-width: var(--table-cell-width);
         text-align: center;
     }
 
     .month-column {
-        width: calc(var(--table-row-width) * var(--data-size));
-        min-width: calc(var(--table-row-width) * var(--data-size));
-        max-width: calc(var(--table-row-width) * var(--data-size));
+        width: calc(var(--table-cell-width) * var(--data-size));
+        min-width: calc(var(--table-cell-width) * var(--data-size));
+        max-width: calc(var(--table-cell-width) * var(--data-size));
         text-align: left;
         padding-left: .7rem;
         overflow: hidden;

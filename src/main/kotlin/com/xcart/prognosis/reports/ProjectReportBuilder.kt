@@ -10,7 +10,6 @@ import com.xcart.prognosis.repositories.YouTrack
 import com.xcart.prognosis.repositories.YouTrackHub
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.time.LocalDate
 
 @Service
 class ProjectReportBuilder @Autowired constructor(
@@ -19,23 +18,17 @@ class ProjectReportBuilder @Autowired constructor(
     val dayOff: DayOff
 ) {
     fun gather(client: String, query: String): ProjectReport {
-//        val hubUser = youTrackHub.fetchUser(login)
-//        return if (hubUser == null) {
-//            UsertasksReport(emptyList(), 0, null, login)
-//        } else {
-//            val user = User(hubUser)
-            val issues = youTrack.fetchIssues(modifyQuery(query, client))
-            val tasks = getTaskWorkloadList(issues)
-            val duration = getReportDuration(tasks)
-            return ProjectReport(tasks, duration, null, client)
-//        }
+        val issues = youTrack.fetchIssues(modifyQuery(query, client))
+        val tasks = getTaskWorkloadList(issues)
+        val duration = getReportDuration(tasks)
+        return ProjectReport(tasks, duration, null, client)
     }
 
     private fun getTaskWorkloadList(issues: List<Issue>): List<TaskWorkload> {
         val analysis = WorkloadAnalysis(issues, dayOff)
         return issues.fold(mutableListOf<TaskWorkload>()) { acc, issue ->
             if (issue.endDate != null) {
-                val swimlane = analysis.getIssueSwimlane(issue, LocalDate.now())
+                val swimlane = analysis.getIssueSwimlane(issue, issue.startDate)
                 acc.add(
                     TaskWorkload(
                         swimlane,

@@ -1,4 +1,4 @@
-import {state, storedQuery, errors} from "./stores"
+import {state, storedQuery, errors, movedIssues} from "./stores"
 import {start, move, finish} from "./util/progress"
 import {modifyAddressBar} from "./util/addressBar"
 
@@ -48,6 +48,26 @@ export function loadProjectReport(client, query = "") {
 
 export function loadProjectsReport(query = "") {
     loadPageState("/projects", "/projects", {query: query})
+}
+
+export function getRescheduledSwimlane(issueId, startFrom) {
+    fetch(buildUrl(apiBaseurl + "/usertasks/" + issueId + "/reschedule", {"start_from": startFrom}))
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            let message = response.json().errorMessage
+            throw new Error("Could not reschedule issue: " + message)
+        })
+        .then(result => {
+            movedIssues.update(current => ({
+                ...current,
+                [result.id]: result.data
+            }))
+        })
+        .catch(reason => {
+            addError(reason)
+        })
 }
 
 export function addError(message) {

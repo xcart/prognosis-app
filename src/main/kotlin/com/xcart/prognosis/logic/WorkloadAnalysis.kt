@@ -52,6 +52,68 @@ class WorkloadAnalysis(
         }
     }
 
+    fun getRescheduledIssueSwimlane(
+        issue: Issue,
+        newStartDate: LocalDate
+    ): List<DailyWorkloadItem> {
+        if (issue.assignee == null || issue.endDate == null) {
+            return emptyList()
+        }
+        val shiftedInFuture = newStartDate > issue.startDate
+        val vacations = dayOff.getUserVacations(issue.assignee)
+        var rescheduledIssue: Issue
+
+        if (shiftedInFuture) {
+            val shiftAmount = getBusinessDaysCountBetween(
+                issue.startDate,
+                newStartDate,
+                vacations
+            )
+            val verificationDate = if (issue.verificationDate !== null)
+                shiftToAnotherBusinessDay(
+                    issue.verificationDate,
+                    shiftAmount, vacations
+                )
+            else null
+
+            val dueDate = if (issue.dueDate !== null)
+                shiftToAnotherBusinessDay(
+                    issue.dueDate,
+                    shiftAmount, vacations
+                )
+            else null
+
+            rescheduledIssue =
+                Issue(issue, newStartDate, verificationDate, dueDate)
+        } else {
+            val shiftAmount = getBusinessDaysCountBetween(
+                newStartDate,
+                issue.startDate,
+                vacations
+            )
+
+            val verificationDate = if (issue.verificationDate !== null)
+                shiftToAnotherBusinessDay(
+                    issue.verificationDate,
+                    -shiftAmount, vacations
+                )
+            else null
+
+            val dueDate = if (issue.dueDate !== null)
+                shiftToAnotherBusinessDay(
+                    issue.dueDate,
+                    -shiftAmount, vacations
+                )
+            else null
+
+            rescheduledIssue =
+                Issue(issue, newStartDate, verificationDate, dueDate)
+        }
+
+
+        return getIssueSwimlane(rescheduledIssue, newStartDate)
+    }
+
     fun getIssueSwimlane(
         issue: Issue,
         startDate: LocalDate
@@ -145,6 +207,42 @@ class WorkloadAnalysis(
         return if (days > 0)
             (totalWork / days).toFloat()
         else 0f
+    }
+
+    private fun shiftToAnotherBusinessDay(
+        original: LocalDate,
+        amount: Int,
+        vacations: List<VacationPeriod>
+    ): LocalDate {
+        var date = original
+        var added = 0
+        while (added < kotlin.math.abs(amount)) {
+            date = if (amount > 0)
+                date.plusDays(1)
+            else date.minusDays(1)
+            if (date.isBusinessDay() && !date.isVacationDay(vacations)) {
+                added++
+            }
+        }
+
+        return date
+    }
+
+    private fun addBusinessDaysTo(
+        date: LocalDate,
+        amount: Int,
+        vacations: List<VacationPeriod>
+    ): LocalDate {
+        var result = date
+        var added = 0
+        while (added < amount) {
+            result = date.plusDays(1)
+            if (date.isBusinessDay() && !date.isVacationDay(vacations)) {
+                added++
+            }
+        }
+
+        return result
     }
 
     private fun getBusinessDaysCountBetween(
