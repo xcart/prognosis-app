@@ -1,13 +1,32 @@
 <script>
+  import {createEventDispatcher} from 'svelte';
   import interact from "interactjs"
   import RowContainer from "../table/RowContainer.svelte"
 
+  const dispatch = createEventDispatcher();
+
   export let dragAllowed = false
   export let key = null
+
+  let dragStartPosition = null
   let dragStarted = false
+  let translate
 
   const DAILY_STEP_SIZE = 32
   const position = {x: 0, y: 0}
+
+  $: {
+    if (dragAllowed) {
+      translate = position
+    } else {
+      translate = {x: 0, y: 0}
+    }
+  }
+
+  function resetPosition() {
+    position.x = 0
+    position.y = 0
+  }
 
   let interactable = interact("#draggable-" + key)
     .draggable({
@@ -32,16 +51,26 @@
       listeners: {
         start(event) {
           dragStarted = true
-          console.log(event.type)
+          dragStartPosition = {
+            x: position.x,
+            y: position.y
+          }
         },
         move(event) {
           position.x += event.dx
-
-          event.target.setAttribute("data-shift", position.x / DAILY_STEP_SIZE)
         },
         end(event) {
           dragStarted = false
-          console.log(event)
+          dispatch('dragend', {
+            key: key,
+            delta: {
+              x: position.x - dragStartPosition.x,
+              y: position.y - dragStartPosition.y,
+              stepX: (position.x - dragStartPosition.x) / DAILY_STEP_SIZE
+            },
+            resetPosition: resetPosition
+          })
+          dragStartPosition = null
         }
       }
     });
@@ -56,11 +85,10 @@
 </script>
 
 <div class="draggable-wrapper" id="draggable-{key}" class:dragged={dragStarted}
-         style="transform: translate({position.x}px, {position.y}px);">
-<!--    <div class="drag-handle" class:hidden={!dragStarted}></div>-->
-    <RowContainer className="draggable-content">
-        <slot></slot>
-    </RowContainer>
+     style="transform: translate({translate.x}px, {translate.y}px);">
+  <RowContainer className="draggable-content">
+    <slot></slot>
+  </RowContainer>
 </div>
 
 <style>
@@ -69,16 +97,13 @@
         position: relative;
     }
 
-    .drag-handle {
-        position: static !important;
-        width: 96px;
-        height: 40px;
-        border: 1px solid #000;
+    :global(.draggable-content) {
+        transition: opacity .2s, box-shadow .2s;
     }
 
     .draggable-wrapper.dragged > :global(.draggable-content) {
-        /*position: absolute;*/
-        /*top: 0;*/
-        opacity: 0.3;
+        box-shadow: 0 0 0 0.15rem rgba(0, 123, 255, .8);
+        border-radius: .2rem;
+        opacity: 0.5;
     }
 </style>

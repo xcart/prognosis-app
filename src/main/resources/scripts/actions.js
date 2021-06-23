@@ -15,7 +15,7 @@ function buildUrl(urlString, queryParams) {
 function loadPageState(apiUrl, addressBarUrl, params) {
     start()
     modifyAddressBar(buildUrl(addressBarUrl, params))
-    fetch(buildUrl(apiBaseurl + apiUrl, params))
+    return fetch(buildUrl(apiBaseurl + apiUrl, params))
         .then(response => {
             move()
             if (response.ok) {
@@ -35,23 +35,23 @@ function loadPageState(apiUrl, addressBarUrl, params) {
 
 export function loadWorkloadReport(query = "") {
     storedQuery.set(query)
-    loadPageState("/workload", "/", {query: query})
+    return loadPageState("/workload", "/", {query: query})
 }
 
 export function loadUsertasksReport(user, query = "") {
-    loadPageState("/usertasks/" + user, "/tasks/" + user, {query: query})
+    return loadPageState("/usertasks/" + user, "/tasks/" + user, {query: query})
 }
 
 export function loadProjectReport(client, query = "") {
-    loadPageState("/projects/" + client, "/projects/" + client, {query: query})
+    return loadPageState("/projects/" + client, "/projects/" + client, {query: query})
 }
 
 export function loadProjectsReport(query = "") {
-    loadPageState("/projects", "/projects", {query: query})
+    return loadPageState("/projects", "/projects", {query: query})
 }
 
-export function getRescheduledSwimlane(issueId, startFrom) {
-    fetch(buildUrl(apiBaseurl + "/usertasks/" + issueId + "/reschedule", {"start_from": startFrom}))
+export function getRescheduledSwimlane(issueId, shiftAmount) {
+    return fetch(buildUrl(apiBaseurl + "/usertasks/" + issueId + "/reschedule", {"shift_amount": shiftAmount}))
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -62,7 +62,10 @@ export function getRescheduledSwimlane(issueId, startFrom) {
         .then(result => {
             movedIssues.update(current => ({
                 ...current,
-                [result.id]: result.data
+                [result.id]: {
+                    shiftAmount: result.shiftAmount,
+                    data: result.data
+                }
             }))
         })
         .catch(reason => {

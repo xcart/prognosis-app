@@ -5,7 +5,8 @@ export function applyMoveChanges(original, changes) {
   for (const id in changes) {
     let item = result.find(i => i.issue.id === id)
     if (item) {
-      item.swimlane = changes[id].swimlane
+      item.offset = item.offset + changes[id].shiftAmount
+      item.swimlane = changes[id].data.swimlane
     }
   }
   return result

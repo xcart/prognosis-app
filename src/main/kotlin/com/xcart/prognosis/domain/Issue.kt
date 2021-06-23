@@ -140,7 +140,7 @@ data class Issue(
     }
 
     val isOnImplementationStage = run {
-        (state.ordinal ?: 0) < IssueState.QualityAssurance.ordinal
+        state.ordinal < IssueState.QualityAssurance.ordinal
     }
 
     /**

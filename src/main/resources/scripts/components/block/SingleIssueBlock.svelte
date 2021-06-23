@@ -8,6 +8,9 @@
   export let swimlane = []
   export let showTestingPhase = true
 
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
   let formatWorkload = (value) => (value / 60.0).toFixed(1)
   let getCellStyle = (item) => item.workload > 0 ? 'background: ' + getContinuousColorCode(item.workload) + ';' : ''
   let tooltipParams = (item) => {
@@ -31,14 +34,16 @@
 </script>
 
 <RowContainer className="single-issue-block">
-    {#each swimlane as item}
-        <div class="data-column {getItemClass(item, showTestingPhase)}"
-             style="{getCellStyle(item)}"
-             use:tooltip={tooltipParams(item)}>
-            <span class="workload-value ">{formatWorkload(item.workload)}</span>
-        </div>
-    {/each}
-    <slot></slot>
+  {#each swimlane as item}
+    {#if Date.parse(item.date) >= today}
+      <div class="data-column {getItemClass(item, showTestingPhase)}"
+           style="{getCellStyle(item)}"
+           use:tooltip={tooltipParams(item)}>
+        <span class="workload-value ">{formatWorkload(item.workload)}</span>
+      </div>
+    {/if}
+  {/each}
+  <slot></slot>
 </RowContainer>
 
 <style>

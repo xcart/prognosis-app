@@ -10,7 +10,6 @@ import com.xcart.prognosis.services.Configuration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.time.LocalDate
 
 
 @RestController
@@ -48,14 +47,14 @@ class UsertasksController @Autowired constructor(
     @GetMapping("/{issueId}/reschedule")
     fun getRescheduledIssueState(
         @PathVariable issueId: String,
-        @RequestParam(name = "start_from") startFrom: String
+        @RequestParam(name = "shift_amount") shiftAmount: String
     ): ResponseEntity<RescheduledIssue> {
         val workload = rescheduleHelper.rescheduleIssue(
             issueId,
-            newStartDate = LocalDate.parse(startFrom)
+            shiftAmount = shiftAmount.toInt()
         )
 
-        val issue = RescheduledIssue(issueId, workload)
+        val issue = RescheduledIssue(issueId, shiftAmount.toInt(), workload)
         return ResponseEntity.ok(issue)
     }
 }
