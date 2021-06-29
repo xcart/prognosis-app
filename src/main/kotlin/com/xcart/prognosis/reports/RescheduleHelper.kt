@@ -1,5 +1,6 @@
 package com.xcart.prognosis.reports
 
+import com.xcart.prognosis.domain.IssueCustomField
 import com.xcart.prognosis.domain.IssueInfo
 import com.xcart.prognosis.errors.ReschedulingError
 import com.xcart.prognosis.logic.WorkloadAnalysis
@@ -8,6 +9,8 @@ import com.xcart.prognosis.repositories.DayOff
 import com.xcart.prognosis.repositories.YouTrack
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.sql.Timestamp
+import java.time.LocalDate
 
 @Service
 class RescheduleHelper @Autowired constructor(
@@ -36,6 +39,29 @@ class RescheduleHelper @Autowired constructor(
             rescheduledIssue.verificationDate!!,
             rescheduledIssue.endDate!!,
             rescheduledIssue.assignee
+        )
+    }
+
+    fun persistChange(
+        issueId: String, startDate: LocalDate,
+        verificationDate: LocalDate, endDate: LocalDate
+    ) {
+        youTrack.updateIssueFields(
+            issueId,
+            listOf(
+                getDateCustomField("Start Date", startDate),
+                getDateCustomField("Verification Date", verificationDate),
+                getDateCustomField("Due Date", endDate)
+            )
+        )
+    }
+
+    fun getDateCustomField(name: String, value: LocalDate): IssueCustomField {
+        return IssueCustomField(
+            name = name,
+            type = "DateIssueCustomField",
+            value = Timestamp
+                        .valueOf(value.atStartOfDay())
         )
     }
 }

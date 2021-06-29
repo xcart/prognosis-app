@@ -2,11 +2,9 @@ package com.xcart.prognosis.controllers
 
 import com.xcart.prognosis.presentation.CommonPageState
 import com.xcart.prognosis.presentation.PageContext
-import com.xcart.prognosis.presentation.RescheduledIssue
-import com.xcart.prognosis.reports.RescheduleHelper
 import com.xcart.prognosis.reports.UsertasksReportBuilder
+import com.xcart.prognosis.services.AppConfiguration
 import com.xcart.prognosis.services.AuthenticationFacade
-import com.xcart.prognosis.services.Configuration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -16,9 +14,8 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/usertasks")
 class UsertasksController @Autowired constructor(
     val reportBuilder: UsertasksReportBuilder,
-    val rescheduleHelper: RescheduleHelper,
     val authentication: AuthenticationFacade,
-    val config: Configuration
+    val config: AppConfiguration
 ) {
 
     @GetMapping("/{login}")
@@ -32,7 +29,8 @@ class UsertasksController @Autowired constructor(
 
         val context = PageContext(
             username = authentication.getUsername(),
-            youtrackUrl = config.youtrackUrl
+            youtrackUrl = config.youtrackUrl,
+            canChangeIssues = authentication.canChangeIssues()
         )
         val report =
             CommonPageState(
@@ -42,19 +40,5 @@ class UsertasksController @Autowired constructor(
                 ), context
             )
         return ResponseEntity.ok(report)
-    }
-
-    @GetMapping("/{issueId}/reschedule")
-    fun getRescheduledIssueState(
-        @PathVariable issueId: String,
-        @RequestParam(name = "shift_amount") shiftAmount: String
-    ): ResponseEntity<RescheduledIssue> {
-        val workload = rescheduleHelper.rescheduleIssue(
-            issueId,
-            shiftAmount = shiftAmount.toInt()
-        )
-
-        val issue = RescheduledIssue(issueId, shiftAmount.toInt(), workload)
-        return ResponseEntity.ok(issue)
     }
 }

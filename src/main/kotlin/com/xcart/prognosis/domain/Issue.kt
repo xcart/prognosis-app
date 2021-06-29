@@ -1,6 +1,7 @@
 package com.xcart.prognosis.domain
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonFormat
 import java.sql.Timestamp
 import java.time.LocalDate
 
@@ -10,8 +11,11 @@ data class Issue(
     val id: String,
     val idReadable: String,
     val state: IssueState,
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     val startDate: LocalDate,
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     val verificationDate: LocalDate?,
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     val dueDate: LocalDate?,
     val estimation: Int = DEFAULT_ESTIMATION,
     val summary: String? = null,
@@ -98,19 +102,7 @@ data class Issue(
                 if (cfield?.value === null || cfield.value !is HashMap<*, *>) {
                     IssueState.Submitted
                 } else {
-                    when (cfield.value["name"]) {
-                        "Waiting" -> IssueState.Waiting
-                        "Submitted" -> IssueState.Submitted
-                        "Scheduled" -> IssueState.Scheduled
-                        "In progress" -> IssueState.InProgress
-                        "Quality Assurance" -> IssueState.QualityAssurance
-                        "Has Defects" -> IssueState.HasDefects
-                        "QA Passed" -> IssueState.QaPassed
-                        "On Review" -> IssueState.OnReview
-                        "Completed" -> IssueState.Completed
-                        "Canceled" -> IssueState.Canceled
-                        else -> IssueState.Submitted
-                    }
+                    IssueState.fromString(cfield.value["name"] as String)
                 }
             }
 

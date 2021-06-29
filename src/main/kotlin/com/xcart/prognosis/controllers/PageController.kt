@@ -3,8 +3,8 @@ package com.xcart.prognosis.controllers
 import com.xcart.prognosis.presentation.CommonPageState
 import com.xcart.prognosis.presentation.PageContext
 import com.xcart.prognosis.reports.*
+import com.xcart.prognosis.services.AppConfiguration
 import com.xcart.prognosis.services.AuthenticationFacade
-import com.xcart.prognosis.services.Configuration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PathVariable
@@ -20,7 +20,7 @@ class PageController @Autowired constructor(
     val project: ProjectReportBuilder,
     val projects: ProjectsReportBuilder,
     val authentication: AuthenticationFacade,
-    val config: Configuration
+    val config: AppConfiguration
 ) {
 
     @RequestMapping("/")
@@ -63,7 +63,8 @@ class PageController @Autowired constructor(
         val mav = ModelAndView("index")
         val context = PageContext(
             username = authentication.getUsername(),
-            youtrackUrl = config.youtrackUrl
+            youtrackUrl = config.youtrackUrl,
+            canChangeIssues = authentication.canChangeIssues()
         )
         val state = CommonPageState(query, report, context)
         mav.addObject("state", state)

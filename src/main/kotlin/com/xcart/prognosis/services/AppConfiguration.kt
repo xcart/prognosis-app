@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 @Service
-class Configuration {
+class AppConfiguration {
     @Value("\${xb.url}")
     lateinit var xbUrl: String
 

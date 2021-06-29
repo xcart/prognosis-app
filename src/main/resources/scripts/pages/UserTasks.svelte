@@ -2,9 +2,9 @@
   import TaskList from "../components/usertasks/TaskList.svelte"
   import MoveIcon from "bootstrap-icons/icons/arrows-move.svg"
   import CancelIcon from "bootstrap-icons/icons/trash.svg"
-  import {state, storedQuery, movedIssues} from '../stores'
+  import {state, storedQuery, movedIssues, canChangeIssues} from '../stores'
   import {onMount} from 'svelte'
-  import {loadUsertasksReport, getRescheduledSwimlane} from "../actions"
+  import {loadUsertasksReport, getRescheduledSwimlane, clearMovedIssues, persistMovedIssues} from "../actions"
   import {applyMoveChanges} from "../util/moveTools"
   import CalendarView from "../components/table/CalendarView.svelte"
   import NoteBlock from "../components/block/NoteBlock.svelte"
@@ -12,6 +12,7 @@
   import SingleIssueBlock from "../components/block/SingleIssueBlock.svelte"
   import OffsetBlock from "../components/block/OffsetBlock.svelte"
   import RowContainer from "../components/table/RowContainer.svelte"
+  import BlockingButton from "../components/controls/BlockingButton.svelte"
 
   export let login = null
 
@@ -19,7 +20,6 @@
   let tasks = []
   let duration = null
   let user = null
-  let query = null
   let showTestingPhase = localStorage.getItem("usertasks.showTestingPhase") !== null
     ? JSON.parse(localStorage.getItem("usertasks.showTestingPhase"))
     : true
@@ -32,18 +32,28 @@
     return state.report.type === 'Usertasks' && state.report.login === login
   }
 
+  function saveChanges(event) {
+    if (!$canChangeIssues) {
+      return
+    }
+    persistMovedIssues().then(() => {
+      event.detail() // Unlock save button
+      moveEnabled = false
+    })
+  }
+
   function toggleMoveEnabled() {
+    if (!$canChangeIssues) {
+      return
+    }
+
     if (moveEnabled && hasMoveChanges) {
       if (!confirm("You have some unsaved changes. Do you really want to discard them?")) {
         return false
       }
-      movedIssues.set({})
+      clearMovedIssues()
     }
     moveEnabled = !moveEnabled
-    return false
-  }
-
-  function persistMoveChanges() {
     return false
   }
 
@@ -79,7 +89,7 @@
   }
 
   $: {
-    if (moveEnabled === true && hasMoveChanges) {
+    if ($canChangeIssues && moveEnabled && hasMoveChanges) {
       displayedTasks = applyMoveChanges(tasks, $movedIssues)
     } else {
       displayedTasks = tasks
@@ -88,20 +98,15 @@
 
   $: {
     if (isReady($state)) {
-      query = $state.query
       tasks = $state.report.tasks
       user = $state.report.user
       duration = $state.report.duration
-    } else {
-      query = $storedQuery
     }
   }
 
   onMount(() => {
     if (!isReady($state)) {
       loadUsertasksReport(login, $storedQuery)
-    } else {
-      storedQuery.set($state.query)
     }
   })
 </script>
@@ -110,23 +115,25 @@
   <div class="table-header container">
     <div></div>
     <form class="ml-auto page-controls title-aside">
+      {#if $canChangeIssues}
       <div class="move-tools-button" class:changed={hasMoveChanges}>
         <button type="button" class="btn {moveEnabled ? 'btn-secondary' : 'btn-light'}"
                 on:click|preventDefault={toggleMoveEnabled}>
           {#if hasMoveChanges && moveEnabled}
             <CancelIcon width="16" height="16"/>
-            <span>Cancel changes</span>
+            <span>Cancel</span>
           {:else}
             <MoveIcon width="16" height="16"/>
             <span>Move tasks</span>
           {/if}
         </button>
         {#if hasMoveChanges && moveEnabled}
-          <button type="button" class="btn btn-success" on:click|preventDefault={persistMoveChanges}>
-            <span>Save</span>
-          </button>
+          <BlockingButton on:click={saveChanges}>
+            <span>Save changes</span>
+          </BlockingButton>
         {/if}
       </div>
+      {/if}
       <div class="form-check">
         <input class="form-check-input" type="checkbox" bind:checked="{showTestingPhase}" value=""
                id="showTestingPhase">
@@ -146,7 +153,7 @@
             {#if task.offset > 0}
               <OffsetBlock amount={task.offset}/>
             {/if}
-            <DraggableBlock dragAllowed={moveEnabled} key={task.issue.id} on:dragend={onIssueMove}>
+            <DraggableBlock dragAllowed={moveEnabled && $canChangeIssues} key={task.issue.id} on:dragend={onIssueMove}>
               <SingleIssueBlock swimlane={task.swimlane} showTestingPhase={showTestingPhase}>
                 {#if task.overdue}
                   <NoteBlock

@@ -41,6 +41,7 @@
     }
 
     .calendar-strip {
+        width: 100%;
         --data-offset: 0;
         background-image: repeating-linear-gradient(90deg,
                 var(--strip-line-color) calc(var(--data-offset) * var(--table-cell-width)), var(--strip-line-color) calc(var(--data-offset) * var(--table-cell-width)),

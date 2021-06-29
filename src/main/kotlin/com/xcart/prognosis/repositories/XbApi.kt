@@ -8,7 +8,7 @@ import com.github.kittinunf.result.Result
 import com.xcart.prognosis.domain.VacationInfo
 import com.xcart.prognosis.domain.VacationPeriod
 import com.xcart.prognosis.errors.ExternalServiceError
-import com.xcart.prognosis.services.Configuration
+import com.xcart.prognosis.services.AppConfiguration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class XbApi @Autowired constructor(config: Configuration) {
+class XbApi @Autowired constructor(config: AppConfiguration) {
     private val baseUrl = config.xbUrl
     private val xbPassword = config.xbPassword
 
