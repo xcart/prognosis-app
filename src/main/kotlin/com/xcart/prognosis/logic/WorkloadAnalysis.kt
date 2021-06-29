@@ -52,6 +52,40 @@ class WorkloadAnalysis(
         }
     }
 
+    fun getRescheduledIssue(
+        issue: Issue,
+        newStartDate: LocalDate
+    ): Issue {
+        if (issue.assignee == null || issue.endDate == null) {
+            throw Exception("Issue has no assignee or end date - cannot be " +
+                                "rescheduled")
+        }
+
+        val vacations = dayOff.getUserVacations(issue.assignee)
+        val businessDaysShift = getBusinessDaysCountBetween(
+            issue.startDate,
+            newStartDate,
+            vacations
+        )
+
+        val verificationDate = if (issue.verificationDate !== null)
+            shiftToAnotherBusinessDay(
+                issue.verificationDate,
+                businessDaysShift,
+                vacations
+            )
+        else null
+
+        val dueDate = if (issue.dueDate !== null)
+            shiftToAnotherBusinessDay(
+                issue.dueDate,
+                businessDaysShift, vacations
+            )
+        else null
+
+        return Issue(issue, newStartDate, verificationDate, dueDate)
+    }
+
     fun getIssueSwimlane(
         issue: Issue,
         startDate: LocalDate
@@ -147,14 +181,61 @@ class WorkloadAnalysis(
         else 0f
     }
 
+    private fun shiftToAnotherBusinessDay(
+        original: LocalDate,
+        amount: Int,
+        vacations: List<VacationPeriod>
+    ): LocalDate {
+        var date = original
+        var added = 0
+        while (added < kotlin.math.abs(amount)) {
+            date = if (amount > 0)
+                date.plusDays(1)
+            else date.minusDays(1)
+            if (date.isBusinessDay() && !date.isVacationDay(vacations)) {
+                added++
+            }
+        }
+
+        return date
+    }
+
+    private fun addBusinessDaysTo(
+        date: LocalDate,
+        amount: Int,
+        vacations: List<VacationPeriod>
+    ): LocalDate {
+        var result = date
+        var added = 0
+        while (added < amount) {
+            result = date.plusDays(1)
+            if (date.isBusinessDay() && !date.isVacationDay(vacations)) {
+                added++
+            }
+        }
+
+        return result
+    }
+
     private fun getBusinessDaysCountBetween(
         startDate: LocalDate,
         endDate: LocalDate,
         vacations: List<VacationPeriod>
     ): Int {
-        return startDate.listDaysUntil(endDate)
+        val daysList = if (endDate > startDate) {
+            startDate.listDaysUntil(endDate)
+        } else {
+            endDate.listDaysUntil(startDate)
+        }
+        val absCount = daysList
             .filter { it.isBusinessDay() }
             .filter { !it.isVacationDay(vacations) }
-            .count()
+            .count() - 1
+
+        return if (endDate > startDate) {
+            absCount
+        } else {
+            absCount * -1
+        }
     }
 }

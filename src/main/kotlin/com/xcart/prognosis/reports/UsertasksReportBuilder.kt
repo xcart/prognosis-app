@@ -11,7 +11,6 @@ import com.xcart.prognosis.repositories.YouTrack
 import com.xcart.prognosis.repositories.YouTrackHub
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.time.LocalDate
 
 @Service
 class UsertasksReportBuilder @Autowired constructor(
@@ -37,7 +36,7 @@ class UsertasksReportBuilder @Autowired constructor(
         val analysis = WorkloadAnalysis(issues, dayOff)
         return issues.fold(mutableListOf<TaskWorkload>()) { acc, issue ->
             if (issue.endDate != null) {
-                val swimlane = analysis.getIssueSwimlane(issue, LocalDate.now())
+                val swimlane = analysis.getIssueSwimlane(issue, issue.startDate)
                 acc.add(
                     TaskWorkload(
                         swimlane,

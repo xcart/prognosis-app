@@ -5,9 +5,10 @@
   import {state, storedQuery} from '../stores'
   import {onMount} from 'svelte';
   import {loadWorkloadReport} from "../actions"
-  import SwimlanesCalendar from "../components/table/SwimlanesCalendar.svelte"
-  import TeamInfo from "../components/workload/parts/TeamInfo.svelte"
-  import WorkloadSwimlane from "../components/table/WorkloadSwimlane.svelte"
+  import CalendarView from "../components/table/CalendarView.svelte"
+  import TeamInfo from "../components/workload/parts/TeamSwimlane.svelte"
+  import AggregatedWorkloadBlock from "../components/block/AggregatedWorkloadBlock.svelte"
+  import RowContainer from "../components/table/RowContainer.svelte"
 
   let users = [],
     teams = [],
@@ -48,14 +49,14 @@
     </Container>
     <div class="workload-table">
         <UserList {teams}/>
-        <SwimlanesCalendar {duration}>
+        <CalendarView {duration}>
             {#each teams as team}
                 <TeamInfo/>
                 {#each team.users as user}
-                    <WorkloadSwimlane swimlane={user.swimlane}/>
+                    <AggregatedWorkloadBlock swimlane={user.swimlane}/>
                 {/each}
             {/each}
-        </SwimlanesCalendar>
+        </CalendarView>
     </div>
 </section>
 

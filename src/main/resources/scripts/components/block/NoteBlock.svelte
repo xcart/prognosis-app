@@ -6,7 +6,7 @@
   export let type = "warning"
 </script>
 
-<div class="swimlane-note">
+<div class="note-block">
     <div class="reason-icon {type}">
         {#if type === "danger"}
             <DangerIcon width="20" height="20"/>
@@ -20,8 +20,8 @@
 </div>
 
 <style>
-    .swimlane-note {
-        display: flex;
+    .note-block {
+        display: inline-flex;
         height: 100%;
         align-items: center;
     }

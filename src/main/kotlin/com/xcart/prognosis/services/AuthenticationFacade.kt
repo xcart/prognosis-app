@@ -26,8 +26,23 @@ class AuthenticationFacade : IAuthenticationFacade {
         return null
     }
 
+    fun canChangeIssues(): Boolean {
+        return when (getUserEmail()) {
+            "daemos@x-cart.com",
+            "xmir@x-cart.com",
+            "alive@x-cart.com",
+            "sarta@x-cart.com",
+            "joy@x-cart.com",
+            "mccornic@x-cart.com" -> true
+            else -> false
+        }
+    }
+
+    fun getUserEmail(): String? {
+        return getUser()?.name
+    }
+
     fun getUsername(): String {
-        val user = getUser()
-        return if (user != null) user.name else "Unknown"
+        return getUserEmail() ?: "Unknown"
     }
 }

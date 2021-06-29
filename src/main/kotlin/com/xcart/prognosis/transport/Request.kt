@@ -22,6 +22,7 @@ fun Request.configure(token: String): Request {
 inline fun <reified T : Any> Request.processResult(): T {
     val mapper = ObjectMapper().registerKotlinModule()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+//    FuelManager.instance.addResponseInterceptor(LogResponseInterceptor)
 
     mapper.propertyNamingStrategy = PropertyNamingStrategy.LOWER_CAMEL_CASE
     val (request, response, result) = this.responseObject<T>(mapper)

@@ -41,10 +41,11 @@
     }
 
     .calendar-strip {
+        width: 100%;
         --data-offset: 0;
         background-image: repeating-linear-gradient(90deg,
-                var(--strip-line-color) calc(var(--data-offset) * var(--table-row-width)), var(--strip-line-color) calc(var(--data-offset) * var(--table-row-width)),
-                var(--strip-bg-color) calc(var(--data-offset) * var(--table-row-width) + 1px), var(--strip-bg-color) calc(var(--data-offset) * var(--table-row-width) + var(--table-row-width) * 7)
+                var(--strip-line-color) calc(var(--data-offset) * var(--table-cell-width)), var(--strip-line-color) calc(var(--data-offset) * var(--table-cell-width)),
+                var(--strip-bg-color) calc(var(--data-offset) * var(--table-cell-width) + 1px), var(--strip-bg-color) calc(var(--data-offset) * var(--table-cell-width) + var(--table-cell-width) * 7)
         );
     }
 </style>

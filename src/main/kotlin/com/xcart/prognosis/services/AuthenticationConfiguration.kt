@@ -14,8 +14,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 @Configuration
 @EnableWebSecurity
 class AuthenticationConfiguration @Autowired constructor(
-    val userService: AuthenticationUserService
-    ) :
+    val userService: AuthenticationUserService,
+    val appConfiguration: com.xcart.prognosis.services.AppConfiguration
+) :
     WebSecurityConfigurerAdapter() {
 
     override fun configure(auth: AuthenticationManagerBuilder) {
@@ -31,7 +32,11 @@ class AuthenticationConfiguration @Autowired constructor(
 
     override fun configure(http: HttpSecurity) {
         http
-            .authorizeRequests { it.anyRequest().authenticated() }
+            .authorizeRequests {
+                if (appConfiguration.authRequire)
+                    it.anyRequest().authenticated()
+                else it.anyRequest().permitAll()
+            }
             .exceptionHandling {
                 it.defaultAuthenticationEntryPointFor(
                     HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED),

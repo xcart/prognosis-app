@@ -5,7 +5,7 @@ import com.xcart.prognosis.presentation.PageContext
 import com.xcart.prognosis.reports.ProjectReportBuilder
 import com.xcart.prognosis.reports.ProjectsReportBuilder
 import com.xcart.prognosis.services.AuthenticationFacade
-import com.xcart.prognosis.services.Configuration
+import com.xcart.prognosis.services.AppConfiguration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -17,7 +17,7 @@ class ProjectsController @Autowired constructor(
     val projectsReportBuilder: ProjectsReportBuilder,
     val projectReportBuilder: ProjectReportBuilder,
     val authentication: AuthenticationFacade,
-    val config: Configuration
+    val config: AppConfiguration
 ) {
 
     @GetMapping("")

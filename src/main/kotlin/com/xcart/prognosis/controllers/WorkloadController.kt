@@ -4,7 +4,7 @@ import com.xcart.prognosis.presentation.CommonPageState
 import com.xcart.prognosis.presentation.PageContext
 import com.xcart.prognosis.reports.WorkloadReportBuilder
 import com.xcart.prognosis.services.AuthenticationFacade
-import com.xcart.prognosis.services.Configuration
+import com.xcart.prognosis.services.AppConfiguration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 class WorkloadController @Autowired constructor(
     val reportBuilder: WorkloadReportBuilder,
     val authentication: AuthenticationFacade,
-    val config: Configuration
+    val config: AppConfiguration
 ) {
 
     @GetMapping("")

@@ -2,6 +2,7 @@
   import {getContinuousColorCode} from "../../../util/colorCode"
   import {Link} from "svelte-routing";
   import {storedQuery} from '../../../stores'
+  import RowContainer from "../../table/RowContainer.svelte"
 
   export let project = null
 
@@ -21,7 +22,7 @@
   }
 </script>
 
-<div class="table-row">
+<RowContainer className="project-swimlane">
     {#if project.offset > 0}
         <div class="data-column offset"
              style="--data-size: {project.offset}"></div>
@@ -30,20 +31,14 @@
          style="--data-size: {getSize(project)};">
         <Link to="{buildProjectUrl(project.client)}">{formatProjectName(project)}</Link>
     </div>
-</div>
+</RowContainer>
 
 <style>
-    .table-row {
-        display: flex;
-        height: var(--table-extended-row-height);
-        padding: var(--table-extended-row-v-padding);
-        align-items: center;
-    }
 
     .data-column {
-        width: calc(var(--table-row-width) * var(--data-size));
-        min-width: calc(var(--table-row-width) * var(--data-size));
-        max-width: calc(var(--table-row-width) * var(--data-size));
+        width: calc(var(--table-cell-width) * var(--data-size));
+        min-width: calc(var(--table-cell-width) * var(--data-size));
+        max-width: calc(var(--table-cell-width) * var(--data-size));
         display: flex;
         height: 100%;
         justify-content: center;

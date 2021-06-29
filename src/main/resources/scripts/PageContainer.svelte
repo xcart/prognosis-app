@@ -6,7 +6,6 @@
   import UserTasks from "./pages/UserTasks.svelte";
   import Projects from "./pages/Projects.svelte"
   import Project from "./pages/Project.svelte"
-  import Avatar from "./components/common/Avatar.svelte"
 
   export let url = "";
 </script>

@@ -3,6 +3,8 @@
 <head lang="en">
     <meta name="viewport" content="width=device-width, initial-scale=0.75">
     <meta charset="UTF-8" />
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Solution Prognosis</title>
     <script th:inline="javascript">
         var initialState = [[${state}]];

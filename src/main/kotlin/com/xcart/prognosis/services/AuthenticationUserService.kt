@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class AuthenticationUserService @Autowired constructor(
-    val config: Configuration
+    val config: AppConfiguration
 ) :
     OidcUserService() {
 
