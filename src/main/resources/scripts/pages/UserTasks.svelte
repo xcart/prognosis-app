@@ -155,7 +155,7 @@
             {#if task.offset > 0}
               <OffsetBlock amount={task.offset}/>
             {/if}
-            <DraggableBlock dragAllowed={moveEnabled && $canChangeIssues} key={task.issue.id} on:dragend={onIssueMove}>
+            <DraggableBlock dragAllowed={moveEnabled && $canChangeIssues && !task.overdue} key={task.issue.id} on:dragend={onIssueMove}>
               <SingleIssueBlock swimlane={task.swimlane} showTestingPhase={showTestingPhase}>
                 {#if task.overdue}
                   <NoteBlock
