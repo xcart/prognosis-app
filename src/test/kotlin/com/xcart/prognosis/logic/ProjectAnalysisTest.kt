@@ -40,7 +40,7 @@ internal class ProjectAnalysisTest {
         )
         val issues = listOf<Issue>(
             // 2020-01-01 - 2020-01-10
-            Issue(
+            Issue.createFromYoutrack(
                 id = "1",
                 created = 1577836800000,
                 isDraft = false,
@@ -61,7 +61,7 @@ internal class ProjectAnalysisTest {
                 )
             ),
             // 2020-01-05 - 2020-01-15
-            Issue(
+            Issue.createFromYoutrack(
                 id = "2",
                 created = 1578182400000,
                 isDraft = false,

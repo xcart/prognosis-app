@@ -44,7 +44,7 @@ internal class WorkloadAnalysisTest {
         )
         val issues = listOf<Issue>(
             // 2020-01-01 - 2020-01-10
-            Issue(id = "1",
+            Issue.createFromYoutrack(id = "1",
                 created = 1577836800000,
                 isDraft = false,
                 customFields = listOf(
@@ -54,7 +54,7 @@ internal class WorkloadAnalysisTest {
                 )
             ),
             // 2020-01-05 - 2020-01-15
-            Issue(id = "2",
+            Issue.createFromYoutrack(id = "2",
                 created = 1578182400000,
                 isDraft = false,
                 customFields = listOf(
@@ -102,7 +102,7 @@ internal class WorkloadAnalysisTest {
             "avatarUrl" to "/test.jpg"
         )
 
-        val issueSameDay = Issue(
+        val issueSameDay = Issue.createFromYoutrack(
             id = "1",
             created = 1614556800000,
             isDraft = false,
@@ -120,7 +120,7 @@ internal class WorkloadAnalysisTest {
             issueSameDay.startDate.listDaysUntil(issueSameDay.endDate!!)
         )
 
-        val issueTwoDays = Issue(
+        val issueTwoDays = Issue.createFromYoutrack(
             id = "1",
             created = 1614556800000,
             isDraft = false,

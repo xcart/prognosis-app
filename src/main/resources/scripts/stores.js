@@ -3,6 +3,7 @@ import {derived, writable} from "svelte/store"
 export const state = writable({})
 export const movedIssues = writable({})
 export const storedQuery = writable("")
+export const storedClient = writable(null)
 export const storedLogin = writable(null)
 export const errors = writable([])
 

@@ -1,8 +1,8 @@
 import App from './App.svelte';
-import {state} from './stores'
+import {updateStateStore} from './actions'
 import './global.scss';
 
-state.set(window.initialState)
+updateStateStore(window.initialState)
 
 const app = new App({
     target: document.body,

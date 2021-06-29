@@ -2,7 +2,7 @@
   import TaskList from "../components/usertasks/TaskList.svelte"
   import MoveIcon from "bootstrap-icons/icons/arrows-move.svg"
   import CancelIcon from "bootstrap-icons/icons/trash.svg"
-  import {state, storedQuery, movedIssues, canChangeIssues} from '../stores'
+  import {state, storedQuery, storedLogin, movedIssues, canChangeIssues} from '../stores'
   import {onMount} from 'svelte'
   import {loadUsertasksReport, getRescheduledSwimlane, clearMovedIssues, persistMovedIssues} from "../actions"
   import {applyMoveChanges} from "../util/moveTools"
@@ -107,6 +107,8 @@
   onMount(() => {
     if (!isReady($state)) {
       loadUsertasksReport(login, $storedQuery)
+    } else {
+      storedLogin.set(login)
     }
   })
 </script>

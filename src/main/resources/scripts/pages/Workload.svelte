@@ -37,8 +37,6 @@
   onMount(() => {
     if (!isReady($state)) {
       loadWorkloadReport($storedQuery)
-    } else {
-      storedQuery.set($state.query)
     }
   })
 </script>

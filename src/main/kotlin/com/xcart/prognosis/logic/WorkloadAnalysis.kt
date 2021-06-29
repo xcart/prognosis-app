@@ -57,15 +57,18 @@ class WorkloadAnalysis(
         newStartDate: LocalDate
     ): Issue {
         if (issue.assignee == null || issue.endDate == null) {
-            throw Exception("Issue has no assignee or end date - cannot be " +
-                                "rescheduled")
+            throw Exception(
+                "Issue has no assignee or end date - cannot be " +
+                    "rescheduled"
+            )
         }
 
         val vacations = dayOff.getUserVacations(issue.assignee)
         val businessDaysShift = getBusinessDaysCountBetween(
             issue.startDate,
             newStartDate,
-            vacations
+            vacations,
+            includingEnd = false
         )
 
         val verificationDate = if (issue.verificationDate !== null)
@@ -175,7 +178,10 @@ class WorkloadAnalysis(
         endDate: LocalDate,
         vacations: List<VacationPeriod>
     ): Float {
-        val days = getBusinessDaysCountBetween(startDate, endDate, vacations)
+        val days = getBusinessDaysCountBetween(
+            startDate, endDate,
+            vacations
+        )
         return if (days > 0)
             (totalWork / days).toFloat()
         else 0f
@@ -220,17 +226,22 @@ class WorkloadAnalysis(
     private fun getBusinessDaysCountBetween(
         startDate: LocalDate,
         endDate: LocalDate,
-        vacations: List<VacationPeriod>
+        vacations: List<VacationPeriod>,
+        includingEnd: Boolean = true
     ): Int {
         val daysList = if (endDate > startDate) {
             startDate.listDaysUntil(endDate)
         } else {
             endDate.listDaysUntil(startDate)
         }
-        val absCount = daysList
+        var absCount = daysList
             .filter { it.isBusinessDay() }
             .filter { !it.isVacationDay(vacations) }
-            .count() - 1
+            .count()
+
+        if (!includingEnd && absCount > 0) {
+            absCount -= 1
+        }
 
         return if (endDate > startDate) {
             absCount

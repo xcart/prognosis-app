@@ -1,5 +1,5 @@
 <script>
-  import {state, storedQuery} from '../stores'
+  import {state, storedClient} from '../stores'
   import {onMount} from 'svelte';
   import {loadProjectReport} from "../actions";
   import CalendarView from "../components/table/CalendarView.svelte"
@@ -37,20 +37,16 @@
 
   $: {
     if (isReady($state)) {
-      // query = $state.query
       tasks = $state.report.tasks
       duration = $state.report.duration
-    } else {
-      // query = $storedQuery
     }
   }
 
   onMount(() => {
     if (!isReady($state)) {
       loadProjectReport(client)
-      // loadProjectReport(client, $storedQuery)
     } else {
-      // storedQuery.set($state.query)
+      storedClient.set(client)
     }
   })
 </script>

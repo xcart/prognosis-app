@@ -1,4 +1,4 @@
-import {state, storedQuery, errors, movedIssues, storedLogin} from "./stores"
+import {state, storedQuery, errors, movedIssues, storedLogin, storedClient} from "./stores"
 import {start, move, finish} from "./util/progress"
 import {modifyAddressBar} from "./util/addressBar"
 import {get} from 'svelte/store'
@@ -34,7 +34,7 @@ function loadPageState(apiUrl, addressBarUrl, params) {
     })
     .then(result => {
       clearMovedIssues()
-      state.set(result)
+      updateStateStore(result)
       finish()
     })
     .catch(reason => {
@@ -43,8 +43,12 @@ function loadPageState(apiUrl, addressBarUrl, params) {
     })
 }
 
+export function updateStateStore(data) {
+  state.set(data)
+  storedQuery.set(data.query)
+}
+
 export function loadWorkloadReport(query = "") {
-  storedQuery.set(query)
   return loadPageState("/workload", "/", {query: query})
 }
 
@@ -56,11 +60,11 @@ export function reloadUsertasksReport() {
 
 export function loadUsertasksReport(user, query = "") {
   storedLogin.set(user)
-  storedQuery.set(query)
   return loadPageState("/usertasks/" + user, "/tasks/" + user, {query: query})
 }
 
 export function loadProjectReport(client, query = "") {
+  storedClient.set(client)
   return loadPageState("/projects/" + client, "/projects/" + client, {query: query})
 }
 
